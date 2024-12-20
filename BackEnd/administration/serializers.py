@@ -119,7 +119,6 @@ class AdminUserDetailSerializer(serializers.ModelSerializer):
 
 class AdminCompanyListSerializer(serializers.ModelSerializer):
     person = AdminUserDetailSerializer(read_only=True)
-    regions = AdminRegionSerializer(many=True, read_only=True)
     company_type = serializers.SerializerMethodField(read_only=True)
     activities = ActivitiesSerializer(many=True, read_only=True)
     representative = serializers.CharField(read_only=True)
@@ -130,13 +129,9 @@ class AdminCompanyListSerializer(serializers.ModelSerializer):
         fields = (
             "id",
             "name",
-            "is_registered",
             "person",
-            "person_position",
-            "regions",
             "business_entity",
             "phone",
-            "edrpou",
             "address",
             "status",
             "updated_at",
