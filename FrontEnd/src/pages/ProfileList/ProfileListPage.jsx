@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import useSWR from 'swr';
 import useWindowWidth from '../../hooks/useWindowWidth';
+import { definPageSize } from '../../utils/definePageSize';
 
 import ErrorPage404 from '../ErrorPages/ErrorPage404';
 import Loader from '../../components/Loader/Loader';
@@ -26,6 +27,9 @@ const ACTIVITY_TYPE = [
   { title: 'Інші послуги', key: 'other-services', value: 'other-services' },
 ];
 
+const TABLET_SCREEN_WIDTH = 768;
+const MOBILE_PAGE_SIZE = 4;
+
 export default function ProfileListPage({ isAuthorized, isSaved }) {
   const [searchParams, setSearchParams] = useSearchParams();
   const pageNumber = Number(searchParams.get('page')) || 1;
@@ -34,23 +38,15 @@ export default function ProfileListPage({ isAuthorized, isSaved }) {
   const [profiles, setProfiles] = useState([]);
   const [filters, setFilters] = useState([]);
   const [currentPage, setCurrentPage] = useState(pageNumber);
-  const [pageSize, setPageSize] = useState(16);
+  const [pageSize, setPageSize] = useState(MOBILE_PAGE_SIZE);
   const [activeTab, setActiveTab] = useState(searchParams.get('companyType') || 'all');
   const [activeBtn, setActiveBtn] = useState(searchParams.get('activity') || 'all');
 
   const windowWidth = useWindowWidth();
-  const linkText = windowWidth >= 768 ? 'Усі підприємства' : 'Усі';
+  const linkText = windowWidth >= TABLET_SCREEN_WIDTH ? 'Усі підприємства' : 'Усі';
 
   useEffect(() => {
-    if (windowWidth < 768) {
-      setPageSize(4);
-    } else if (windowWidth >= 768 && windowWidth < 1200) {
-      setPageSize(16);
-    } else if (windowWidth >= 1200 && windowWidth < 1512) {
-      setPageSize(12);
-    } else if (windowWidth >= 1512) {
-      setPageSize(16);
-    }
+    definPageSize(windowWidth, setPageSize);
   }, [windowWidth]);
 
   const [url, setUrl] = useState(
