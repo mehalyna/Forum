@@ -53,6 +53,7 @@ class ProfilesFilter(FilterSet):
     Ordering sample:
     /?ordering=id asc or /?ordering=-id desc
     """
+
     name = filters.CharFilter(lookup_expr="icontains")
     representative = filters.CharFilter(
         field_name="representative", lookup_expr="icontains"
