@@ -113,8 +113,6 @@ class ProfilesListView(ListAPIView):
     )
 
 
-
-
 class ProfileDetailView(RetrieveUpdateDestroyAPIView):
     """
     Retrieve, update or delete a Profiles.
