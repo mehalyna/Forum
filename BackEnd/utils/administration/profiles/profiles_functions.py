@@ -8,12 +8,6 @@ def format_company_type(obj):
     return None
 
 
-def format_representative(obj):
-    if obj.person:
-        return f'{obj.person.name} {obj.person.surname}'
-    return None
-
-
 def format_business_entity(obj):
     if obj.is_fop:
         return "ФОП"
