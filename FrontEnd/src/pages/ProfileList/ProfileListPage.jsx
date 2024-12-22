@@ -4,6 +4,8 @@ import axios from 'axios';
 import useSWR from 'swr';
 import useWindowWidth from '../../hooks/useWindowWidth';
 import { definPageSize } from '../../utils/definePageSize';
+import { PAGE_SIZE } from '../../constants/constants';
+import { SCREEN_WIDTH } from '../../constants/constants';
 
 import ErrorPage404 from '../ErrorPages/ErrorPage404';
 import Loader from '../../components/Loader/Loader';
@@ -27,9 +29,6 @@ const ACTIVITY_TYPE = [
   { title: 'Інші послуги', key: 'other-services', value: 'other-services' },
 ];
 
-const TABLET_SCREEN_WIDTH = 768;
-const MOBILE_PAGE_SIZE = 4;
-
 export default function ProfileListPage({ isAuthorized, isSaved }) {
   const [searchParams, setSearchParams] = useSearchParams();
   const pageNumber = Number(searchParams.get('page')) || 1;
@@ -38,12 +37,12 @@ export default function ProfileListPage({ isAuthorized, isSaved }) {
   const [profiles, setProfiles] = useState([]);
   const [filters, setFilters] = useState([]);
   const [currentPage, setCurrentPage] = useState(pageNumber);
-  const [pageSize, setPageSize] = useState(MOBILE_PAGE_SIZE);
+  const [pageSize, setPageSize] = useState(PAGE_SIZE.mobile);
   const [activeTab, setActiveTab] = useState(searchParams.get('companyType') || 'all');
   const [activeBtn, setActiveBtn] = useState(searchParams.get('activity') || 'all');
 
   const windowWidth = useWindowWidth();
-  const linkText = windowWidth >= TABLET_SCREEN_WIDTH ? 'Усі підприємства' : 'Усі';
+  const linkText = windowWidth >= SCREEN_WIDTH.tablet ? 'Усі підприємства' : 'Усі';
 
   useEffect(() => {
     definPageSize(windowWidth, setPageSize);

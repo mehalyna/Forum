@@ -7,12 +7,11 @@ import useSWR from 'swr';
 
 import useWindowWidth from '../../hooks/useWindowWidth';
 import { definPageSize } from '../../utils/definePageSize';
+import { PAGE_SIZE } from '../../constants/constants';
 
 import Loader from '../../components/Loader/Loader';
 import ProfileList from '../ProfileList/ProfileList';
 import styles from './Search.module.scss';
-
-const MOBILE_PAGE_SIZE = 4;
 
 export function Search({ isAuthorized }) {
   const [searchResults, setSearchResults] = useState([]);
@@ -20,7 +19,7 @@ export function Search({ isAuthorized }) {
   const searchTerm = searchParams.get('name');
   const pageNumber = Number(searchParams.get('page')) || 1;
   const [currentPage, setCurrentPage] = useState(pageNumber);
-  const [pageSize, setPageSize] = useState(MOBILE_PAGE_SIZE);
+  const [pageSize, setPageSize] = useState(PAGE_SIZE.mobile);
   const servedAddress = process.env.REACT_APP_BASE_API_URL;
 
   async function fetcher(url) {

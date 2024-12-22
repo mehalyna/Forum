@@ -1,21 +1,15 @@
-const TABLET_SCREEN_WIDTH = 768;
-const SMALL_DESKTOP_SCREEN_WIDTH = 1200;
-const DESKTOP_SCREEN_WIDTH = 1512;
-
-const MOBILE_PAGE_SIZE = 4;
-const TABLET_PAGE_SIZE = 10;
-const SMALL_DESKTOP_PAGE_SIZE = 12;
-const DESKTOP_PAGE_SIZE = 16;
+import { SCREEN_WIDTH } from "../constants/constants";
+import { PAGE_SIZE } from "../constants/constants";
 
 export function definPageSize (windowWidth, setPageSize) {
-    if (windowWidth < TABLET_SCREEN_WIDTH) {
-      return setPageSize(MOBILE_PAGE_SIZE);
+    if (windowWidth < SCREEN_WIDTH.tablet) {
+      return setPageSize(PAGE_SIZE.mobile);
     }
-    if (windowWidth < SMALL_DESKTOP_SCREEN_WIDTH) {
-      return setPageSize(TABLET_PAGE_SIZE);
+    if (windowWidth < SCREEN_WIDTH.smallDesktop) {
+      return setPageSize(PAGE_SIZE.tablet);
     }
-    if (windowWidth < DESKTOP_SCREEN_WIDTH) {
-      return setPageSize(SMALL_DESKTOP_PAGE_SIZE);
+    if (windowWidth < SCREEN_WIDTH.desktop) {
+      return setPageSize(PAGE_SIZE.smallDesktop);
     }
-    return setPageSize(DESKTOP_PAGE_SIZE);
+    return setPageSize(PAGE_SIZE.desktop);
   }
