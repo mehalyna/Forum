@@ -1,6 +1,6 @@
 .delete__description {
     text-align: left;
-    color: #292E32;
+    color: var(--main-text-color);
     font-family: var(--font-main);
     font-size: 14px;
     font-weight: 400;
@@ -25,13 +25,13 @@
 
 .button__cancel {
     display: flex;
-    padding: 5px 15px;
+    padding: 9px 14px;
     justify-content: center;
     align-items: center;
     gap: 10px;
     border-radius: 4px;
-    background: white;
-    border: 1px solid #A3AAB0;
+    background: var(--light-button-color);
+    border: 1px solid var(--light-button-border-color);
     cursor: pointer;
     font-family: var(--font-main);
     font-size: 16px;
@@ -39,19 +39,22 @@
     line-height: 20px;
     letter-spacing: -0.01em;
     text-align: center;
-    color: #25292C;
+    color: var(--light-button-text-color);
+}
+
+.button__cancel:hover {
+    background: var(--light-button-hover-color);
 }
 
 .button__delete {
     display: flex;
-    padding: 5px 15px;
+    padding: 10px 17px;
     justify-content: center;
     align-items: center;
     gap: 10px;
     border-radius: 4px;
-    background: #F15831;
-    border: 1px solid #F15831;
-    color: white;
+    background: var(--warn-button-color);
+    color: var(--warn-button-text-color);
     font-family: var(--font-main);
     font-size: 16px;
     font-weight: 600;
@@ -61,22 +64,8 @@
     cursor: pointer;
 }
 
-.button__delete__disabled {
-    display: flex;
-    padding: 5px 15px;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    border-radius: 4px;
-    background: white;
-    border: 1px solid #F15831;
-    color: #F15831;
-    font-family: var(--font-main);
-    font-size: 16px;
-    font-weight: 600;
-    line-height: 20px;
-    letter-spacing: -0.01em;
-    text-align: center;
+.button__delete:hover {
+    background: var(--warn-button-hover-color);
 }
 
 .delete-header {

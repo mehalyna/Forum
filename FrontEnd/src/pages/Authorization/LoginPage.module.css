@@ -205,15 +205,15 @@
 .login-footer-buttons__signin,
 .login-footer-buttons__signin__disabled {
   display: flex;
-  padding: 9px 16px;
+  padding: 10px 16px;
   justify-content: center;
   align-items: center;
   gap: 4px;
   border-radius: 4px;
-  background: #000000;
+  background: var(--main-button-color);
   cursor: pointer;
 
-  color: var(--light-button-text-color);
+  color: var(--main-button-text-color);
   text-align: center;
   font-feature-settings: "calt" off;
   font-family: var(--font-main);
@@ -226,10 +226,13 @@
 }
 
 .login-footer-buttons__signin__disabled {
-  border: 1px solid #BFC6CF;
-  background: #EEEFF1;
-  color: #A3AAB0;
+  background: var(--main-button-disabled-color);
+  color: var(--main-button-disabled-text-color);
   cursor: default;
+}
+
+.login-footer-buttons__signin:hover {
+  background: var(--main-button-hover-color);
 }
 
 .error-message {

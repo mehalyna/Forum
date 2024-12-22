@@ -111,11 +111,11 @@ function TitleInfo({ isAuthorized, data }) {
                   {!isSaved ? 'Додати в збережені' : 'Додано в збережені'}
                 </span>
                 <StarForLike
+                  location="profilePage"
                   isSaved={isSaved}
                   isAuthorized={isAuthorized}
                   ownProfile={ownProfile}
-                  styleFilled={{ color: '#FFF', fontSize: '24px' }}
-                  styleOutlined={{ color: '#000', fontSize: '24px' }}
+                  styleOutlined={{ color: isSaved ? '#FFF' : '#000', fontSize: '24px' }}
                 ></StarForLike>
               </button>
             )}
