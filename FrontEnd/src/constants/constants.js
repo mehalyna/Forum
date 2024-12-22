@@ -7,10 +7,10 @@ export const SCREEN_WIDTH = {
     tablet: 768,
     smallDesktop: 1200,
     desktop: 1512,
-}
+};
 export const PAGE_SIZE = {
     mobile: 4,
     tablet: 10,
     smallDesktop: 12,
     desktop: 16,
-}
+};

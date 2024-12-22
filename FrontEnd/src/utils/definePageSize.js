@@ -1,5 +1,5 @@
-import { SCREEN_WIDTH } from "../constants/constants";
-import { PAGE_SIZE } from "../constants/constants";
+import { SCREEN_WIDTH } from '../constants/constants';
+import { PAGE_SIZE } from '../constants/constants';
 
 export function definPageSize (windowWidth, setPageSize) {
     if (windowWidth < SCREEN_WIDTH.tablet) {
