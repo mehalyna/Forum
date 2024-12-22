@@ -92,6 +92,7 @@ class ProfilesListView(ListAPIView):
     """
     View to list profiles with optional filtering and ordering.
     """
+
     permission_classes = [IsStaffUser]
     pagination_class = ListPagination
     serializer_class = AdminCompanyListSerializer
