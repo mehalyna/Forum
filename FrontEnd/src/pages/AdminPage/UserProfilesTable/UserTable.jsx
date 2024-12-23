@@ -157,6 +157,9 @@ function UserTable() {
         if (status.is_active) {
             tags.push(<Tag color="green" key="active">Активний</Tag>);
         }
+        if (status.is_inactive) {
+            tags.push(<Tag color="cyan" key="active">Неактивний</Tag>);
+        }
         if (status.is_staff) {
             tags.push(<Tag color="blue" key="staff">Адміністратор</Tag>);
         }
@@ -238,6 +241,7 @@ function UserTable() {
             render: (status) => renderStatusTags(status),
             filters: [
                 { text: 'Aктивні', value: 'is_active' },
+                { text: 'Неактивні', value: 'is_inactive' },
                 { text: 'Aдміністратори', value: 'is_staff' },
                 { text: 'Суперюзер', value: 'is_superuser' },
                 { text: 'Видалені', value: 'is_deleted' },
