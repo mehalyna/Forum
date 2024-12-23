@@ -1,4 +1,3 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import { useCookies } from 'react-cookie';
 import { Link } from 'react-router-dom';
