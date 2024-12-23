@@ -36,7 +36,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    color: var(--join-us-batton-text-color, white);
+    color: var(--main-button-text-color);
     font-feature-settings: 'calt' off;
     font-family: var(--font-main);
     font-size: 16px;
@@ -48,8 +48,12 @@
     text-align: center;
     width: 170px;
     height: 46px;
-    background: var(--join-us-batton-color, black);
+    background: var(--main-button-color);
     border-radius: 4px;
+}
+
+.join-us__button-text:hover {
+    background: var(--main-button-hover-color);
 }
 
 @media only screen and (min-width: 768px) {

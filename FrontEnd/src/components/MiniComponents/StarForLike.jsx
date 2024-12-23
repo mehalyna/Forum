@@ -10,6 +10,7 @@ export default function StarForLike({
   handleClick,
   styleFilled,
   styleOutlined,
+  location,
 }) {
   const filledStar = (
     <StarFilled
@@ -27,14 +28,23 @@ export default function StarForLike({
       style={styleOutlined}
     />
   );
-  return isAuthorized && !ownProfile
-    ? isSaved
-      ? filledStar
-      : outlinedStar
-    : null;
+
+  const getStar = (isAuthorized, ownProfile, isSaved, location) => {
+    if (isAuthorized && !ownProfile) {
+      if (isSaved) {
+        return location !== 'profilePage' ? filledStar : outlinedStar;
+      } else {
+        return outlinedStar;
+      }
+    }
+    return null;
+  };
+
+  return getStar(isAuthorized, ownProfile, isSaved, location);
 }
 
 StarForLike.propTypes = {
+  location: PropTypes.string,
   isSaved: PropTypes.bool,
   isAuthorized: PropTypes.bool,
   ownProfile: PropTypes.bool,

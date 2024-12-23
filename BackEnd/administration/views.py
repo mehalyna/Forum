@@ -38,10 +38,8 @@ from .permissions import IsStaffUser, IsStaffUserOrReadOnly, IsSuperUser
 from .serializers import FeedbackSerializer
 from utils.administration.send_email_feedback import send_email_feedback
 
-from django_filters.rest_framework import DjangoFilterBackend
 from .filters import UsersFilter, CategoriesFilter
 from utils.administration.send_email_notification import send_email_to_user
-from .filters import UsersFilter
 
 
 class UsersListView(ListAPIView):
@@ -49,8 +47,8 @@ class UsersListView(ListAPIView):
     View to list users with optional filtering and ordering.
 
     ### Query Parameters:
-    -  **id** / **surname** / **email** /  **is_active** /  **is_staff** / **is_superuser** / **is_deleted**
-    - **company_name** /  **registration_date**
+    -  **name** / **surname** /**email** /  **is_active** /  **is_staff** /
+    - **is_superuser** / **is_deleted**/ **company_name** /  **registration_date**
 
     ### Ordering:
     - Use the `ordering` parameter to sort the results.

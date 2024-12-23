@@ -98,7 +98,7 @@
 .company-list__btns--element--active {
   border-radius: 4px;
   padding: 8px;
-  border: 1px solid #231C09;
+  border: 1px solid var(--list-button-border-color);
 
   font-family: var(--font-main);
   font-size: 16px;
@@ -108,8 +108,8 @@
 }
 
 .company-list__btns--element--active {
-  color: var(--light-button-text-color);
-  background: #231C09;
+  color: var(--list-button-active-text-color);
+  background: var(--list-button-active-color);
 }
 
 .company-list__content--items {

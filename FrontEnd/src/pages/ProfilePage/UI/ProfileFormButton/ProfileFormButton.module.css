@@ -8,13 +8,17 @@
 .submit-button {
     border-radius: 4px;
     background: var(--main-button-color);
-    color: var(--main-white);
+    color: var(--main-button-text-color);
     padding: 10px 16px;
     font-family: var(--font-main);
     font-size: 16px;
     font-weight: 600;
     line-height: 20px;
     cursor: pointer;
+}
+
+.submit-button:hover {
+    background: var(--main-button-hover-color);
 }
 
 @media only screen and (min-width: 768px) {

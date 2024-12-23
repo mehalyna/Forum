@@ -24,8 +24,12 @@
     align-items: center;
     gap: 4px;
     border-radius: 4px;
-    border: 1px solid var(--profile-detail-data-contacts-color-text);
+    border: 1px solid var(--light-button-border-color);
     cursor: pointer;
+}
+
+.data-block__field button:hover {
+    background: var(--light-button-hover-color);
 }
 
 .data-block__field--show--contacts,
@@ -50,7 +54,7 @@
 
 .data-block__field--show--contacts {
     flex: 1 0 0;
-    color: var(--profile-detail-data-contacts-color-text);
+    color: var(--light-button-text-color);
 }
 
 .contact-container {
