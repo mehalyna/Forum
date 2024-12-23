@@ -126,6 +126,11 @@ export default function ProfileListPage({ isAuthorized, isSaved }) {
     }
   }, [fetchedProfiles, pageSize, currentPage, isSaved]);
 
+  useEffect(() => {
+    setActiveTab(searchParams.get('companyType') || 'all');
+    setActiveBtn(searchParams.get('activity') || 'all');
+  }, [searchParams]);
+
   const changeCompanies = (companyId, saved) => {
     setProfiles((prevProfiles) =>
         prevProfiles.map((profile) =>
@@ -160,14 +165,6 @@ export default function ProfileListPage({ isAuthorized, isSaved }) {
     updateQueryParams(page);
   };
 
-  const handleActiveTab = (activeTab) => {
-    setActiveTab(activeTab);
-  };
-
-  const handleActiveBtn = (activeBtn) => {
-    setActiveBtn(activeBtn);
-  };
-
   return (
     <div className={css.page}>
       {error && error.response.status !==401 ? (
@@ -188,7 +185,7 @@ export default function ProfileListPage({ isAuthorized, isSaved }) {
                           className={activeTab === item.key ?
                             css['company-list__tabs--element--active'] :
                             css['company-list__tabs--element']}
-                          onClick={() => (handleFilters(item.value, activity), handleActiveTab(item.key))}
+                          onClick={() => (handleFilters(item.value, activity))}
                         >
                           {item.title === 'Усі підприємства' ? linkText : item.title}
                         </span>
@@ -208,7 +205,7 @@ export default function ProfileListPage({ isAuthorized, isSaved }) {
                     className={activeBtn === item.key ?
                       css['company-list__btns--element--active'] :
                       css['company-list__btns--element']}
-                    onClick={() => (handleFilters(companyType, item.value), handleActiveBtn(item.key))}
+                    onClick={() => (handleFilters(companyType, item.value))}
                   >
                     {item.title}
                   </button>

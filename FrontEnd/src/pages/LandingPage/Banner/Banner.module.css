@@ -26,8 +26,26 @@
 }
   
 .main-baner-text__logo {
-  font-size: 34px;
+  font-size: 48px;
   padding-bottom: 14px;
+  margin-bottom: 10px;
+}
+  
+.main-banner-link__container {
+  display: flex;
+  box-sizing: border-box;
+  max-width: 194px;
+  height: 46px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+  padding: 9px 16px;
+  margin-top: 30px;
+  background: var(--main-button-color);
+}
+  
+.main-banner-link__container:hover {
+  background: var(--main-button-hover-color);
 }
   
 .main-baner-text__explanation {
@@ -164,4 +182,3 @@
       font-size: 40px;
     }
   }
-  

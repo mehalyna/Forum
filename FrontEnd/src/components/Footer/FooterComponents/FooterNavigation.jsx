@@ -1,73 +1,72 @@
-import { HashLink } from 'react-router-hash-link';
 import { Link } from 'react-router-dom';
-
 import css from './FooterNavigation.module.css';
-
 
 const PAGE_NAVIGATION_LINKS = [
   {
     title: 'Компанії',
-    link: '/profiles/companies',
+    params: { companyType: 'companies' },
   },
   {
     title: 'Стартапи',
-    link: '/profiles/startups',
+    params: { companyType: 'startups' },
   },
 ];
+
 const SERVICES_LINKS = [
   {
     title: 'Виробники',
-    link: '/profiles/producers',
+    params: { activity: 'producers' },
   },
   {
     title: 'Імпортери',
-    link: '/profiles/importers',
+    params: { activity: 'importers' },
   },
   {
     title: 'Роздрібні мережі',
-    link: '/profiles/retailers',
+    params: { activity: 'retailers' },
   },
   {
     title: 'HORECA',
-    link: '/profiles/horeca',
+    params: { activity: 'horeca' },
   },
   {
     title: 'Інші послуги',
-    link: '/profiles/other-services',
+    params: { activity: 'other-services' },
   },
 ];
 
 function FooterNavigation() {
-
+  const generateQueryString = (params) =>
+    new URLSearchParams(params).toString();
 
   return (
     <div className={css['navigation-content']}>
       <div className={css['navigation-content__company']}>
         <h3 className={css['navigation-content-company__header']}>Підприємства</h3>
         <div className={css['navigation-content-company__text-block']}>
-        {PAGE_NAVIGATION_LINKS.map((element) => (
-          <HashLink
-            key={element.link}
-            className={css['navigation-content-company__text']}
-            to={element.link}
-          >
-            {element.title}
-          </HashLink>
-        ))}
+          {PAGE_NAVIGATION_LINKS.map((element) => (
+            <Link
+              key={element.params.companyType}
+              className={css['navigation-content-company__text']}
+              to={`/profiles?${generateQueryString(element.params)}`}
+            >
+              {element.title}
+            </Link>
+          ))}
         </div>
       </div>
       <div className={css['navigation-content__section']}>
         <h3 className={css['navigation-content-section__header']}>Сектори</h3>
-        <div  className={css['navigation-content-section__text-block']}>
-        {SERVICES_LINKS.map((element) => (
-          <Link
-            className={css['navigation-content-section__text']}
-            key={element.link}
-            to={element.link}
-          >
-            {element.title}
-          </Link>
-        ))}
+        <div className={css['navigation-content-section__text-block']}>
+          {SERVICES_LINKS.map((element) => (
+            <Link
+              key={element.params.activity}
+              className={css['navigation-content-section__text']}
+              to={`/profiles?${generateQueryString(element.params)}`}
+            >
+              {element.title}
+            </Link>
+          ))}
         </div>
       </div>
     </div>

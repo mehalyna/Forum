@@ -1,17 +1,21 @@
 .button__delete-main {
-   padding: 10px;
+    padding: 10px;
 }
 
 .button__delete {
     border-radius: 4px;
     background: var(--main-button-color);
-    color: var(--main-white);
+    color: var(--main-button-text-color);
     padding: 10px 15px;
     font-family: var(--font-main);
     font-size: 16px;
     font-weight: 600;
     line-height: 20px;
     cursor: pointer;
+}
+
+.button__delete:hover {
+    background: var(--main-button-hover-color);
 }
 
 .button__delete-head {
@@ -27,6 +31,7 @@
         height: 112px;
         border-radius: 6px;
     }
+
     .button__delete-head {
         font-family: var(--font-main);
         font-size: 16px;
@@ -37,12 +42,13 @@
         align-items: center;
         padding-left: 24px;
     }
-    
+
     .divider {
         width: 100%;
         height: 1px;
         background-color: var(--light-seashell-background);
     }
+
     .button__delete {
         margin-left: 14px;
     }

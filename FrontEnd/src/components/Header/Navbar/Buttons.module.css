@@ -3,19 +3,22 @@
     gap: 12px;
 }
 
-.header-login__button {
+.header-login-element {
     display: flex;
     padding: 5px 15px;
+    align-items: center;
+}
+
+.header-login__button {
+    position: relative;
+    display: flex;
     justify-content: center;
     align-items: center;
-    gap: 10px;
-    transition: background-color 0.3s ease, color 0.3s ease;
 
     border-radius: 4px;
-    background: var(--light-button-color);
 
     /* Button Text */
-    color: var(--main-button-color);
+    color: var(--login-button-text-color);
     text-align: center;
     font-feature-settings: 'calt' off;
     text-decoration: none;
@@ -23,23 +26,37 @@
     font-size: 16px;
     font-style: normal;
     font-weight: 500;
-    line-height: 20px;
-    letter-spacing: -0.16px;
+    line-height: 19.2px;
+    letter-spacing: 0.16px;
+}
+
+.header-login__button::after {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 2px;
+    left: 0;
+    bottom: -5px;
+    background-color: var(--login-button-underline-color);
+    transition: width 0.3s ease;
+}
+
+.header-login__button:hover::after {
+    width: 100%;
 }
 
 .header-register__button {
     display: flex;
-    padding: 5px 15px;
+    padding: 10px 16px;
     justify-content: center;
     align-items: center;
     gap: 10px;
-    transition: background-color 0.3s ease, color 0.3s ease;
 
     border-radius: 4px;
     background: var(--main-button-color);
 
     /* Button Text */
-    color: var(--light-button-color);
+    color: var(--main-button-text-color);
     text-align: center;
     font-feature-settings: 'calt' off;
     text-decoration: none;
@@ -52,11 +69,9 @@
 }
 
 .header-login__button:hover {
-    background: var(--main-button-color);
-    color: var(--light-button-color);
+    color: var(--light-button-login-hover-text-color);
 }
 
 .header-register__button:hover {
-    background: var(--light-button-color);
-    color: var(--main-button-color);
+    background: var(--main-button-hover-color);
 }
