@@ -383,6 +383,7 @@ function ProfilesTable() {
                 onChange={handleTableChange}
                 pagination={false}
                 loading={loading}
+                scroll={{ x: 800 }}
                 tableLayout="fixed"
                 locale={{
                     triggerDesc: 'Сортувати в порядку спадання',
