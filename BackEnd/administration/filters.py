@@ -61,8 +61,8 @@ class ProfilesFilter(FilterSet):
     official_name = filters.CharFilter(lookup_expr="icontains")
     phone = filters.CharFilter(lookup_expr="icontains")
     address = filters.CharFilter(lookup_expr="icontains")
-    created_at = filters.DateFilter()
-    updated_at = filters.DateFilter()
+    created_at = filters.DateFromToRangeFilter()
+    updated_at = filters.DateFromToRangeFilter()
 
     ordering = filters.OrderingFilter(
         fields=(
