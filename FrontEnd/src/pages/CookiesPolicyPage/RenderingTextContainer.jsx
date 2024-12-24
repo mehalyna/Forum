@@ -3,20 +3,44 @@ import PropTypes from 'prop-types';
 
 const RenderingTextContainer = ({ item, styles }) => {
   const renderParagraph = () => (
-    <p className={styles['text_content']} key={item.id || uuidv4()}>{item.text}</p>
+    <p
+      className={styles['text_content']}
+      key={item.id || uuidv4()}
+      id={item.sectionId || null} // Додано атрибут id
+    >
+      {item.text}
+    </p>
   );
 
   const renderHeading = () => {
     const HeadingTag = `h${item.level}`;
-    return <HeadingTag className={styles['text_content__heading']} key={item.id || uuidv4()}>{item.text}</HeadingTag>;
+    return (
+      <HeadingTag
+        className={styles['text_content__heading']}
+        key={item.id || uuidv4()}
+        id={item.sectionId || null} // Додано атрибут id
+      >
+        {item.text}
+      </HeadingTag>
+    );
   };
 
   const renderParagraphMarginBottom = () => (
-    <p className={styles['text_content__margin_bottom']} key={item.id || uuidv4()}>{item.text}</p>
+    <p
+      className={styles['text_content__margin_bottom']}
+      key={item.id || uuidv4()}
+      id={item.sectionId || null} // Додано атрибут id
+    >
+      {item.text}
+    </p>
   );
 
   const renderListItem = () => (
-    <ul key={item.id || uuidv4()} className={styles['custom-list']}>
+    <ul
+      key={item.id || uuidv4()}
+      className={styles['custom-list']}
+      id={item.sectionId || null} // Додано атрибут id
+    >
       <li className={styles['custom-list__item']}>{item.text}</li>
     </ul>
   );
@@ -49,6 +73,7 @@ RenderingTextContainer.propTypes = {
     type: PropTypes.string.isRequired,
     text: PropTypes.string.isRequired,
     level: PropTypes.number,
+    sectionId: PropTypes.string,
   }).isRequired,
   styles: PropTypes.object.isRequired,
 };

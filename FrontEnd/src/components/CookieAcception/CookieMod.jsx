@@ -22,7 +22,7 @@ const CookieMod = () => {
         </p>
         <p className={styles['cookie-text']}>
           Дізнатися більше
-          <Link to="/privacy-policy" className={styles['cookie-link']}>
+          <Link to="/privacy-policy#cookies-usage" className={styles['cookie-link']}>
             про файли cookie.
           </Link>
         </p>
