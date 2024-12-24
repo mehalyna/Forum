@@ -100,7 +100,7 @@ class ProfilesListView(ListAPIView):
     filterset_class = ProfilesFilter
     queryset = (
         Profile.objects.select_related("person")
-        .prefetch_related("regions", "categories", "activities")
+        .prefetch_related("activities")
         .order_by("id")
         .annotate(
             representative=Concat(
