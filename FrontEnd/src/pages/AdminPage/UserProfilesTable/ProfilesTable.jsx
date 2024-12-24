@@ -234,6 +234,15 @@ function ProfilesTable() {
             sortIcon: ({ sortOrder }) => getSortIcon(sortOrder),
             ...getColumnSearchProps('name'),
             width: 140,
+            render: (text, profile) => (
+                <UserActionsProfiles
+                    profile={profile}
+                    text = {text}
+                    onActionComplete={() => {
+                        mutate(url);
+                    }}
+                />
+            ),
         },
         {
             title: (<div className={css['TableSubject']}>
@@ -354,22 +363,6 @@ function ProfilesTable() {
             sortOrder: sortInfo.field === 'address' ? sortInfo.order : null,
             ...getColumnSearchProps('address'),
             width: 130
-        },
-        {
-            title: (<div className={css['TableSubject']}>
-                Дії
-            </div>),
-            dataIndex: 'actions',
-            key: 'actions',
-            render: (_, profile) => (
-                <UserActionsProfiles
-                    profile={profile}
-                    onActionComplete={() => {
-                        mutate(url);
-                    }}
-                />
-            ),
-            width: 125
         },
     ];
     return (
