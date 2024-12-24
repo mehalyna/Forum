@@ -322,13 +322,18 @@ function ProfilesTable() {
             key: 'status',
             render: (status) => renderStatusTags(status),
             filters: [
-                { text: 'Їжа', value: 'Їжа' },
-                { text: 'Напої', value: 'Напої' },
-                { text: 'Пакування', value: 'Пакування' },
-                { text: 'Перевезення', value: 'Перевезення' },
-                { text: 'Кейтенинг', value: 'Кейтенинг' },
+                { text: 'Не визначена', value: 'undefined' },
+                { text: 'На модерації', value: 'pending' },
+                { text: 'Заблокована', value: 'blocked' },
+                { text: 'Активна', value: 'active' },
+                { text: 'Підтверджена', value: ['approved', 'auto_approved']},
             ],
-            onFilter: (value, record) => record.status === value,
+            onFilter: (value, record) => {
+                if (Array.isArray(value)) {
+                    return value.includes(record.status);
+                }
+                    return record.status === value;
+            },
             width: 120
         },
         {
