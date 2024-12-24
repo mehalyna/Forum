@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react';
-import css from './ProfilesTable.module.scss';
 import {useLocation, useNavigate} from 'react-router-dom';
+import css from './ProfilesTable.module.scss';
 import axios from 'axios';
 import useSWR, {mutate} from 'swr';
 import {Button, Input, Pagination, Space, Table, Tag} from 'antd';
