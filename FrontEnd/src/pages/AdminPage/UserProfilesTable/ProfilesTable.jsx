@@ -7,6 +7,7 @@ import {Button, Input, Pagination, Space, Table, Tag} from 'antd';
 import {CaretDownOutlined, CaretUpOutlined, SearchOutlined} from '@ant-design/icons';
 import Highlighter from 'react-highlight-words';
 import UserActionsProfiles from './UserActionsProfiles';
+import { DatePicker } from 'antd';
 
 
 const DEFAULT_PAGE_SIZE = 10;
@@ -38,7 +39,7 @@ function ProfilesTable() {
         const response = await axios.get(url);
         return response.data;
     }
-
+    const { RangePicker } = DatePicker;
     const { data, isValidating: loading } = useSWR(url, fetcher);
     const profiles = data ? data.results : [];
     const totalItems = data ? data.total_items : 0;
@@ -149,7 +150,40 @@ function ProfilesTable() {
             );
         }
     });
-
+    const getDateRangeColumnProps = (dataIndex) => ({
+    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+        <div className={css['dropdownMenu']}>
+            <RangePicker
+                onChange={(dates, dateStrings) => setSelectedKeys([dateStrings])}
+                className={css['antInput']}
+            />
+            <Space>
+                <Button
+                    type="primary"
+                    onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
+                    icon={<SearchOutlined />}
+                    size="small"
+                    className={css['antBtn']}
+                >
+                    Пошук
+                </Button>
+                <Button
+                    onClick={() => handleReset(clearFilters, confirm, dataIndex)}
+                    size="small"
+                    className={css['ant-btn']}
+                >
+                    Скинути
+                </Button>
+            </Space>
+        </div>
+    ),
+    filterIcon: (filtered) => <SearchOutlined className={filtered ? css['filteredIcon'] : css['icon']} />,
+    onFilter: (value, record) => {
+        const [start, end] = value;
+        const recordDate = new Date(record[dataIndex]);
+        return (!start || recordDate >= new Date(start)) && (!end || recordDate <= new Date(end));
+    },
+});
     const renderCompanyTypeTags = (type) => {
         const tags = [];
 
@@ -298,7 +332,7 @@ function ProfilesTable() {
             sorter: true,
             sortOrder: sortInfo.field === 'created_at' ? sortInfo.order : null,
             sortIcon: ({sortOrder}) => getSortIcon(sortOrder),
-            ...getColumnSearchProps('created_at'),
+            ...getDateRangeColumnProps('created_at'),
             width: 170
         },
         {
@@ -310,7 +344,7 @@ function ProfilesTable() {
             sorter: true,
             sortOrder: sortInfo.field === 'updated_at' ? sortInfo.order : null,
             sortIcon: ({sortOrder}) => getSortIcon(sortOrder),
-            ...getColumnSearchProps('updated_at'),
+            ...getDateRangeColumnProps('updated_at'),
             width: 150
         },
         {
