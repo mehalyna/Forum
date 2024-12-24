@@ -1,11 +1,10 @@
-import { Button } from 'antd';
+import { Tooltip} from 'antd';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
-import styles from './UserActionsProfiles.module.css';
 
-function UserActionsProfiles({ profile }) {
+function UserActionsProfiles({ text, profile }) {
     const navigate = useNavigate();
     const viewProfile = () => {
         try {
@@ -16,9 +15,10 @@ function UserActionsProfiles({ profile }) {
     };
 
     return (
-        <Button className={styles['profileButton']} onClick={viewProfile}>
-            Переглянути профіль
-        </Button>
+        <Tooltip title="Відкрити профіль">
+             <a onClick={viewProfile}>
+            {text} </a>
+        </Tooltip>
     );
 }
 
