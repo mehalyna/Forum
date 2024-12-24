@@ -2,7 +2,7 @@ import { ToastContainer } from 'react-toastify';
 import { Route, Routes, Navigate } from 'react-router-dom';
 import { ConfigProvider } from 'antd';
 import { SWRConfig } from 'swr';
-import React, { useState } from 'react';
+import React from 'react';
 
 import 'react-toastify/dist/ReactToastify.css';
 import customTheme from '../pages/CustomThemes/customTheme.js';
@@ -13,7 +13,6 @@ import CookiesPolicyComponent from '../pages/CookiesPolicyPage/CookiesPolicyComp
 import Footer from '../components/Footer/Footer';
 import Header from '../components/Header/Header';
 import Loader from '../components/Loader/Loader';
-import CookieMod from '../components/CookieAcception/CookieMod';
 import MainPage from '../pages/LandingPage/MainPage';
 import PrivacyPolicy from '../pages/PrivacyPolicyPage/PrivacyPolicyPage';
 import ProfileDetailPage from '../pages/ProfileDetail/ProfileDetailPage';
@@ -37,11 +36,11 @@ import Contact from '../pages/Contact/Contact.jsx';
 import ErrorPage404 from '../pages/ErrorPages/ErrorPage404';
 
 import { BurgerMenuProvider } from '../context/BurgerMenuContext';
+import { CookieProvider } from '../context/CookieContext';
 import PageWrapper from '../components/PageWrapper/PageWrapper';
 
 function ClientRouter() {
   const { isAuth, user, logout, isLoading } = useAuth();
-  const [isCookieModalActive, setCookieModalActive] = useState(true);
 
   return (
     <ConfigProvider theme={customTheme}>
@@ -55,16 +54,12 @@ function ClientRouter() {
           },
         }}
       >
-        <BurgerMenuProvider>
-          <Header isAuthorized={isAuth} />
-          {isLoading ? (
-            <Loader />
-          ) : (
-            <>
-              <CookieMod
-                active={isCookieModalActive}
-                setActive={setCookieModalActive}
-              />
+        <CookieProvider>
+          <BurgerMenuProvider>
+            <Header isAuthorized={isAuth} />
+            {isLoading ? (
+              <Loader />
+            ) : (
               <PageWrapper>
                 <Routes>
                   <Route path="/" element={<MainPage isAuthorized={isAuth} />} />
@@ -159,16 +154,16 @@ function ClientRouter() {
                   <Route path="*" element={<ErrorPage404 />} />
                 </Routes>
               </PageWrapper>
-            </>
-          )}
-          <Footer />
-          <ToastContainer
-            position="top-right"
-            autoClose={3000}
-            theme="colored"
-            icon={false}
-          />
-        </BurgerMenuProvider>
+            )}
+            <Footer />
+            <ToastContainer
+              position="top-right"
+              autoClose={3000}
+              theme="colored"
+              icon={false}
+            />
+          </BurgerMenuProvider>
+        </CookieProvider>
       </SWRConfig>
     </ConfigProvider>
   );

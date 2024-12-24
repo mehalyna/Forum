@@ -1,27 +1,12 @@
-import PropTypes from 'prop-types';
-import { useCookies } from 'react-cookie';
+import { useCookieContext } from '../../context/CookieContext';
 import { Link } from 'react-router-dom';
 import styles from './CookieMod.module.css';
 
-const CookieMod = ({ active, setActive }) => {
-  const [cookies, setCookie] = useCookies(['cookies']);
+const CookieMod = () => {
+  const { isCookieModalActive, allowCookies, declineCookies } =
+    useCookieContext();
 
-  const shouldShowModal = cookies.cookies === undefined;
-
-  const allowCookies = () => {
-    const expirationDate = new Date();
-    expirationDate.setTime(expirationDate.getTime() + 30 * 24 * 60 * 60 * 1000);
-    setCookie('cookies', true, { expires: expirationDate, sameSite: 'lax' });
-    setActive(false);
-  };
-
-  const declineCookies = () => {
-    const expirationDate = new Date();
-    expirationDate.setTime(expirationDate.getTime() + 30 * 24 * 60 * 60 * 1000);
-    setCookie('cookies', false, { expires: expirationDate, sameSite: 'lax' });
-    setActive(false);
-  };
-  return shouldShowModal && active ? (
+  return isCookieModalActive ? (
     <div className={styles['cookie-banner']} data-testid="cookiemodal">
       <div className={styles['cookie-content']}>
         <div className={styles['cookie-header']}>
@@ -52,11 +37,6 @@ const CookieMod = ({ active, setActive }) => {
       </div>
     </div>
   ) : null;
-};
-
-CookieMod.propTypes = {
-  active: PropTypes.bool.isRequired,
-  setActive: PropTypes.func.isRequired,
 };
 
 export default CookieMod;
