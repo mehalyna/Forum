@@ -2,7 +2,6 @@ import { ToastContainer } from 'react-toastify';
 import { Route, Routes, Navigate } from 'react-router-dom';
 import { ConfigProvider } from 'antd';
 import { SWRConfig } from 'swr';
-import React from 'react';
 
 import 'react-toastify/dist/ReactToastify.css';
 import customTheme from '../pages/CustomThemes/customTheme.js';

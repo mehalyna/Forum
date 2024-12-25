@@ -6,7 +6,7 @@ const RenderingTextContainer = ({ item, styles }) => {
     <p
       className={styles['text_content']}
       key={item.id || uuidv4()}
-      id={item.sectionId || null} // Додано атрибут id
+      id={item.sectionId || null}
     >
       {item.text}
     </p>
@@ -18,7 +18,7 @@ const RenderingTextContainer = ({ item, styles }) => {
       <HeadingTag
         className={styles['text_content__heading']}
         key={item.id || uuidv4()}
-        id={item.sectionId || null} // Додано атрибут id
+        id={item.sectionId || null}
       >
         {item.text}
       </HeadingTag>
@@ -29,7 +29,7 @@ const RenderingTextContainer = ({ item, styles }) => {
     <p
       className={styles['text_content__margin_bottom']}
       key={item.id || uuidv4()}
-      id={item.sectionId || null} // Додано атрибут id
+      id={item.sectionId || null}
     >
       {item.text}
     </p>
@@ -39,7 +39,7 @@ const RenderingTextContainer = ({ item, styles }) => {
     <ul
       key={item.id || uuidv4()}
       className={styles['custom-list']}
-      id={item.sectionId || null} // Додано атрибут id
+      id={item.sectionId || null}
     >
       <li className={styles['custom-list__item']}>{item.text}</li>
     </ul>

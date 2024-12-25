@@ -3,10 +3,9 @@ import { Link } from 'react-router-dom';
 import styles from './CookieMod.module.css';
 
 const CookieMod = () => {
-  const { isCookieModalActive, allowCookies, declineCookies } =
-    useCookieContext();
+  const { allowCookies, declineCookies } = useCookieContext();
 
-  return isCookieModalActive ? (
+  return (
     <div className={styles['cookie-banner']} data-testid="cookiemodal">
       <div className={styles['cookie-content']}>
         <div className={styles['cookie-header']}>
@@ -36,7 +35,7 @@ const CookieMod = () => {
         </div>
       </div>
     </div>
-  ) : null;
+  );
 };
 
 export default CookieMod;
