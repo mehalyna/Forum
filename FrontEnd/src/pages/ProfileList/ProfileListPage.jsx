@@ -3,7 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import useSWR from 'swr';
 import useWindowWidth from '../../hooks/useWindowWidth';
-import { definPageSize } from '../../utils/definePageSize';
+import { definePageSize } from '../../utils/definePageSize';
 import { PAGE_SIZE } from '../../constants/constants';
 import { SCREEN_WIDTH } from '../../constants/constants';
 
@@ -45,7 +45,7 @@ export default function ProfileListPage({ isAuthorized, isSaved }) {
   const linkText = windowWidth >= SCREEN_WIDTH.tablet ? 'Усі підприємства' : 'Усі';
 
   useEffect(() => {
-    definPageSize(windowWidth, setPageSize);
+    definePageSize(windowWidth, setPageSize);
   }, [windowWidth]);
 
   const [url, setUrl] = useState(

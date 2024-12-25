@@ -1,7 +1,7 @@
 import { SCREEN_WIDTH } from '../constants/constants';
 import { PAGE_SIZE } from '../constants/constants';
 
-export function definPageSize (windowWidth, setPageSize) {
+export function definePageSize (windowWidth, setPageSize) {
     if (windowWidth < SCREEN_WIDTH.tablet) {
       return setPageSize(PAGE_SIZE.mobile);
     }

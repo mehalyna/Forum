@@ -6,7 +6,7 @@ import axios from 'axios';
 import useSWR from 'swr';
 
 import useWindowWidth from '../../hooks/useWindowWidth';
-import { definPageSize } from '../../utils/definePageSize';
+import { definePageSize } from '../../utils/definePageSize';
 import { PAGE_SIZE } from '../../constants/constants';
 
 import Loader from '../../components/Loader/Loader';
@@ -46,7 +46,7 @@ export function Search({ isAuthorized }) {
   const windowWidth = useWindowWidth();
 
   useEffect(() => {
-    definPageSize(windowWidth, setPageSize);
+    definePageSize(windowWidth, setPageSize);
   }, [windowWidth]);
 
   const updateQueryParams = (newPage) => {
