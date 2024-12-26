@@ -12,7 +12,7 @@
   display: flex;
   padding: 9px 16px;
   border-radius: 4px;
-  background: #000000;
+  background: var(--main-button-color);
   color: var(--light-button-text-color);
   text-align: center;
   font-feature-settings: "calt" off;
@@ -24,4 +24,8 @@
   letter-spacing: -0.16px;
   text-decoration: none;
   cursor: pointer;
+}
+
+.signup-page__button:active {
+  background: var(--pressed-button-color);
 }
