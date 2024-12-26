@@ -8,8 +8,8 @@ import styles from './CategoriesActions.module.css';
 
 
 function CategoriesActions({ category, onActionComplete }) {
-    const [messageContent, setMessageContent] = useState('');
-    const [isSending, setIsSending] = useState(false);
+    const [categoryRename, setCategoryRename] = useState('');
+    const [isCreated, setIsCreated] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [error, setError] = useState('');
 
@@ -23,25 +23,25 @@ function CategoriesActions({ category, onActionComplete }) {
         }
     };
 
-    const handleSendMessage = async () => {
-        if (!validateMessage(messageContent)) return;
+    const handleCategoryRename = async () => {
+        if (!validateMessage(categoryRename)) return;
 
-        setIsSending(true);
+        setIsCreated(true);
         try {
             await axios.patch(
                 `${process.env.REACT_APP_BASE_API_URL}/api/admin/categories/${category.id}/`,
                 {
-                    name: messageContent.trim(),
+                    name: categoryRename.trim(),
                 }
             );
             toast.success('Успішно змінено');
-            setMessageContent('');
+            setCategoryRename('');
             setIsModalVisible(false);
             if (onActionComplete) onActionComplete();
         } catch {
             toast.error('Не вдалося змінити. Спробуйте ще раз.');
         } finally {
-            setIsSending(false);
+            setIsCreated(false);
         }
     };
 
@@ -54,7 +54,7 @@ function CategoriesActions({ category, onActionComplete }) {
                 onCancel={() => {
                     setIsModalVisible(false);
                     setError('');
-                    setMessageContent('');
+                    setCategoryRename('');
                 }}
                 footer={[
                     <Button key="cancel" onClick={() => setIsModalVisible(false)}>
@@ -63,22 +63,23 @@ function CategoriesActions({ category, onActionComplete }) {
                     <Button
                         key="send"
                         type="primary"
-                        loading={isSending}
-                        onClick={handleSendMessage}
+                        loading={isCreated}
+                        onClick={handleCategoryRename}
                     >
                         Змінити
                     </Button>,
                 ]}
-                width={600}
+                width={400}
             >
                 <div className={styles.CategoriesActionsModalContent}>
                     <Input.TextArea
                         rows={1}
                         placeholder={`${category.name}`}
-                        value={messageContent}
+                        value={categoryRename}
+                        width={50}
                         onChange={(e) => {
                             const input = e.target.value;
-                            setMessageContent(input);
+                            setCategoryRename(input);
                             validateMessage(input);
                         }}
                         className={styles.CategoriesActionsTextarea}
