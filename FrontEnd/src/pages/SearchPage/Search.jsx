@@ -6,6 +6,9 @@ import axios from 'axios';
 import useSWR from 'swr';
 
 import useWindowWidth from '../../hooks/useWindowWidth';
+import { definePageSize } from '../../utils/definePageSize';
+import { PAGE_SIZE } from '../../constants/constants';
+
 import Loader from '../../components/Loader/Loader';
 import ProfileList from '../ProfileList/ProfileList';
 import styles from './Search.module.scss';
@@ -16,7 +19,7 @@ export function Search({ isAuthorized }) {
   const searchTerm = searchParams.get('name');
   const pageNumber = Number(searchParams.get('page')) || 1;
   const [currentPage, setCurrentPage] = useState(pageNumber);
-  const [pageSize, setPageSize] = useState(16);
+  const [pageSize, setPageSize] = useState(PAGE_SIZE.mobile);
   const servedAddress = process.env.REACT_APP_BASE_API_URL;
 
   async function fetcher(url) {
@@ -43,15 +46,7 @@ export function Search({ isAuthorized }) {
   const windowWidth = useWindowWidth();
 
   useEffect(() => {
-    if (windowWidth < 768) {
-      setPageSize(4);
-    } else if (windowWidth >= 768 && windowWidth < 1200) {
-      setPageSize(16);
-    } else if (windowWidth >= 1200 && windowWidth < 1512) {
-      setPageSize(12);
-    } else if (windowWidth >= 1512) {
-      setPageSize(16);
-    }
+    definePageSize(windowWidth, setPageSize);
   }, [windowWidth]);
 
   const updateQueryParams = (newPage) => {
