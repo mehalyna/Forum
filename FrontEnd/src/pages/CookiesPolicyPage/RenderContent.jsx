@@ -4,7 +4,12 @@ import styles from './cookiesPolicyComponent.module.css';
 
 const renderContent = (Text) => (
   Text.content.map((item) => (
-    <ContentRenderer key={item.id || uuidv4()} item={item} styles={styles} />
+    <ContentRenderer
+      key={item.id || uuidv4()}
+      item={item}
+      styles={styles}
+      id={item.sectionId || null}
+    />
   ))
 );
 
