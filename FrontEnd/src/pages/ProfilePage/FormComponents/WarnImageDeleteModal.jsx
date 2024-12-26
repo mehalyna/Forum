@@ -9,7 +9,7 @@ const WarnImageDeleteModal = ({ onCancel, onDelete }) => {
                 <p className={classes['modal-header--text']}>
                     Ви впевнені, що хочете видалити зображення?
                 </p>
-                <button onClick={onCancel} className={classes['modal-header--close-icon']}>
+                <button type="button" onClick={onCancel} className={classes['modal-header--close-icon']}>
                     <img src={`${process.env.REACT_APP_PUBLIC_URL}/svg/cross-btn.svg`} alt="Cancel button" />
                 </button>
             </div>
