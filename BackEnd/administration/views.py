@@ -3,7 +3,6 @@ from django.db.models import F, Value, CharField
 from django.http import JsonResponse
 from django.views import View
 from django.db.models import Count, Q
-from django_filters.rest_framework import DjangoFilterBackend
 
 from drf_spectacular.utils import (
     extend_schema,
@@ -43,7 +42,6 @@ from utils.administration.send_email_feedback import send_email_feedback
 from .filters import UsersFilter, CategoriesFilter, ProfilesFilter
 from django_filters.rest_framework import DjangoFilterBackend
 from utils.administration.send_email_notification import send_email_to_user
-
 
 
 class UsersListView(ListAPIView):
