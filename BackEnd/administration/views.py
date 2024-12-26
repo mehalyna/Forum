@@ -1,3 +1,5 @@
+from django.db.models.functions import Concat
+from django.db.models import F, Value, CharField
 from django.http import JsonResponse
 from django.views import View
 from django.db.models import Count, Q
@@ -37,8 +39,7 @@ from .permissions import IsStaffUser, IsStaffUserOrReadOnly, IsSuperUser
 from .serializers import FeedbackSerializer
 from utils.administration.send_email_feedback import send_email_feedback
 
-from django_filters.rest_framework import DjangoFilterBackend
-from .filters import UsersFilter, ProfilesFilter, CategoriesFilter
+from .filters import UsersFilter, CategoriesFilter
 from utils.administration.send_email_notification import send_email_to_user
 
 
