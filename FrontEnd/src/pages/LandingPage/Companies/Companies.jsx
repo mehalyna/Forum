@@ -1,13 +1,16 @@
-import axios from 'axios';
 import { useState } from 'react';
-import useWindowWidth from '../../../hooks/useWindowWidth';
 import { Link } from 'react-router-dom';
-import styles from './Companies.module.css';
+import PropTypes from 'prop-types';
+import { Col, Row } from 'antd';
+import useSWR from 'swr';
+import axios from 'axios';
+
+import useWindowWidth from '../../../hooks/useWindowWidth';
+import { SCREEN_WIDTH } from '../../../constants/constants';
 import Loader from '../../../components/Loader/Loader';
 import CompanyCard from '../../../components/CompanyCard/CompanyCard';
-import PropTypes from 'prop-types';
-import useSWR from 'swr';
-import { Col, Row } from 'antd';
+
+import styles from './Companies.module.css';
 
 const MainCompanies = ({ isAuthorized }) => {
   const baseUrl = process.env.REACT_APP_BASE_API_URL;
@@ -35,9 +38,9 @@ const MainCompanies = ({ isAuthorized }) => {
     setSearchResults(newCompanies);
   };
 
-  const linkText = windowWidth >= 768 ? 'Всі підприємства' : 'Всі';
-  const antdGutter = windowWidth >= 1200 ? [24, 24] : [0, 24];
-  const antdWrap = windowWidth < 1200;
+  const linkText = windowWidth >= SCREEN_WIDTH.tablet ? 'Всі підприємства' : 'Всі';
+  const antdGutter = windowWidth >= SCREEN_WIDTH.smallDesktop ? [24, 24] : [0, 24];
+  const antdWrap = windowWidth < SCREEN_WIDTH.smallDesktop;
 
   return (
     <div className={styles['new-companies-main']}>

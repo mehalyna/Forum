@@ -1,56 +1,58 @@
 import { render, screen, cleanup } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-import CookieMod from '../CookieMod';
+import PageWrapper from '../../PageWrapper/PageWrapper';
+import { CookieProvider } from '../../../context/CookieContext';
+import { BurgerMenuProvider } from '../../../context/BurgerMenuContext';
+import { useCookies } from 'react-cookie';
+
+jest.mock('react-cookie', () => ({
+  useCookies: jest.fn(),
+}));
 
 afterEach(cleanup);
 
 describe('CookieMod component unit tests', () => {
-  test('renders "Allow" button', () => {
-    render(
+  const renderWithProviders = (cookiesValue) => {
+    useCookies.mockReturnValue([cookiesValue, jest.fn()]);
+    return render(
       <MemoryRouter>
-        <CookieMod active={true} setActive={() => {}} />
+        <BurgerMenuProvider>
+          <CookieProvider>
+            <PageWrapper>
+              <div>Test Content</div>
+            </PageWrapper>
+          </CookieProvider>
+        </BurgerMenuProvider>
       </MemoryRouter>
     );
+  };
+
+  test('renders "Allow" button', () => {
+    renderWithProviders({ cookies: undefined });
     const buttonElement = screen.getByText(/Дозволити/i);
     expect(buttonElement).toBeInTheDocument();
   });
 
   test('renders "Decline" button', () => {
-    render(
-      <MemoryRouter>
-        <CookieMod active={true} setActive={() => {}} />
-      </MemoryRouter>
-    );
+    renderWithProviders({ cookies: undefined });
     const buttonElement = screen.getByText(/Відмовитись/i);
     expect(buttonElement).toBeInTheDocument();
   });
 
   test('renders link to cookie policy', () => {
-    render(
-      <MemoryRouter>
-        <CookieMod active={true} setActive={() => {}} />
-      </MemoryRouter>
-    );
+    renderWithProviders({ cookies: undefined });
     const linkElement = screen.getByText(/про файли cookie/i);
     expect(linkElement).toBeInTheDocument();
   });
 
   test('does not render cookie banner when inactive', () => {
-    render(
-      <MemoryRouter>
-        <CookieMod active={false} setActive={() => {}} />
-      </MemoryRouter>
-    );
+    renderWithProviders({ cookies: true });
     const cookieElement = screen.queryByTestId('cookiemodal');
     expect(cookieElement).not.toBeInTheDocument();
   });
 
   test('renders cookie banner when active', () => {
-    render(
-      <MemoryRouter>
-        <CookieMod active={true} setActive={() => {}} />
-      </MemoryRouter>
-    );
+    renderWithProviders({ cookies: undefined });
     const cookieElement = screen.getByTestId('cookiemodal');
     expect(cookieElement).toBeInTheDocument();
   });
