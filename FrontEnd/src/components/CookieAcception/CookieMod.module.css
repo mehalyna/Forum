@@ -31,7 +31,7 @@
 }
 
 .cookie-title {
-  font-family: 'Geologica', sans-serif;
+  font-family: var(--font-main);
   font-size: 30px;
   font-weight: 600;
   line-height: 30px;
@@ -42,7 +42,7 @@
 }
 
 .cookie-text {
-  font-family: 'Geologica', sans-serif;
+  font-family: var(--font-main);
   font-size: 14px;
   font-weight: 600;
   line-height: 20px;
@@ -67,10 +67,10 @@
 }
 
 .allow-all-btn {
-  font-family: 'Geologica', sans-serif;
+  font-family: var(--font-main);
   line-height: 20px;
-  background: var(--cookie-black-color);
-  color: var(--cookie-light-color);
+  background: var(--main-button-color);
+  color: var(--main-button-text-color);
   width: 144px;
   height: 40px;
   padding: 10px 16px;
@@ -82,21 +82,19 @@
 }
 
 .allow-all-btn:hover {
-  background: transparent;
-  color: var(--cookie-black-color);
-  border: 1px solid var(--cookie-black-color);
+  background: var(--main-button-hover-color);
 }
 
 .deny-btn {
-  font-family: 'Geologica', sans-serif;
+  font-family: var(--font-main);
   line-height: 20px;
-  background: var(--cookie-light-color);
-  color: var(--cookie-black-color);
+  background: var(--light-button-color);
+  color: var(--light-button-text-color);
   width: 144px;
   height: 40px;
   padding: 10px 16px;
   border-radius: 4px;
-  border: 1px solid var(--cookie-black-color);
+  border: 1px solid var(--light-button-border-color);
   font-size: 15px;
   font-weight: 500;
   cursor: pointer;
@@ -104,8 +102,7 @@
 }
 
 .deny-btn:hover {
-  background: var(--cookie-black-color);
-  color: var(--cookie-light-color);
+  background: var(--light-button-hover-color);
 }
 
 @media (max-width: 768px) {

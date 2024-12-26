@@ -1,3 +1,12 @@
+.statistics-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding: 30px;
+}
+
 .description-item-label {
   max-width: 150px;
 }

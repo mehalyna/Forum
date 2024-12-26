@@ -1,10 +1,10 @@
 .contact__button_send {
     min-width: 114px;
-    padding: 9px 16px;
+    padding: 10px 16px;
     border-radius: 4px;
-    background: #000000;
+    background: var(--main-button-color);
 
-    color: var(--light-button-text-color);
+    color: var(--main-button-text-color);
     text-align: center;
     font-feature-settings: "calt" off;
 
@@ -15,4 +15,8 @@
     letter-spacing: -0.16px;
 
     cursor: pointer;
+}
+
+.contact__button_send:hover {
+    background: var(--main-button-hover-color);
 }

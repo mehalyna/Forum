@@ -45,7 +45,6 @@
   --main-text-color: #292E32;
   --header-bunner-text-color: #000000;
   --light-text-color: #FFFFFF;
-  --light-button-text-color: #FFFFFF;
   --delete-text-color: #F15831;
   --notification-text-color: #F34444;
   --footer-dark-text-color: #A0ABC0;
@@ -55,15 +54,37 @@
   --placeholder-text-color: #ADB3B9;
   --edit-page-head-color: #000000D9;
   --input-text-color: #000000D9;
+  --secondary-button-text-color: #232424;
 
 
 
   /* button color*/
   --main-button-color: #000000;
-  --button-color-hover: #0b6c61;
-  --light-button-color: #FFFFFF;
-  --dark-border-button: #232424;
+  --main-button-text-color: #FFFFFF;
+  --main-button-hover-color: #292929;
+  --main-button-disabled-color: #E5E5E5;
+  --main-button-disabled-text-color: #A1A1A1;
+  --main-button-border-color: #000000;
+  --main-button-hover-border-color: #333333;
+
+  --light-button-color: transparent;
+  --light-button-hover-color: #F1E7D280;
+  --light-button-text-color: #232424;
+  --light-button-border-color: #232424;
+
+  --warn-button-color: #E14E29;
+  --warn-button-text-color: #FFFFFF;
+  --warn-button-hover-color: #F15831;
+
+  --login-button-text-color: #000000;
+  --login-button-underline-color: #000000;
+
+  --list-button-border-color: #231C09;
+  --list-button-active-color: #231C09;
+  --list-button-active-text-color: #FFFFFF;
+
   --disabled-link: #8D959C;
+
 
   /* fonts */
   --font-main: 'Geologica', sans-serif;
@@ -107,10 +128,9 @@
   --banner-main-font-color: #000;
   --banner-main-dark-color: #1F9A7C;
   /* main pages JoinUs block*/
-  --join-us-batton-color: black;
+  --join-us-button-color: black;
   --join-us-main-color: #B4D27A;
   --join-us-font-color: black;
-  --join-us-batton-text-color: white;
   /* CompanyCard */
   --companies-card-text-color: #232424;
   --companies-card-box-shadow: rgba(65, 64, 69, 0.2);
@@ -129,8 +149,6 @@
   --profile-detail-title-color-activity: #707070;
   --profile-detail-title-color-company-name: #232424;
   --profile-detail-title-color-company-region: #000000;
-  --profile-detail-title-color-company-button: #232424;
-  --profile-detail-title-color-company-button-saved: #fff;
   --profile-detail-data-contacts-backround: #F9F5EC;
   --profile-detail-data-contacts-color-text: #292E32;
   --profile-detail-info-color-text: #000;
