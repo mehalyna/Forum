@@ -1,7 +1,7 @@
 from django.db.models import Q
 from django_filters import filters
 from django_filters.rest_framework import FilterSet
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 class UsersFilter(FilterSet):
@@ -84,5 +84,15 @@ class ProfileStatisticsFilter(FilterSet):
         elif value == "year":
             return queryset.filter(
                 created_at__gte=datetime.now().replace(month=1, day=1),
+                created_at__lte=datetime.now(),
+            )
+        elif value == "week":
+            return queryset.filter(
+                created_at__gte=datetime.now() - timedelta(days=7),
+                created_at__lte=datetime.now(),
+            )
+        elif value == "day":
+            return queryset.filter(
+                created_at__gte=datetime.now() - timedelta(hours=24),
                 created_at__lte=datetime.now(),
             )
