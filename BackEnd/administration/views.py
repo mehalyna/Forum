@@ -38,7 +38,7 @@ from .permissions import IsStaffUser, IsStaffUserOrReadOnly, IsSuperUser
 from .serializers import FeedbackSerializer
 from utils.administration.send_email_feedback import send_email_feedback
 
-from .filters import UsersFilter, CategoriesFilter
+from .filters import UsersFilter, CategoriesFilter, ProfileStatisticsFilter
 from utils.administration.send_email_notification import send_email_to_user
 
 
@@ -110,17 +110,23 @@ class ProfileDetailView(RetrieveUpdateDestroyAPIView):
         "regions", "categories", "activities"
     )
 
-
+from rest_framework.permissions import AllowAny
 class ProfileStatisticsView(RetrieveAPIView):
     """
     Count of companies
+
+    ### Query Parameters:
+    -  **period**
     """
 
-    permission_classes = [IsStaffUser]
+    permission_classes = [AllowAny]
     serializer_class = StatisticsSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = ProfileStatisticsFilter
 
     def get_object(self):
-        return Profile.objects.aggregate(
+        queryset = self.filter_queryset(Profile.objects.all())
+        return queryset.aggregate(
             companies_count=Count("pk"),
             investors_count=Count("pk", filter=Q(is_registered=True)),
             startups_count=Count("pk", filter=Q(is_startup=True)),

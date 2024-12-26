@@ -1,6 +1,7 @@
 from django.db.models import Q
 from django_filters import filters
 from django_filters.rest_framework import FilterSet
+from datetime import datetime
 
 
 class UsersFilter(FilterSet):
@@ -64,3 +65,24 @@ class CategoriesFilter(FilterSet):
             ("name", "name"),
         )
     )
+
+
+class ProfileStatisticsFilter(FilterSet):
+    """
+    Filters
+    /?period=
+    """
+
+    period = filters.CharFilter(method="period_filter")
+
+    def period_filter(self, queryset, name, value):
+        if value == "month":
+            return queryset.filter(
+                created_at__gte=datetime.now().replace(day=20),
+                created_at__lte=datetime.now(),
+            )
+        elif value == "year":
+            return queryset.filter(
+                created_at__gte=datetime.now().replace(month=1, day=1),
+                created_at__lte=datetime.now(),
+            )
