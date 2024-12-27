@@ -1,5 +1,4 @@
 import { NavLink } from 'react-router-dom';
-import styles from './cookiesPolicyComponent.module.css';
 
 const LinkContainer = () => {
   const getClassName = ({ isActive }) =>
