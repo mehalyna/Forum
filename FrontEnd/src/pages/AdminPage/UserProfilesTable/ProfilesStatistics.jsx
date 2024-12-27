@@ -43,39 +43,39 @@ function ProfilesStatistics() {
       ]
     : [];
 
-    return (
-      <div className={css['statistics-container']}>
-        <Segmented
-          className={css['segmented-container']}
-          value={period}
-          options={[
-            {label: 'Загалом', value: ''},
-            {label: 'День', value: 'day'},
-            {label: 'Тиждень', value: 'week'},
-            {label: 'Місяць', value: 'month'},
-            {label: 'Рік', value: 'year'},
-          ]}
-          onChange={(value) => setPeriod(value)}
+  return (
+    <div className={css['statistics-container']}>
+      <Segmented
+        className={css['segmented-container']}
+        value={period}
+        options={[
+          {label: 'Загалом', value: ''},
+          {label: 'День', value: 'day'},
+          {label: 'Тиждень', value: 'week'},
+          {label: 'Місяць', value: 'month'},
+          {label: 'Рік', value: 'year'},
+        ]}
+        onChange={(value) => setPeriod(value)}
+      />
+      {isLoading && (
+        <div className={css['loader-container']}>
+          <Loader />
+        </div>
+      )}
+      {error && (
+        <div className={css['error']}>Не вдалося отримати статистику компаній</div>
+      )}
+      {!isLoading && !error && (
+        <Descriptions
+          title="Статистика компаній"
+          column={1}
+          bordered
+          size="small"
+          items={items}
         />
-        {isLoading && (
-          <div className={css['loader-container']}>
-            <Loader />
-          </div>
-        )}
-        {error && (
-          <div className={css['error']}>Не вдалося отримати статистику компаній</div>
-        )}
-        {!isLoading && !error && (
-          <Descriptions
-            title="Статистика компаній"
-            column={1}
-            bordered
-            size="small"
-            items={items}
-          />
-        )}
-      </div>
-    );
+      )}
+    </div>
+  );
 }
 
 export default ProfilesStatistics;
