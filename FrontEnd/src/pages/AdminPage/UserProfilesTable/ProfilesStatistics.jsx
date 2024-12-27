@@ -45,6 +45,7 @@ function ProfilesStatistics() {
 
   return (
     <div className={css['statistics-container']}>
+      <p className={css['statistics-title']}>Статистика компаній</p>
       <Segmented
         className={css['segmented-container']}
         value={period}
@@ -67,7 +68,7 @@ function ProfilesStatistics() {
       )}
       {!isLoading && !error && (
         <Descriptions
-          title="Статистика компаній"
+          className={css['descriptions-container']}
           column={1}
           bordered
           size="small"

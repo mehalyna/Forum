@@ -1,15 +1,26 @@
 .statistics-container {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
+  align-items: flex-start;
   width: 100%;
+  max-width: 335px;
   padding: 30px;
 }
 
+.statistics-title {
+  font-size: 16px;
+  font-weight: 600;
+  padding-bottom: 8px;
+  text-align: left;
+}
+
 .segmented-container {
+  width: 100%;
   margin-bottom: 16px;
+}
+
+.descriptions-container {
+  width: 100%;
 }
 
 .error {
