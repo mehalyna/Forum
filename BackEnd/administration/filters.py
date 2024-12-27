@@ -76,14 +76,14 @@ class ProfileStatisticsFilter(FilterSet):
     period = filters.CharFilter(method="period_filter")
 
     def period_filter(self, queryset, name, value):
-        if value == "month":
-            return queryset.filter(
-                created_at__gte=datetime.now().replace(day=20),
-                created_at__lte=datetime.now(),
-            )
-        elif value == "year":
+        if value == "year":
             return queryset.filter(
                 created_at__gte=datetime.now().replace(month=1, day=1),
+                created_at__lte=datetime.now(),
+            )
+        elif value == "month":
+            return queryset.filter(
+                created_at__gte=datetime.now().replace(day=1),
                 created_at__lte=datetime.now(),
             )
         elif value == "week":
