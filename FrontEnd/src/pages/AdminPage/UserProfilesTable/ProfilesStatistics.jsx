@@ -1,6 +1,7 @@
+import { useState } from 'react';
 import axios from 'axios';
 import useSWR from 'swr';
-import { Descriptions } from 'antd';
+import { Descriptions, Segmented } from 'antd';
 import Loader from '../../../components/Loader/Loader';
 import css from './ProfilesStatistics.module.css';
 
@@ -11,7 +12,10 @@ async function fetcher(url) {
 
 function ProfilesStatistics() {
   const baseUrl = process.env.REACT_APP_BASE_API_URL;
-  const url = `${baseUrl}/api/admin/profiles/statistics/`;
+  const [period, setPeriod] = useState('');
+  const url = `${baseUrl}/api/admin/profiles/statistics/${
+    period ? `?period=${period}` : ''
+  }`;
   const { data: statistics, error, isLoading } = useSWR(url, fetcher);
 
   const items = statistics
@@ -39,33 +43,39 @@ function ProfilesStatistics() {
       ]
     : [];
 
-  return isLoading ? (
-    <div className={css['loader-container']}>
-      <Loader />
-    </div>
-  ) : error ? (
-    <div className={css['error']}>Не вдалося отримати статистику компаній</div>
-  ) : (
-    <div className={css['statistics-container']}>
-      <Descriptions
-        title="Статистика компаній"
-        column={1}
-        bordered
-        size="small"
-        items={items.map((item) => ({
-          ...item,
-          label: (
-            <span className={css['description-item-label']}>{item.label}</span>
-          ),
-          children: (
-            <span className={css['description-item-content']}>
-              {item.children}
-            </span>
-          ),
-        }))}
-      />
-    </div>
-  );
+    return (
+      <div className={css['statistics-container']}>
+        <Segmented
+          className={css['segmented-container']}
+          value={period}
+          options={[
+            {label: 'Загалом', value: ''},
+            {label: 'День', value: 'day'},
+            {label: 'Тиждень', value: 'week'},
+            {label: 'Місяць', value: 'month'},
+            {label: 'Рік', value: 'year'},
+          ]}
+          onChange={(value) => setPeriod(value)}
+        />
+        {isLoading && (
+          <div className={css['loader-container']}>
+            <Loader />
+          </div>
+        )}
+        {error && (
+          <div className={css['error']}>Не вдалося отримати статистику компаній</div>
+        )}
+        {!isLoading && !error && (
+          <Descriptions
+            title="Статистика компаній"
+            column={1}
+            bordered
+            size="small"
+            items={items}
+          />
+        )}
+      </div>
+    );
 }
 
 export default ProfilesStatistics;
