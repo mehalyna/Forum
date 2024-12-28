@@ -3,7 +3,7 @@
   flex-direction: column;
   align-items: flex-start;
   width: 100%;
-  max-width: 335px;
+  max-width: 400px;
   padding: 30px;
 }
 
@@ -15,8 +15,16 @@
 }
 
 .segmented-container {
-  width: 100%;
+  max-width: 100%;
   margin-bottom: 16px;
+}
+
+.period-container {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  max-width: 100%;
+  margin-bottom: 8px;
 }
 
 .descriptions-container {
