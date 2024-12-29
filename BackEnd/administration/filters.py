@@ -1,4 +1,5 @@
 from django.db.models import Q
+from rest_framework.exceptions import ValidationError
 from django_filters import filters
 from django_filters.rest_framework import FilterSet
 
@@ -79,13 +80,17 @@ class ProfileStatisticsFilter(FilterSet):
     year = filters.CharFilter(method="year_filter")
 
     def month_filter(self, queryset, name, value):
-        year_month = [int(i) for i in value.split("-")]
+        try:
+            year, month = [int(i) for i in value.split("-")]
+        except (ValueError, IndexError):
+            raise ValidationError({name: [f"Enter a valid {name}. Use YYYY-MM"]})
         return queryset.filter(
-            created_at__month=year_month[1],
-            created_at__year=year_month[0]
-            )
+            created_at__month=month, created_at__year=year
+        )
 
     def year_filter(self, queryset, name, value):
-        return queryset.filter(
-            created_at__year=int(value)
-        )
+        try:
+            year = int(value)
+        except ValueError:
+            raise ValidationError({name: [f"Enter a valid {name}. Use YYYY"]})
+        return queryset.filter(created_at__year=year)
