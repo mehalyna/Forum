@@ -82,6 +82,8 @@ class ProfileStatisticsFilter(FilterSet):
     def month_filter(self, queryset, name, value):
         try:
             year, month = [int(i) for i in value.split("-")]
+            if month < 1 or month > 12:
+                raise ValueError
         except (ValueError, IndexError):
             raise ValidationError({name: [f"Enter a valid {name}. Use YYYY-MM"]})
         return queryset.filter(
@@ -91,6 +93,8 @@ class ProfileStatisticsFilter(FilterSet):
     def year_filter(self, queryset, name, value):
         try:
             year = int(value)
+            if year < 1:
+                raise ValueError
         except ValueError:
             raise ValidationError({name: [f"Enter a valid {name}. Use YYYY"]})
         return queryset.filter(created_at__year=year)
