@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { PropTypes } from 'prop-types';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 import DefaultLogo from './DefaultLogo';
@@ -9,13 +9,9 @@ import PendingStatus from '../../../components/MiniComponents/PendingModerationI
 import CategoryBadges from '../../../components/MiniComponents/CategoryBadges';
 import StarForLike from '../../../components/MiniComponents/StarForLike';
 import { useAuth } from '../../../hooks';
+import truncateRegionName from '../../../utils/truncateRegionName';
 
 import classes from './TitleInfo.module.css';
-
-function truncateRegionName(regionName) {
-  if (!regionName) return '';
-  return regionName.replace(/область/g, 'обл.');
-}
 
 export default function TitleInfo({ isAuthorized, data }) {
   const { user } = useAuth();
@@ -28,9 +24,9 @@ export default function TitleInfo({ isAuthorized, data }) {
       personId: data.person,
       name: data.name,
       activities:
-        data.activities && data.activities.length
+        data.activities?.length
           ? data.activities.map((activity) => activity.name).join(', ')
-          : null,
+          : '',
       regions: truncateRegionName(data.regions_ukr_display),
       categories: data.categories || [],
       isSaved: data.is_saved,
