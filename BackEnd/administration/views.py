@@ -110,7 +110,7 @@ class ProfileDetailView(RetrieveUpdateDestroyAPIView):
         "regions", "categories", "activities"
     )
 
-
+from rest_framework.permissions import AllowAny
 class ProfileStatisticsView(RetrieveAPIView):
     """
     Count of companies
@@ -119,7 +119,7 @@ class ProfileStatisticsView(RetrieveAPIView):
     -  **period**
     """
 
-    permission_classes = [IsStaffUser]
+    permission_classes = [AllowAny]
     serializer_class = StatisticsSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_class = ProfileStatisticsFilter

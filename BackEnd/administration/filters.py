@@ -1,7 +1,6 @@
 from django.db.models import Q
 from django_filters import filters
 from django_filters.rest_framework import FilterSet
-from datetime import datetime, timedelta
 
 
 class UsersFilter(FilterSet):
@@ -70,29 +69,23 @@ class CategoriesFilter(FilterSet):
 class ProfileStatisticsFilter(FilterSet):
     """
     Filters
-    /?period=
+    /?start_date= /?end_date= /?day /?month= /?year=
     """
 
-    period = filters.CharFilter(method="period_filter")
+    start_date = filters.DateFilter(field_name="created_at", lookup_expr="gte")
+    end_date = filters.DateFilter(field_name="created_at", lookup_expr="lte")
+    day = filters.DateFilter(field_name="created_at")
+    month = filters.CharFilter(method="month_filter")
+    year = filters.CharFilter(method="year_filter")
 
-    def period_filter(self, queryset, name, value):
-        if value == "year":
-            return queryset.filter(
-                created_at__gte=datetime.now().replace(month=1, day=1),
-                created_at__lte=datetime.now(),
+    def month_filter(self, queryset, name, value):
+        year_month = [int(i) for i in value.split("-")]
+        return queryset.filter(
+            created_at__month=year_month[1],
+            created_at__year=year_month[0]
             )
-        elif value == "month":
-            return queryset.filter(
-                created_at__gte=datetime.now().replace(day=1),
-                created_at__lte=datetime.now(),
-            )
-        elif value == "week":
-            return queryset.filter(
-                created_at__gte=datetime.now() - timedelta(days=7),
-                created_at__lte=datetime.now(),
-            )
-        elif value == "day":
-            return queryset.filter(
-                created_at__gte=datetime.now() - timedelta(hours=24),
-                created_at__lte=datetime.now(),
-            )
+
+    def year_filter(self, queryset, name, value):
+        return queryset.filter(
+            created_at__year=int(value)
+        )
