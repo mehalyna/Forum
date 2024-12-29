@@ -12,11 +12,16 @@ import { useAuth } from '../../../hooks';
 
 import classes from './TitleInfo.module.css';
 
+function truncateRegionName(regionName) {
+  if (!regionName) return '';
+  return regionName.replace(/область/g, 'обл.');
+}
 
-function TitleInfo({ isAuthorized, data }) {
+export default function TitleInfo({ isAuthorized, data }) {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [isSaved, setIsSaved] = useState(data.is_saved);
+
   const profile = useMemo(() => {
     return {
       id: data.id,
@@ -26,8 +31,8 @@ function TitleInfo({ isAuthorized, data }) {
         data.activities && data.activities.length
           ? data.activities.map((activity) => activity.name).join(', ')
           : null,
-      regions: data.regions_ukr_display ? data.regions_ukr_display : '',
-      categories: data.categories ? data.categories : null,
+      regions: truncateRegionName(data.regions_ukr_display),
+      categories: data.categories || [],
       isSaved: data.is_saved,
       logo: data.logo,
     };
@@ -93,9 +98,9 @@ function TitleInfo({ isAuthorized, data }) {
             </div>
           </div>
         </div>
-        {isAuthorized ? (
+        {isAuthorized && (
           <div className={classes['title-block__button-block']}>
-            {!ownProfile && (
+            {!ownProfile ? (
               <button
                 onClick={isSaved ? handleDeleteSaved : handleSave}
                 type="button"
@@ -111,33 +116,27 @@ function TitleInfo({ isAuthorized, data }) {
                   {!isSaved ? 'Додати в збережені' : 'Додано в збережені'}
                 </span>
                 <StarForLike
-                  location="profilePage"
                   isSaved={isSaved}
                   isAuthorized={isAuthorized}
                   ownProfile={ownProfile}
                   styleOutlined={{ color: isSaved ? '#FFF' : '#000', fontSize: '24px' }}
-                ></StarForLike>
+                />
               </button>
-            )}
-            {ownProfile && (
+            ) : (
               <a
                 role="link"
                 className={`${classes['title-block__button']} ${classes['title-block__link']}`}
                 onClick={navigateToEditProfile}
               >
-                <span className={`${classes['title-block__button--text']}`}>
-                  Редагувати
-                </span>
+                <span className={classes['title-block__button--text']}>Редагувати</span>
               </a>
             )}
           </div>
-        ) : null}
+        )}
       </div>
     </div>
   );
 }
-
-export default TitleInfo;
 
 TitleInfo.propTypes = {
   isAuthorized: PropTypes.bool,
