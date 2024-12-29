@@ -116,7 +116,7 @@ class ProfileStatisticsView(RetrieveAPIView):
     Count of companies
 
     ### Query Parameters:
-    -  **period**
+    -  **start_date** **end_date** **day** **month** **year**
     """
 
     permission_classes = [AllowAny]

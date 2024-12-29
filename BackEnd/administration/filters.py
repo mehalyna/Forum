@@ -70,14 +70,14 @@ class CategoriesFilter(FilterSet):
 class ProfileStatisticsFilter(FilterSet):
     """
     Filters
-    /?start_date= /?end_date= /?day /?month= /?year=
+    /?start_date= /?end_date= /?day= /?month= /?year=
     """
 
     start_date = filters.DateFilter(field_name="created_at", lookup_expr="gte")
     end_date = filters.DateFilter(field_name="created_at", lookup_expr="lte")
     day = filters.DateFilter(field_name="created_at")
     month = filters.CharFilter(method="month_filter")
-    year = filters.CharFilter(method="year_filter")
+    year = filters.NumberFilter(method="year_filter")
 
     def month_filter(self, queryset, name, value):
         try:
@@ -85,16 +85,15 @@ class ProfileStatisticsFilter(FilterSet):
             if month < 1 or month > 12:
                 raise ValueError
         except (ValueError, IndexError):
-            raise ValidationError({name: [f"Enter a valid {name}. Use YYYY-MM"]})
-        return queryset.filter(
-            created_at__month=month, created_at__year=year
-        )
+            raise ValidationError(
+                {name: [f"Enter a valid {name}. Use YYYY-MM"]}
+            )
+        return queryset.filter(created_at__month=month, created_at__year=year)
 
     def year_filter(self, queryset, name, value):
         try:
-            year = int(value)
-            if year < 1:
+            if value < 1:
                 raise ValueError
         except ValueError:
             raise ValidationError({name: [f"Enter a valid {name}. Use YYYY"]})
-        return queryset.filter(created_at__year=year)
+        return queryset.filter(created_at__year=value)
