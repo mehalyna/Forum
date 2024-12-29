@@ -1,12 +1,11 @@
 import { NavLink } from 'react-router-dom';
-import styles from './cookiesPolicyComponent.module.css';
 
 const LinkContainer = () => {
   const getClassName = ({ isActive }) =>
-    isActive ? styles['link_text__active'] : styles['link_text'];
+    isActive ? 'link_text__active' : 'link_text';
 
   return (
-    <div className={styles['link']}>
+    <div className="link">
       <NavLink to="/privacy-policy/" className={getClassName}>
         Політика конфіденційності
       </NavLink>
@@ -14,7 +13,7 @@ const LinkContainer = () => {
         Умови користування
       </NavLink>
       <NavLink to="/contact/" className={getClassName}>
-      Зворотній зв&apos;язок
+        Зворотній зв&apos;язок
       </NavLink>
     </div>
   );

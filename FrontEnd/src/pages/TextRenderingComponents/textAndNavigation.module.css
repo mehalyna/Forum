@@ -1,0 +1,30 @@
+.text_content {
+    font-family: var(--font-main);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 22px;
+}
+
+.text_content__margin_bottom{
+    margin-bottom: 24px;
+    font-family: var(--font-main);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 22px;
+}
+
+.text_content__heading{
+    padding: 24px 0;
+}
+
+.custom-list {
+    margin:0px;
+    padding-left: 16px; 
+}
+
+.custom-list__item{
+    font-family: var(--font-main);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 22px;
+}

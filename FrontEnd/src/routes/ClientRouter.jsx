@@ -8,7 +8,6 @@ import customTheme from '../pages/CustomThemes/customTheme.js';
 
 import LoginPage from '../pages/Authorization/LoginPage';
 import AboutUsPage from '../pages/AboutUsPage/AboutUsPage.jsx';
-import CookiesPolicyComponent from '../pages/CookiesPolicyPage/CookiesPolicyComponent';
 import Footer from '../components/Footer/Footer';
 import Header from '../components/Header/Header';
 import Loader from '../components/Loader/Loader';
@@ -136,10 +135,6 @@ function ClientRouter() {
                   <Route
                     path="/terms-and-conditions"
                     element={<TermsAndConditions />}
-                  />
-                  <Route
-                    path="/cookies-policy"
-                    element={<CookiesPolicyComponent />}
                   />
                   <Route path="/contact" element={<Contact />} />
                   <Route
