@@ -46,6 +46,22 @@
     background-color: var(--light-seashell-background);
 }
 
+.tooltip-icon {
+    margin-left: 5px;
+    background-color: var(--tooltip-bg-color);
+    border-radius: var(--tooltip-border-radius);
+    width: 16px;
+    height: 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: bold;
+    font-family: 'Geologica', sans-serif;
+    color: var(--tooltip-font-color);
+  }
+
 @media only screen and (min-width: 768px) {
     .form__container {
         width: 474px;
@@ -72,9 +88,8 @@
         background-color: var(--light-seashell-background);
         display: inherit;
     }
-    
 }
-
+    
 @media only screen and (min-width: 1200px) {
     .form__container {
         width: 636px;

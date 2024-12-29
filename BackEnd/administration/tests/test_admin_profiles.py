@@ -6,6 +6,7 @@ from administration.factories import (
     AdminProfileFactory,
 )
 
+from utils.unittest_helper import AnyInt, AnyStr
 from utils.dump_response import dump  # noqa
 
 
@@ -52,14 +53,14 @@ class TestAdminProfilesAPITests(APITestCase):
         response = self.client.get(path="/api/admin/profiles/")
         data = [
             {
-                "id": 4,
+                "id": AnyInt(),
                 "name": "Test person",
                 "is_registered": True,
                 "is_startup": True,
                 "person": {
-                    "name": "Test person 7",
-                    "surname": "Test person 7 surname",
-                    "email": "test7@test.com",
+                    "name": AnyStr(),
+                    "surname": AnyStr(),
+                    "email": AnyStr(),
                     "is_active": True,
                     "is_staff": True,
                     "is_superuser": False,
@@ -89,9 +90,9 @@ class TestAdminProfilesAPITests(APITestCase):
             "categories": [],
             "activities": [],
             "person": {
-                "name": "Test person 1",
-                "surname": "Test person 1 surname",
-                "email": "test1@test.com",
+                "name": AnyStr(),
+                "surname": AnyStr(),
+                "email": AnyStr(),
                 "is_active": True,
                 "is_staff": True,
                 "is_superuser": False,

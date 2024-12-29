@@ -23,7 +23,13 @@ const MENU = [
         title: 'Налаштування часу автоапруву',
         link: '/customadmin/automoderation/'
     },
+    {
+        id: 'am5',
+        title: 'Статистика компаній',
+        link: '/customadmin/statistics/'
+    },
 ];
+
 
 const SUPERUSER_MENU = [
     {

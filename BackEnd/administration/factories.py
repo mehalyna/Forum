@@ -1,7 +1,7 @@
 import factory.django
 
 from authentication.models import CustomUser
-from profiles.models import Profile
+from profiles.models import Profile, Category
 
 
 class AdminUserFactory(factory.django.DjangoModelFactory):
@@ -39,3 +39,11 @@ class AdminProfileFactory(factory.django.DjangoModelFactory):
     official_name = "Test official name"
     startup_idea = "Test startup idea"
     is_deleted = False
+
+
+class AdminCategoryFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Category
+        django_get_or_create = ("name",)
+
+    name = factory.Sequence(lambda n: f"category {n + 1}")

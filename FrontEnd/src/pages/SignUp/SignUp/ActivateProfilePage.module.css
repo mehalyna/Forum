@@ -12,8 +12,8 @@
   display: flex;
   padding: 9px 16px;
   border-radius: 4px;
-  background: #000000;
-  color: var(--light-button-text-color);
+  background: var(--main-button-color);
+  color: var(--main-button-text-color);
   text-align: center;
   font-feature-settings: "calt" off;
   font-family: var(--font-main);
@@ -24,4 +24,8 @@
   letter-spacing: -0.16px;
   text-decoration: none;
   cursor: pointer;
+}
+
+.signup-page__button:hover {
+  background: var(--main-button-hover-color);
 }

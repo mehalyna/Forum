@@ -78,8 +78,7 @@
 
 .modal-footer--button {
     display: flex;
-    height: 32px;
-    padding: 5px 15px;
+    padding: 9px 16px;
     justify-content: center;
     align-items: center;
     gap: 4px;
@@ -96,16 +95,25 @@
 }
 
 .modal-footer--button-cancel {
-    border: 1px solid var(--Main-Grey-40, #A3AAB0);
-    background: var(--main-white, #FFF);
-    color: var(--main-grey-90, #25292C);
+    border: 1px solid var(--light-button-border-color);
+    background: var(--light-button-color);
+    color: var(--light-button-text-color);
 
 }
 
+.modal-footer--button-cancel:hover {
+    background: var(--light-button-hover-color);
+}
+
 .modal-footer--button-continue {
-    border: 1px solid var(--main-button-color, #000000);
+    border: 1px solid var(--main-button-border-color);
     background: var(--main-button-color, #000000);
-    color: var(--main-white, #FFF);
+    color: var(--main-button-text-color);
+}
+
+.modal-footer--button-continue:hover {
+    background: var(--main-button-hover-color);
+    border: 1px solid var(--main-button-hover-border-color);
 }
 
 @media only screen and (min-width: 768px) {

@@ -11,6 +11,8 @@ from administration.views import (
     ModerationEmailView,
     FeedbackView,
     CreateAdminUserView,
+    CategoriesListView,
+    CategoryDetailView,
     SendMessageView,
 )
 
@@ -35,6 +37,16 @@ urlpatterns = [
     path("contacts/", ContactsView.as_view(), name="contacts"),
     path("feedback/", FeedbackView.as_view(), name="feedback"),
     path("admin_create/", CreateAdminUserView.as_view(), name="admin-create"),
+    path(
+        "categories/",
+        CategoriesListView.as_view(),
+        name="categories",
+    ),
+    path(
+        "categories/<pk>/",
+        CategoryDetailView.as_view(),
+        name="category_detail",
+    ),
     path(
         "users/<pk>/send_message/",
         SendMessageView.as_view(),

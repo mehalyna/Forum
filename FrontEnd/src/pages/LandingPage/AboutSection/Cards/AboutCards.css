@@ -1,132 +1,112 @@
 .about-us-cards-main-container {
-    display: flex;
-    justify-content: center;
-    background: #fff;
-    width: 100vw;
+  display: flex;
+  justify-content: center;
+  background: #fff;
+  width: 100vw;
 }
 
 .about-us-cards-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    max-width: 1260px;
-    width: 100%;
-    height: 448px;
-    padding: 80px 104px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  width: 375px;
+  padding: 40px 16px;
+  box-sizing: border-box;
 }
 
 .about-us-cards-section__header-text {
-    font-family: Geologica, sans-serif;
-    font-size: 40px;
-    font-weight: bold;
-    line-height: 48px;
-    color: #232424;
-    margin-bottom: 40px;
-    text-align: center;
-}
-
-.about-us-cards-section__cards {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 32px;
-
+  font-family: var(--font-main);
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 28px;
+  color: #232424;
+  text-align: center;
 }
 
 .about-us-cards-section__card {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    background-color: #f9f5ec;
-    border-radius: 12px;
-    box-shadow: 0 0 2px 0 rgba(65, 64, 69, 0.2);
-    transition: transform 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  background-color: #f9f5ec;
+  border-radius: 6px;
+  box-shadow: 0 0 2px 0 rgba(65, 64, 69, 0.2);
+  box-sizing: border-box;
+  width: 345px;
+  height: 132px;
+  padding: 16px 24px;
+  gap: 16px;
+  transition: transform 0.2s ease;
 }
 
 .about-us-cards-section__cards-content {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 16px;
-    width: 367px;
-    height: 80px;
-    padding: 32px 23px 52px 23px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .about-us-cards-section__cards-content__text-header {
-    font-family: Geologica, sans-serif;
-    font-size: 20px;
-    font-weight: bold;
-    line-height: 1.2;
-    color: #232424;
+  font-family: var(--font-main);
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 1.2;
+  color: #232424;
 }
 
 .about-us-cards-section__cards-content__text {
-    font-family: Geologica, sans-serif;
-    font-size: 16px;
-    line-height: 1.25;
-    color: #292e32;
+  font-family: var(--font-main);
+  font-size: 16px;
+  line-height: 1.25;
+  color: #292e32;
 }
 
-@media (min-width: 768px) and (max-width: 1511px) {
-    .about-us-cards-section__cards {
-        grid-template-columns: repeat(2, 1fr);
-        justify-content: center;
-        box-sizing: border-box;
+@media only screen and (min-width: 768px) {
+  .about-us-cards-section {
+    width: 768px;
+    padding: 48px 24px;
+  }
 
-    }
+  .about-us-cards-section__header-text {
+    font-size: 40px;
+    line-height: 48px;
+    letter-spacing: 0.4px;
+  }
 
-    .about-us-cards-section {
-        height: auto;
-        padding: 48px 24px;
-
-    }
-
-    .about-us-cards-section__cards-content {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 16px;
-        width: 296px;
-        height: 100px;
-        padding: 32px 24px;
-
-    }
-
-    .about-us-cards-section__card {
-        width: 343px;
-
-    }
-
+  .about-us-cards-section__card {
+    min-width: 344px;
+    height: 164px;
+    padding: 32px 24px;
+  }
 }
 
-@media (max-width: 767px) {
-    .about-us-cards-section {
-        max-width: 345px;
-        height: auto;
-        padding: 24px 16px;
+@media only screen and (min-width: 1200px) {
+  .about-us-cards-section {
+    width: 1200px;
+    padding: 64px 32px;
 
-    }
+  }
 
-    .about-us-cards-section__card {
-        width: 343px;
+  .about-us-cards-section__card {
+    min-width: 357px;
+    height: 164px;
+  }
+}
 
-    }
+@media only screen and (min-width: 1512px) {
+  .about-us-cards-section {
+    width: 1512px;
+    padding: 80px 104px;
+  }
 
-    .about-us-cards-section__cards-content {
-        width: 296px;
-        height: 100px;
-        padding: 16px 24px;
+  .about-us-cards-section__cards {
+    display: flex;
+    flex-wrap: wrap;
+    width: 1304px;
+    justify-content: space-between;
+    gap: 32px;
+  }
 
-    }
-
-    .about-us-cards-section__header-text {
-        font-size: 24px;
-        margin-bottom: 24px;
-
-    }
-
-    .about-us-cards-section__cards {
-        grid-template-columns: 1fr;
-
-    }
+  .about-us-cards-section__card {
+    min-width: 413px;
+    height: 164px;
+  }
 }

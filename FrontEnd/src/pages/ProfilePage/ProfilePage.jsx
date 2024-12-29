@@ -1,12 +1,13 @@
-import css from './ProfilePage.module.css';
-import Description from './ProfilePageComponents/Description';
-import ProfileContent from './ProfilePageComponents/ProfileContent';
 import { useState, useEffect } from 'react';
 import { DirtyFormContext } from '../../context/DirtyFormContext';
-import Loader from '../../components/Loader/Loader';
 import { useAuth, useProfile } from '../../hooks';
 import useWindowWidth from '../../hooks/useWindowWidth';
+import { SCREEN_WIDTH } from '../../constants/constants';
+import Loader from '../../components/Loader/Loader';
+import Description from './ProfilePageComponents/Description';
+import ProfileContent from './ProfilePageComponents/ProfileContent';
 import EditProfileMobile from './Mobile/EditProfileMobile';
+import css from './ProfilePage.module.css';
 
 const ProfilePage = () => {
   const [formIsDirty, setFormIsDirty] = useState(false);
@@ -28,7 +29,7 @@ const ProfilePage = () => {
   }, [formIsDirty]);
 
 
-  if (windowWidth < 768) {
+  if (windowWidth < SCREEN_WIDTH.tablet) {
     return (
       <DirtyFormContext.Provider value={{ formIsDirty, setFormIsDirty }}>
         <EditProfileMobile/>
