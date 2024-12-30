@@ -9,7 +9,7 @@
   width: 100vw;
   display: flex;
   flex-direction: column;
-
+  align-self: center;
 }
 
 .company-list__header--wrapper {
@@ -30,11 +30,10 @@
 }
 
 .company-list__title {
-  font-family: Geologica;
+  font-family: var(--font-main);
   font-weight: 700;
   line-height: 28.8px;
   letter-spacing: 0.01em;
-
 }
 
 .company-list__tabs {
@@ -76,8 +75,8 @@
   display: flex;
   align-self: center;
   flex-direction: column;
-  padding: 24px 27px 40px;
-  gap: 20px;
+  padding: 40px 15px;
+  gap: 16px;
 }
 
 .company-list__content--btns-wrapper {
@@ -123,6 +122,10 @@
   .company-list__content {
     width: 768px;
   }
+
+  .company-list__content {
+    padding: 24px 24px 48px;
+  }
 }
 
 @media only screen and (min-width: 1200px) {
@@ -136,7 +139,7 @@
   }
 
   .company-list__content {
-    padding: 24px 35px 32px;
+    padding: 24px 32px 64px;
     gap: 32px;
   }
 

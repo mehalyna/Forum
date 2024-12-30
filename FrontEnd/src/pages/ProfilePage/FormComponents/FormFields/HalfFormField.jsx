@@ -70,7 +70,7 @@ const HalfFormField = forwardRef(function HalfFormField(props, ref) {
 HalfFormField.propTypes = {
   requiredField: PropTypes.bool,
   inputType: PropTypes.string,
-  label: PropTypes.string.isRequired,
+  label: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
   name: PropTypes.string.isRequired,
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   fieldPlaceholder: PropTypes.string,

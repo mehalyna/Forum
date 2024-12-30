@@ -43,7 +43,7 @@
   padding: 9px 16px;
   border-radius: 4px;
   background: var(--main-button-color);
-  color: var(--light-button-text-color);
+  color: var(--main-button-text-color);
   text-align: center;
   font-feature-settings: "calt" off;
   font-family: var(--font-main);
@@ -56,6 +56,6 @@
   cursor: pointer;
 }
 
-.signup-page__button:active {
-  background: var(--pressed-button-color);
+.signup-page__button:hover {
+  background: var(--main-button-hover-color);
 }

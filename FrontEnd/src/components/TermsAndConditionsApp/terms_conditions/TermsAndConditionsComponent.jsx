@@ -1,7 +1,7 @@
 import styles from './TermsAndConditionsComponent.module.css';
 import TermsAndConditionsText from './text';
 import TEXT_CONTENT from './text';
-import renderContent from '../../../pages/CookiesPolicyPage/RenderContent.jsx';
+import renderContent from '../../../pages/TextRenderingComponents/RenderContent.jsx';
 import useScrollToTop from '../../../hooks/useScrollToTop';
 
 
