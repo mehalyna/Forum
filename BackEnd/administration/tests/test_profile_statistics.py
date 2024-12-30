@@ -88,6 +88,46 @@ class TestProfileStatisticsStaff(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data, data)
 
+    def test_get_profile_statistics_filtered_by_incorrect_day(self):
+        response = self.client.get(
+            "/api/admin/profiles/statistics/?day=2023-13-77"
+        )
+        data = {"day": ["Enter a valid date."]}
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.data, data)
+
+    def test_get_profile_statistics_filtered_by_incorrect_month(self):
+        response = self.client.get(
+            "/api/admin/profiles/statistics/?month=2023-13-07"
+        )
+        data = {"month": ["Enter a valid month. Use YYYY-MM"]}
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.data, data)
+
+    def test_get_profile_statistics_filtered_by_incorrect_month_format(self):
+        response = self.client.get(
+            "/api/admin/profiles/statistics/?month=2023-12-07"
+        )
+        data = {"month": ["Enter a valid month. Use YYYY-MM"]}
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.data, data)
+
+    def test_get_profile_statistics_filtered_by_incorrect_year_format(self):
+        response = self.client.get(
+            "/api/admin/profiles/statistics/?year=2023-1"
+        )
+        data = {"year": ["Enter a number."]}
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.data, data)
+
+    def test_get_profile_statistics_filtered_by_incorrect_year(self):
+        response = self.client.get(
+            "/api/admin/profiles/statistics/?year=-2024"
+        )
+        data = {"year": ["Enter a valid year. Use YYYY"]}
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.data, data)
+
 
 class TestProfileStatisticsNotStaff(APITestCase):
     def setUp(self):

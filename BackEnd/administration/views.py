@@ -2,11 +2,12 @@ from django.http import JsonResponse
 from django.views import View
 from django.db.models import Count, Q
 from django_filters.rest_framework import DjangoFilterBackend
-
+from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import (
     extend_schema,
     OpenApiExample,
     OpenApiResponse,
+    OpenApiParameter,
 )
 from rest_framework.generics import (
     ListAPIView,
@@ -111,12 +112,25 @@ class ProfileDetailView(RetrieveUpdateDestroyAPIView):
     )
 
 
+@extend_schema(
+    parameters=[
+        OpenApiParameter("start_date", OpenApiTypes.DATE),
+        OpenApiParameter("end_date", OpenApiTypes.DATE),
+        OpenApiParameter("day", OpenApiTypes.DATE),
+        OpenApiParameter("month", OpenApiTypes.STR),
+        OpenApiParameter("year", OpenApiTypes.STR),
+    ]
+)
 class ProfileStatisticsView(RetrieveAPIView):
     """
     Count of companies
 
     ### Query Parameters:
-    -  **start_date** **end_date** **day** **month** **year**
+    - **start_date**  (format: **YYYY-MM-DD**)
+    - **end_date** (format: **YYYY-MM-DD**)
+    - **day** (format: **YYYY-MM-DD**)
+    - **month** (format: **YYYY-MM**)
+    - **year** (format: **YYYY**)
     """
 
     permission_classes = [IsStaffUser]
