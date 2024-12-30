@@ -1,6 +1,5 @@
 from rest_framework.test import APITestCase
 from rest_framework import status
-from datetime import datetime
 from administration.factories import AdminUserFactory, AdminProfileFactory
 from utils.unittest_helper import utc_datetime
 
