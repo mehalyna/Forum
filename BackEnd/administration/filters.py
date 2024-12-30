@@ -24,8 +24,8 @@ class UsersFilter(FilterSet):
     company_name = filters.CharFilter(
         field_name="profile__name", lookup_expr="icontains"
     )
-    registration_date = filters.CharFilter(
-        field_name="profile__created_at", lookup_expr="icontains"
+    registration_date = filters.DateFilter(
+        field_name="profile__created_at",
     )
 
     def is_inactive_filter(self, queryset, name, value):
@@ -51,6 +51,40 @@ class UsersFilter(FilterSet):
             ("is_deleted", "is_deleted"),
             ("profile__name", "company_name"),
             ("profile__created_at", "registration_date"),
+        )
+    )
+
+
+class ProfilesFilter(FilterSet):
+    """
+    Filters
+    /?name= , /?representative= , /?official_name= , /?phone= , /?address= ,
+    /?created_at= , /?updated_at= ,
+    Ordering sample:
+    /?ordering=id asc or /?ordering=-id desc
+    """
+
+    name = filters.CharFilter(lookup_expr="icontains")
+    representative = filters.CharFilter(
+        field_name="representative", lookup_expr="icontains"
+    )
+    official_name = filters.CharFilter(lookup_expr="icontains")
+    phone = filters.CharFilter(lookup_expr="icontains")
+    address = filters.CharFilter(lookup_expr="icontains")
+    created_at = filters.DateFromToRangeFilter()
+    updated_at = filters.DateFromToRangeFilter()
+
+    ordering = filters.OrderingFilter(
+        fields=(
+            ("name", "name"),
+            ("is_registered", "is_registered"),
+            ("representative", "representative"),
+            ("official_name", "official_name"),
+            ("phone", "phone"),
+            ("address", "address"),
+            ("status", "status"),
+            ("created_at", "created_at"),
+            ("updated_at", "updated_at"),
         )
     )
 
