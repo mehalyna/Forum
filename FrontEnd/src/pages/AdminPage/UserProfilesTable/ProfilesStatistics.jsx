@@ -46,23 +46,25 @@ function ProfilesStatistics() {
   ) : error ? (
     <div className={css['error']}>Не вдалося отримати статистику компаній</div>
   ) : (
-    <Descriptions
-      title="Статистика компаній"
-      column={1}
-      bordered
-      size="small"
-      items={items.map((item) => ({
-        ...item,
-        label: (
-          <span className={css['description-item-label']}>{item.label}</span>
-        ),
-        children: (
-          <span className={css['description-item-content']}>
-            {item.children}
-          </span>
-        ),
-      }))}
-    />
+    <div className={css['statistics-container']}>
+      <Descriptions
+        title="Статистика компаній"
+        column={1}
+        bordered
+        size="small"
+        items={items.map((item) => ({
+          ...item,
+          label: (
+            <span className={css['description-item-label']}>{item.label}</span>
+          ),
+          children: (
+            <span className={css['description-item-content']}>
+              {item.children}
+            </span>
+          ),
+        }))}
+      />
+    </div>
   );
 }
 

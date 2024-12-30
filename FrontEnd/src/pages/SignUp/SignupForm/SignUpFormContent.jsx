@@ -1,6 +1,6 @@
-import React, { useEffect, useState, Suspense, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import ReCAPTCHA from 'react-google-recaptcha';
@@ -10,8 +10,6 @@ import SignUpPasswordField from './SignUpPasswordField';
 import SignUpCheckboxField from './SignUpCheckboxField';
 
 import styles from './SignUpFormContent.module.css';
-
-import PropTypes from 'prop-types';
 import {
   EMAIL_PATTERN,
   PASSWORD_PATTERN,
@@ -19,8 +17,6 @@ import {
   COMPANY_NAME_PATTERN,
 } from '../../../constants/constants';
 
-
-const RulesModal = React.lazy(() => import('./RulesModal'));
 
 export function SignUpFormContentComponent(props) {
   const [showPassword, setShowPassword] = useState(false);
@@ -58,18 +54,6 @@ export function SignUpFormContentComponent(props) {
   });
 
   const { setIsValid } = props;
-  // modal start
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  SignUpFormContentComponent.propTypes = {
-    setIsValid: PropTypes.func.isRequired,
-  };
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
-  // modal end
 
   const togglePassword = () => {
     setShowPassword(!showPassword);
@@ -352,12 +336,13 @@ export function SignUpFormContentComponent(props) {
         <div className={styles['signup-form__checkboxes-container--rules']}>
           <label className={styles['rules__line--text']}>
             Реєструючись, я погоджуюсь з{' '}
-            <a
-              onClick={openModal}
+            <Link
+              to="/terms-and-conditions"
+              target="_blank"
               className={styles['rules__line--link']}
             >
               правилами використання
-            </a>
+            </Link>
             {' '}сайту Craftmerge
           </label>
         </div>
@@ -369,9 +354,6 @@ export function SignUpFormContentComponent(props) {
           className={styles['signup-form__recaptcha']}
         />
       </form>
-      <Suspense fallback={<div>Loading...</div>}>
-        {isModalOpen && <RulesModal closeModal={closeModal} />}
-      </Suspense>
     </div>
   );
 }
