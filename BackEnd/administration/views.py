@@ -17,6 +17,9 @@ from rest_framework.generics import (
     CreateAPIView,
 )
 
+from rest_framework.response import Response
+from rest_framework import status
+
 from administration.serializers import AdminRegistrationSerializer
 from administration.serializers import (
     AdminCompanyListSerializer,
@@ -40,7 +43,7 @@ from utils.administration.send_email_feedback import send_email_feedback
 
 from .filters import UsersFilter, CategoriesFilter
 from utils.administration.send_email_notification import send_email_to_user
-
+from utils.administration.backup_contact_info import backup_contact_info,update_cache
 
 class UsersListView(ListAPIView):
     """
@@ -186,7 +189,7 @@ class ContactsView(RetrieveUpdateAPIView):
     """
     API view for retrieving and updating contact information.
     """
-
+    permission_classes = [IsStaffUser]
     serializer_class = ContactInformationSerializer
 
     def get_object(self):
@@ -206,18 +209,31 @@ class ContactsView(RetrieveUpdateAPIView):
         serializer = self.get_serializer(instance, data=request.data, partial=partial)
         if serializer.is_valid():
             try:
-                backup_contact_info()  # Create a backup
-                serializer.save(admin_user=request.user)  # Save the admin user who made changes
-                update_cache()  # Update cache
+                # Create a backup of the contact information
+                backup_contact_info()
+            except Exception as e:
+                return Response(
+                    {"message": f"Backup failed: {str(e)}"},
+                    status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                )
+
+            try:
+                # Save the updated contact information
+                serializer.save(admin_user=request.user)
+
+                # Update cache with new contact information
+                update_cache()
                 return Response(
                     {"message": "Contact information successfully updated."},
                     status=status.HTTP_200_OK,
                 )
-            except Exception:
+            except Exception as e:
                 return Response(
-                    {"message": "Failed to save changes. Please check the database connection."},
+                    {"message": f"Cache update failed: {str(e)}"},
                     status=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 )
+
+        # If validation fails, return validation errors
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
