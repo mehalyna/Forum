@@ -54,11 +54,15 @@
     height: 0.4px;
 }
 
+.upload-file__main--empty:hover {
+    background: var(--light-button-hover-color);
+}
+
 .upload-file__label {
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 1px solid var(--dark-border-button);
+    border: 1px solid var(--light-button-border-color);
     border-radius: 4px;
     cursor: pointer;
     width: 144px;
@@ -72,7 +76,7 @@
     line-height: 20px;
     letter-spacing: -0.01em;
     text-align: center;
-    color: var(--main-button-color);
+    color: var(--light-button-text-color);
 }
 
 .upload-file__icon {

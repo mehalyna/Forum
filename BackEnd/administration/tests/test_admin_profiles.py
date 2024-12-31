@@ -55,8 +55,6 @@ class TestAdminProfilesAPITests(APITestCase):
             {
                 "id": AnyInt(),
                 "name": "Test person",
-                "is_registered": True,
-                "is_startup": True,
                 "person": {
                     "name": AnyStr(),
                     "surname": AnyStr(),
@@ -66,11 +64,14 @@ class TestAdminProfilesAPITests(APITestCase):
                     "is_superuser": False,
                     "company_name": True,
                 },
-                "person_position": "Test person position",
-                "regions": [],
-                "official_name": "Test official name",
+                "business_entity": AnyStr(),
+                "status": AnyStr(),
+                "updated_at": AnyStr(),
+                "created_at": AnyStr(),
+                "company_type": AnyStr(),
+                "activities": [],
+                "representative": AnyStr(),
                 "phone": "380112909099",
-                "edrpou": "10000003",
                 "address": "Test Country, Test City, St. Test, 1",
                 "is_deleted": False,
             }
