@@ -232,7 +232,6 @@ class ContactsView(RetrieveUpdateAPIView):
         )
         if serializer.is_valid():
             try:
-                # Create a backup of the contact information
                 backup_contact_info()
             except Exception as e:
                 return Response(
@@ -241,10 +240,8 @@ class ContactsView(RetrieveUpdateAPIView):
                 )
 
             try:
-                # Save the updated contact information
                 serializer.save(admin_user=request.user)
 
-                # Update cache with new contact information
                 update_cache()
                 return Response(
                     {"message": "Contact information successfully updated."},
@@ -256,7 +253,6 @@ class ContactsView(RetrieveUpdateAPIView):
                     status=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 )
 
-        # If validation fails, return validation errors
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 

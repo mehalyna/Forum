@@ -117,9 +117,7 @@ class ContactsViewTest(APITestCase):
         """
         Test behavior when backup_contact_info fails.
         """
-        mock_backup.side_effect = Exception(
-            "Backup failed!"
-        )  # Simulate failure
+        mock_backup.side_effect = Exception("Backup failed!")
 
         response = self.client.put("/api/admin/contacts/", self.valid_data)
         self.assertEqual(
@@ -134,9 +132,7 @@ class ContactsViewTest(APITestCase):
         """
         Test behavior when update_cache fails.
         """
-        mock_update_cache.side_effect = Exception(
-            "Cache update failed!"
-        )  # Simulate failure
+        mock_update_cache.side_effect = Exception("Cache update failed!")
 
         response = self.client.put("/api/admin/contacts/", self.valid_data)
         self.assertEqual(
@@ -153,8 +149,8 @@ class ContactsViewTest(APITestCase):
         """
         Test successful execution of backup_contact_info and update_cache.
         """
-        mock_backup.return_value = None  # Simulate success
-        mock_update_cache.return_value = None  # Simulate success
+        mock_backup.return_value = None
+        mock_update_cache.return_value = None
 
         response = self.client.put("/api/admin/contacts/", self.valid_data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
