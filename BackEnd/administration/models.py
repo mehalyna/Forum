@@ -40,15 +40,17 @@ class ModerationEmail(models.Model):
 
     def __str__(self):
         return self.email_moderation
-    
-    
+
+
 class ContactInformation(models.Model):
     company_name = models.CharField(max_length=100)
     address = models.TextField()
     email = models.EmailField()
     phone = models.CharField(max_length=12)
     updated_at = models.DateTimeField(auto_now=True)
-    admin_user = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, blank=True)
+    admin_user = models.ForeignKey(
+        CustomUser, on_delete=models.SET_NULL, null=True, blank=True
+    )
 
     def save(self, *args, **kwargs):
         """

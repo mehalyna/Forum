@@ -17,9 +17,7 @@ class ContactsViewTest(APITestCase):
         self.client = APIClient()
 
         self.admin_user = CustomUser.objects.create_user(
-            email="admin@example.com",
-            password="admin123",
-            is_staff=True
+            email="admin@example.com", password="admin123", is_staff=True
         )
 
         self.client.force_authenticate(user=self.admin_user)
@@ -68,7 +66,10 @@ class ContactsViewTest(APITestCase):
         """
         response = self.client.put("/api/admin/contacts/", self.valid_data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["message"], "Contact information successfully updated.")
+        self.assertEqual(
+            response.data["message"],
+            "Contact information successfully updated.",
+        )
 
         contact_info = ContactInformation.objects.get(pk=1)
         self.assertEqual(contact_info.company_name, "Updated Company")
@@ -78,7 +79,9 @@ class ContactsViewTest(APITestCase):
         """
         Test updating contact information with an invalid phone number.
         """
-        response = self.client.put("/api/admin/contacts/", self.invalid_phone_data)
+        response = self.client.put(
+            "/api/admin/contacts/", self.invalid_phone_data
+        )
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertIn("phone", response.data)
 
@@ -86,7 +89,9 @@ class ContactsViewTest(APITestCase):
         """
         Test updating contact information with missing required fields.
         """
-        response = self.client.put("/api/admin/contacts/", self.missing_fields_data)
+        response = self.client.put(
+            "/api/admin/contacts/", self.missing_fields_data
+        )
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertIn("company_name", response.data)
         self.assertIn("address", response.data)
@@ -112,22 +117,35 @@ class ContactsViewTest(APITestCase):
         """
         Test behavior when backup_contact_info fails.
         """
-        mock_backup.side_effect = Exception("Backup failed!")  # Simulate failure
+        mock_backup.side_effect = Exception(
+            "Backup failed!"
+        )  # Simulate failure
 
         response = self.client.put("/api/admin/contacts/", self.valid_data)
-        self.assertEqual(response.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR)
-        self.assertEqual(response.data["message"], "Backup failed: Backup failed!")
+        self.assertEqual(
+            response.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
+        self.assertEqual(
+            response.data["message"], "Backup failed: Backup failed!"
+        )
 
     @patch("administration.views.update_cache")
     def test_cache_update_failure(self, mock_update_cache):
         """
         Test behavior when update_cache fails.
         """
-        mock_update_cache.side_effect = Exception("Cache update failed!")  # Simulate failure
+        mock_update_cache.side_effect = Exception(
+            "Cache update failed!"
+        )  # Simulate failure
 
         response = self.client.put("/api/admin/contacts/", self.valid_data)
-        self.assertEqual(response.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR)
-        self.assertEqual(response.data["message"], "Cache update failed: Cache update failed!")
+        self.assertEqual(
+            response.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
+        self.assertEqual(
+            response.data["message"],
+            "Cache update failed: Cache update failed!",
+        )
 
     @patch("administration.views.update_cache")
     @patch("administration.views.backup_contact_info")
@@ -140,4 +158,7 @@ class ContactsViewTest(APITestCase):
 
         response = self.client.put("/api/admin/contacts/", self.valid_data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["message"], "Contact information successfully updated.")
+        self.assertEqual(
+            response.data["message"],
+            "Contact information successfully updated.",
+        )

@@ -20,7 +20,7 @@ from validation.validate_phone_number import (
     validate_phone_number_len,
     validate_phone_number_is_digit,
 )
-from validation.validate_company import validate_address,validate_company_name
+from validation.validate_company import validate_address, validate_company_name
 
 User = get_user_model()
 
@@ -279,8 +279,15 @@ class StatisticsSerializer(serializers.Serializer):
 class ContactInformationSerializer(serializers.ModelSerializer):
     class Meta:
         model = ContactInformation
-        fields = ['company_name', 'address', 'email', 'phone', 'updated_at', 'admin_user']
-        read_only_fields = ['updated_at', 'admin_user']
+        fields = [
+            "company_name",
+            "address",
+            "email",
+            "phone",
+            "updated_at",
+            "admin_user",
+        ]
+        read_only_fields = ["updated_at", "admin_user"]
 
     def validate_phone(self, value):
         """

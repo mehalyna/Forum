@@ -35,7 +35,11 @@ from administration.serializers import (
     ContactInformationSerializer,
 )
 from administration.pagination import ListPagination
-from administration.models import AutoModeration, ModerationEmail,ContactInformation
+from administration.models import (
+    AutoModeration,
+    ModerationEmail,
+    ContactInformation,
+)
 from authentication.models import CustomUser
 from profiles.models import Profile, Category
 from .permissions import IsStaffUser, IsStaffUserOrReadOnly, IsSuperUser
@@ -45,7 +49,11 @@ from utils.administration.send_email_feedback import send_email_feedback
 from .filters import UsersFilter, CategoriesFilter, ProfilesFilter
 from django_filters.rest_framework import DjangoFilterBackend
 from utils.administration.send_email_notification import send_email_to_user
-from utils.administration.backup_contact_info import backup_contact_info,update_cache
+from utils.administration.backup_contact_info import (
+    backup_contact_info,
+    update_cache,
+)
+
 
 class UsersListView(ListAPIView):
     """
@@ -201,6 +209,7 @@ class ContactsView(RetrieveUpdateAPIView):
     """
     API view for retrieving and updating contact information.
     """
+
     permission_classes = [IsStaffUser]
     serializer_class = ContactInformationSerializer
 
@@ -216,9 +225,11 @@ class ContactsView(RetrieveUpdateAPIView):
         """
         Updates contact information and creates a backup.
         """
-        partial = kwargs.pop('partial', False)
+        partial = kwargs.pop("partial", False)
         instance = self.get_object()
-        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer = self.get_serializer(
+            instance, data=request.data, partial=partial
+        )
         if serializer.is_valid():
             try:
                 # Create a backup of the contact information
