@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import {Modal, Button, Input} from 'antd';
+import { Modal, Button, Input } from 'antd';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import ValidateCategory from './CategoryValidation';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 import styles from './CategoriesActions.module.css';
@@ -13,18 +14,9 @@ function CategoriesActions({ category, onActionComplete }) {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [error, setError] = useState('');
 
-    const validateCategory = (category) => {
-        if (category.trim().length >= 2) {
-            setError('');
-            return true;
-        } else {
-            setError('Назва категорії має бути не менше 2 символів.');
-            return false;
-        }
-    };
 
     const handleCategoryRename = async () => {
-        if (!validateCategory(categoryRename)) return;
+        if (!ValidateCategory(categoryRename, setError)) return;
 
         setIsCreated(true);
         try {
@@ -80,7 +72,7 @@ function CategoriesActions({ category, onActionComplete }) {
                         onChange={(e) => {
                             const input = e.target.value;
                             setCategoryRename(input);
-                            validateCategory(input);
+                            ValidateCategory(input, setError);
                         }}
                         className={styles.CategoriesActionsTextarea}
                     />
