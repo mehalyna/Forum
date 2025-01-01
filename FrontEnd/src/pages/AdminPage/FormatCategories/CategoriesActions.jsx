@@ -13,8 +13,8 @@ function CategoriesActions({ category, onActionComplete }) {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [error, setError] = useState('');
 
-    const validateMessage = (message) => {
-        if (message.trim().length >= 2) {
+    const validateCategory = (category) => {
+        if (category.trim().length >= 2) {
             setError('');
             return true;
         } else {
@@ -24,7 +24,7 @@ function CategoriesActions({ category, onActionComplete }) {
     };
 
     const handleCategoryRename = async () => {
-        if (!validateMessage(categoryRename)) return;
+        if (!validateCategory(categoryRename)) return;
 
         setIsCreated(true);
         try {
@@ -80,7 +80,7 @@ function CategoriesActions({ category, onActionComplete }) {
                         onChange={(e) => {
                             const input = e.target.value;
                             setCategoryRename(input);
-                            validateMessage(input);
+                            validateCategory(input);
                         }}
                         className={styles.CategoriesActionsTextarea}
                     />
