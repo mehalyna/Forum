@@ -1,46 +1,46 @@
-import { useState, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import Highlighter from 'react-highlight-words';
 import axios from 'axios';
-import useSWR, {mutate}from 'swr';
+import useSWR, { mutate } from 'swr';
 import { Table, Pagination, Input, Button, Space } from 'antd';
-import { CaretUpOutlined, CaretDownOutlined, SearchOutlined } from '@ant-design/icons';
+import { SearchOutlined } from '@ant-design/icons';
+import Highlighter from 'react-highlight-words';
 import CategoriesActions from './CategoriesActions';
 import CategoryAdd from './CategoryAdd';
 import css from './CategoriesTable.module.scss';
 
-
 const DEFAULT_PAGE_SIZE = 10;
 
 function FormatCategories() {
-    const location = useLocation();
     const navigate = useNavigate();
-    const queryParams = new URLSearchParams(location.search);
-    const pageNumber = Number(queryParams.get('page')) || 1;
-    const [currentPage, setCurrentPage] = useState(pageNumber);
+    const queryParams = new URLSearchParams(useLocation().search);
+    const [currentPage, setCurrentPage] = useState(Number(queryParams.get('page')) || 1);
     const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
     const [sortInfo, setSortInfo] = useState({ field: null, order: null });
-    const [statusFilters, setStatusFilters] = useState([]);
     const [searchText, setSearchText] = useState('');
-    const [searchedColumn, setSearchedColumn] = useState('');
+    const [statusFilters, setStatusFilters] = useState([]);
 
-    useEffect(() => {
-        const queryParams = new URLSearchParams(location.search);
-        const updatedPageNumber = Number(queryParams.get('page')) || 1;
-        setCurrentPage(updatedPageNumber);
-    }, [location.search]);
+    const generateUrl = useMemo(() => {
+        const ordering = sortInfo.field
+            ? `&ordering=${sortInfo.order === 'ascend' ? sortInfo.field : '-' + sortInfo.field}`
+            : '&ordering=name';
+        const filtering = statusFilters.length
+            ? statusFilters.map((filter) => `&${filter}=true`).join('')
+            : '';
+        const search = searchText ? `&name=${searchText}` : '';
 
-    const ordering = sortInfo.field ? `&ordering=${sortInfo.order === 'ascend' ? sortInfo.field : '-' + sortInfo.field}` : '';
-    const filtering = statusFilters ? statusFilters.map((filter) => `&${filter}=true`).join('') : '';
-    const url = `${process.env.REACT_APP_BASE_API_URL}/api/admin/categories?page=${currentPage}&page_size=${pageSize}${ordering}${filtering}`;
+        return `${process.env.REACT_APP_BASE_API_URL}/api/admin/categories?page=${currentPage}` +
+            `&page_size=${pageSize}${ordering}${filtering}${search}`;
+    }, [currentPage, pageSize, sortInfo, statusFilters, searchText]);
 
-    async function fetcher(url) {
+    const fetcher = async (url) => {
         const response = await axios.get(url);
         return response.data;
-    }
-    const { data, isValidating: loading } = useSWR(url, fetcher);
-    const categories = data ? data.results : [];
-    const totalItems = data ? data.total_items : 0;
+    };
+    const { data, isValidating: loading } = useSWR(generateUrl, fetcher);
+
+    const categories = data?.results || [];
+    const totalItems = data?.total_items || 0;
 
     const updateQueryParams = (newPage) => {
         queryParams.set('page', newPage);
@@ -59,34 +59,14 @@ function FormatCategories() {
                 sorter.order === null || sorter.order === undefined
                     ? { field: null, order: null }
                     : { field: sorter.field, order: sorter.order };
-
             setSortInfo(newSortInfo);
         } else {
             setSortInfo({ field: null, order: null });
         }
-
-        setStatusFilters(filters.status);
+        setStatusFilters(filters.status || []);
         setCurrentPage(1);
-        updateQueryParams(1);
     };
 
-    const getSortIcon = (sortOrder) => {
-        if (!sortOrder) return <span className={css['empty-icon']} />;
-        return sortOrder === 'ascend' ? (
-            <CaretUpOutlined className={css['icon']} />
-        ) : (
-            <CaretDownOutlined className={css['icon']} />
-        );
-    };
-    const handleSearch = (selectedKeys, confirm, dataIndex) => {
-        confirm();
-        setSearchText(selectedKeys[0]);
-        setSearchedColumn(dataIndex);
-    };
-    const handleReset = (clearFilters) => {
-        clearFilters();
-        setSearchText('');
-    };
     const getColumnSearchProps = (dataIndex) => ({
         filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
             <div className={css['dropdownMenu']}>
@@ -94,14 +74,19 @@ function FormatCategories() {
                     placeholder="Пошук"
                     value={selectedKeys[0]}
                     onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-                    onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
+                    onPressEnter={() => {
+                        confirm();
+                        setSearchText(selectedKeys[0]);
+                    }}
                     className={css['antInput']}
-                >
-                </Input>
+                />
                 <Space>
                     <Button
                         type="primary"
-                        onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
+                        onClick={() => {
+                            confirm();
+                            setSearchText(selectedKeys[0]);
+                        }}
                         icon={<SearchOutlined />}
                         size="small"
                         className={css['antBtn']}
@@ -109,7 +94,10 @@ function FormatCategories() {
                         Пошук
                     </Button>
                     <Button
-                        onClick={() => clearFilters && handleReset(clearFilters)}
+                        onClick={() => {
+                            clearFilters();
+                            setSearchText('');
+                        }}
                         size="small"
                         className={css['ant-btn']}
                     >
@@ -119,15 +107,13 @@ function FormatCategories() {
             </div>
         ),
         filterIcon: (filtered) => <SearchOutlined className={filtered ? css['filteredIcon'] : css['icon']} />,
-        onFilter: (value, record) =>
-            record[dataIndex]?.toString().toLowerCase().includes(value.toLowerCase()),
         render: (text) =>
-            searchedColumn === dataIndex ? (
+            dataIndex === 'name' && searchText ? (
                 <Highlighter
                     highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
                     searchWords={[searchText]}
                     autoEscape
-                    textToHighlight={text ? text.toString() : ''}
+                    textToHighlight={text || ''}
                 />
             ) : (
                 text
@@ -141,8 +127,6 @@ function FormatCategories() {
             key: 'name',
             sorter: true,
             sortOrder: sortInfo.field === 'name' ? sortInfo.order : null,
-            sortIcon: ({ sortOrder }) => getSortIcon(sortOrder),
-            render: (_, record) => `${record.name}`,
             ...getColumnSearchProps('name'),
         },
         {
@@ -153,7 +137,7 @@ function FormatCategories() {
                 <CategoriesActions
                     category={category}
                     onActionComplete={() => {
-                        mutate(url);
+                        mutate(generateUrl);
                     }}
                 />
             ),
@@ -178,6 +162,7 @@ function FormatCategories() {
                 onChange={handleTableChange}
                 pagination={false}
                 loading={loading}
+                rowKey={(record) => record.id}
                 tableLayout="fixed"
                 locale={{
                     triggerDesc: 'Сортувати в порядку спадання',
@@ -195,7 +180,7 @@ function FormatCategories() {
                 showTitle={false}
                 className={css['pagination']}
             />
-            <CategoryAdd/>
+            <CategoryAdd />
         </div>
     );
 }
