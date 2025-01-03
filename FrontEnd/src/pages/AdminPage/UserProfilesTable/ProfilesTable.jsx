@@ -188,13 +188,13 @@ function ProfilesTable() {
         const tags = [];
 
         if (type === 'Компанія') {
-            tags.push(<Tag color="#8fdde7" key="active">Компанія</Tag>);
+            tags.push(<Tag color="processing" key="active">Компанія</Tag>);
         }
         if (type === 'Стартап') {
-            tags.push(<Tag color="#b6e5d8" key="deleted">Стартап</Tag>);
+            tags.push(<Tag color="lime" key="deleted">Стартап</Tag>);
         }
         if (type === 'Компанія і стартап') {
-            tags.push(<Tag color="#167d7f" key="deleted">Компанія і стартап</Tag>);
+            tags.push(<Tag color="green" key="deleted">Компанія і стартап</Tag>);
         }
 
         return <>{tags}</>;
@@ -229,16 +229,16 @@ function ProfilesTable() {
     const tags = [];
     activities.forEach((activity) => {
         if (activity.name === 'Виробник') {
-            tags.push(<Tag color="#74F2BF" key={activity.name}>Виробник</Tag>);
+            tags.push(<Tag color="cyan" key={activity.name}>Виробник</Tag>);
         }
         if (activity.name === 'Імпортер') {
-            tags.push(<Tag color="#74D3F2" key={activity.name}>Імпортер</Tag>);
+            tags.push(<Tag color="cyan" key={activity.name}>Імпортер</Tag>);
         }
         if (activity.name === 'Роздрібна мережа') {
-            tags.push(<Tag color="#74F2E9" key={activity.name}>Роздрібна мережа</Tag>);
+            tags.push(<Tag color="cyan" key={activity.name}>Роздрібна мережа</Tag>);
         }
         if (activity.name === 'Інші послуги') {
-            tags.push(<Tag color="#8FF5A9" key={activity.name}>Інші послуги</Tag>);
+            tags.push(<Tag color="cyan" key={activity.name}>Інші послуги</Tag>);
         }
     });
     return <>{tags}</>;
