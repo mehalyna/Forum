@@ -1,7 +1,11 @@
+import { useState } from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import preventEnterSubmit from '../../../../utils/preventEnterSubmit';
-import css from './ImageField.module.css';
 import PendingStatus from '../../../../components/MiniComponents/PendingModerationIcon/PendingStatus';
+import MyModal from '../../UI/MyModal/MyModal';
+import WarnImageDeleteModal from '../WarnImageDeleteModal';
+import css from './ImageField.module.css';
 
 const ImageField = ({
   name,
@@ -14,6 +18,8 @@ const ImageField = ({
   profile,
   error,
 }) => {
+
+  const [modal, setModal] = useState(false);
 
   const backgroundImage = {
     background: `url(${value}) lightgray 50% / cover no-repeat`,
@@ -31,31 +37,41 @@ const ImageField = ({
     />
   );
 
-  const renderUpdateImageLabel = (text) => (
+  const renderUpdateImageLabel = () => (
     <label className={css['update-file__label']} htmlFor={name}>
       <img
         className={css['upload-file__icon']}
         src={`${process.env.REACT_APP_PUBLIC_URL}/profilepage/camera_icon.png`}
         alt="Change icon"
       />
-      <span className={css['update-file__text']}>{text}</span>
+      <span className={css['update-file__text']}>змінити</span>
     </label>
   );
 
-  const renderDeleteButton = (text) => (
-    <button
-      type="button"
-      className={css['upload-file__delete--wrapper']}
-      onKeyDown={preventEnterSubmit}
-      onClick={() => onDeleteImage(name)}
-    >
-      <img
-        className={css['upload-file__icon']}
-        src={`${process.env.REACT_APP_PUBLIC_URL}/profilepage/Vectordelete.png`}
-        alt="Delete icon"
-      />
-      <span className={css['upload-file__delete--text']}>{text}</span>
-    </button>
+  const renderDeleteButton = () => (
+    <div className={css['button__delete-container']}>
+      <button
+        type="button"
+        className={css['upload-file__delete--wrapper']}
+        onKeyDown={preventEnterSubmit}
+        onClick={() => setModal(true)}
+      >
+        <img
+          className={css['upload-file__icon']}
+          src={`${process.env.REACT_APP_PUBLIC_URL}/profilepage/Vectordelete.png`}
+          alt="Delete icon"
+        />
+        <span className={css['upload-file__delete--text']}>видалити</span>
+      </button>
+      <MyModal visible={modal}>
+        <WarnImageDeleteModal
+          onCancel={() => setModal(false)}
+          onDelete={() => {
+            onDeleteImage(name);
+            setModal(false);
+          }}/>
+      </MyModal>
+    </div>
   );
 
   return (
@@ -76,12 +92,15 @@ const ImageField = ({
         </label>
         {name === 'banner' && value && (
           <>
-            {renderUpdateImageLabel('змінити')}
-            {renderDeleteButton('видалити')}
+            {renderUpdateImageLabel()}
+            {renderDeleteButton()}
           </>
         )}
       </div>
-      <div className={css['upload-file__main']}>
+      <div
+        className={classNames(css['upload-file__main'], {
+        [css['upload-file__main--empty']]: !value,
+      })}>
         {renderInput()}
         {!value && (
           <label className={css['upload-file__label']} htmlFor={name}>
@@ -121,8 +140,8 @@ const ImageField = ({
             <PendingStatus profile={profile} elementType="logo" />
             <div className={css['upload-file__wrapper--logo']}>
               <div className={css['upload-file__logo']} style={backgroundImage} />
-              {renderUpdateImageLabel('змінити')}
-              {renderDeleteButton('видалити')}
+              {renderUpdateImageLabel()}
+              {renderDeleteButton()}
             </div>
           </div>
         )}
@@ -130,6 +149,18 @@ const ImageField = ({
       {error && <div className={css['error-message']}>{error}</div>}
     </div>
   );
+};
+
+ImageField.propTypes = {
+  name: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
+  accept: PropTypes.string.isRequired,
+  inputType: PropTypes.string.isRequired,
+  value: PropTypes.string,
+  updateHandler: PropTypes.func.isRequired,
+  onDeleteImage: PropTypes.func.isRequired,
+  profile: PropTypes.object.isRequired,
+  error: PropTypes.string,
 };
 
 export default ImageField;

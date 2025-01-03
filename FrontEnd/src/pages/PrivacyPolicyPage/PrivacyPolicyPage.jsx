@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import styles from './PrivacyPolicy.module.css';
 import privacyPolicyText from './text';
 import TEXT_CONTENT from './text';
-import renderContent from '../CookiesPolicyPage/RenderContent.jsx';
+import renderContent from '../TextRenderingComponents/RenderContent.jsx';
 import useScrollToTop from '../../hooks/useScrollToTop';
 
 
