@@ -2,9 +2,11 @@ import { useState } from 'react';
 import { Modal, Button, Input } from 'antd';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import ValidateCategory from './CategoryValidation';
 import axios from 'axios';
 import PropTypes from 'prop-types';
+
+import ValidateCategory from './CategoryValidation';
+
 import styles from './CategoriesActions.module.css';
 
 

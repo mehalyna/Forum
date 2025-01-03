@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const ValidateCategory = async (category, setError) => {
     const trimmedCategory = category.trim();
-    const regex = /^[А-ЯЇІЄҐ][а-яїієґА-ЯЇІЄҐ\s]*$/;
+    const regex = /^[А-ЯҐЄІЇ]{1}[а-яґєії]{1,}$/u;
 
     if (trimmedCategory.length < 2 || trimmedCategory.length > 50) {
         setError('Назва категорії має бути від 2 до 50 символів.');
@@ -27,8 +27,7 @@ const ValidateCategory = async (category, setError) => {
             setError('Така категорія вже існує.');
             return false;
         }
-    } catch (error) {
-        console.error('Error checking category existence:', error);
+    } catch {
         setError('Помилка перевірки. Спробуйте пізніше.');
         return false;
     }

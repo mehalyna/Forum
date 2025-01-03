@@ -5,8 +5,10 @@ import useSWR, { mutate } from 'swr';
 import { Table, Pagination, Input, Button, Space } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import Highlighter from 'react-highlight-words';
+
 import CategoriesActions from './CategoriesActions';
 import CategoryAdd from './CategoryAdd';
+
 import css from './CategoriesTable.module.scss';
 
 const DEFAULT_PAGE_SIZE = 10;
@@ -37,20 +39,14 @@ function FormatCategories() {
         const response = await axios.get(url);
         return response.data;
     };
+
     const { data, isValidating: loading } = useSWR(generateUrl, fetcher);
-
-    const categories = data?.results || [];
-    const totalItems = data?.total_items || 0;
-
-    const updateQueryParams = (newPage) => {
-        queryParams.set('page', newPage);
-        navigate(`?${queryParams.toString()}`);
-    };
 
     const handlePageChange = (page, size) => {
         setCurrentPage(page);
         setPageSize(size);
-        updateQueryParams(page);
+        queryParams.set('page', page);
+        navigate(`?${queryParams.toString()}`);
     };
 
     const handleTableChange = (pagination, filters, sorter) => {
@@ -146,19 +142,9 @@ function FormatCategories() {
 
     return (
         <div className={css['table-container']}>
-            <Pagination
-                showSizeChanger
-                current={currentPage}
-                pageSize={pageSize}
-                total={totalItems}
-                onChange={handlePageChange}
-                onShowSizeChange={handlePageChange}
-                showTitle={false}
-                className={css['pagination']}
-            />
             <Table
                 columns={columns}
-                dataSource={categories}
+                dataSource={data?.results || []}
                 onChange={handleTableChange}
                 pagination={false}
                 loading={loading}
@@ -174,7 +160,7 @@ function FormatCategories() {
                 showSizeChanger
                 current={currentPage}
                 pageSize={pageSize}
-                total={totalItems}
+                total={data?.total_items || 0}
                 onChange={handlePageChange}
                 onShowSizeChange={handlePageChange}
                 showTitle={false}
