@@ -38,12 +38,12 @@ const MENU = [
 
 const SUPERUSER_MENU = [
     {
-        id: 'am5',
+        id: 'am10',
         title: 'Пошта адміністратора',
         link: '/customadmin/email/'
     },
     {
-        id: 'am6',
+        id: 'am11',
         title: 'Реєстрація адміністратора',
         link: '/customadmin/admin-create/'
     }
