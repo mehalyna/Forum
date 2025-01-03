@@ -1,0 +1,33 @@
+.statistics-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding: 30px;
+}
+
+.description-item-label {
+  max-width: 150px;
+}
+
+.description-item-content {
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.error {
+  color: #f5222d;
+  background-color: #fff1f0; 
+  border: 1px solid #ffa39e;
+  padding: 10px;
+  border-radius: 4px;
+  margin-top: 10px;
+}
+
+.loader-container {
+  width: 200px;
+  height: 300px;
+}

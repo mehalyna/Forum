@@ -1,12 +1,16 @@
+from django.db.models.functions import Concat
+from django.db.models import F, Value, CharField
 from django.http import JsonResponse
 from django.views import View
 from django.db.models import Count, Q
 from django_filters.rest_framework import DjangoFilterBackend
+from drf_spectacular.types import OpenApiTypes
 
 from drf_spectacular.utils import (
     extend_schema,
     OpenApiExample,
     OpenApiResponse,
+    OpenApiParameter,
 )
 from rest_framework.generics import (
     ListAPIView,
@@ -37,11 +41,13 @@ from profiles.models import Profile, Category
 from .permissions import IsStaffUser, IsStaffUserOrReadOnly, IsSuperUser
 from .serializers import FeedbackSerializer
 from utils.administration.send_email_feedback import send_email_feedback
-
-from django_filters.rest_framework import DjangoFilterBackend
-from .filters import UsersFilter, CategoriesFilter
+from .filters import (
+    UsersFilter,
+    CategoriesFilter,
+    ProfilesFilter,
+    ProfileStatisticsFilter,
+)
 from utils.administration.send_email_notification import send_email_to_user
-from .filters import UsersFilter
 
 
 class UsersListView(ListAPIView):
@@ -49,8 +55,8 @@ class UsersListView(ListAPIView):
     View to list users with optional filtering and ordering.
 
     ### Query Parameters:
-    -  **id** / **surname** / **email** /  **is_active** /  **is_staff** / **is_superuser** / **is_deleted**
-    - **company_name** /  **registration_date**
+    -  **name** / **surname** /**email** /  **is_active** /  **is_staff** /
+    - **is_superuser** / **is_deleted**/ **company_name** /  **registration_date**
 
     ### Ordering:
     - Use the `ordering` parameter to sort the results.
@@ -88,16 +94,26 @@ class UserDetailView(RetrieveUpdateDestroyAPIView):
 
 class ProfilesListView(ListAPIView):
     """
-    List of profiles.
+    View to list profiles with optional filtering and ordering.
     """
 
     permission_classes = [IsStaffUser]
     pagination_class = ListPagination
     serializer_class = AdminCompanyListSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = ProfilesFilter
     queryset = (
         Profile.objects.select_related("person")
-        .prefetch_related("regions", "categories", "activities")
+        .prefetch_related("activities")
         .order_by("id")
+        .annotate(
+            representative=Concat(
+                F("person__name"),
+                Value(" "),
+                F("person__surname"),
+                output_field=CharField(),
+            )
+        )
     )
 
 
@@ -113,16 +129,35 @@ class ProfileDetailView(RetrieveUpdateDestroyAPIView):
     )
 
 
+@extend_schema(
+    parameters=[
+        OpenApiParameter("start_date", OpenApiTypes.DATE),
+        OpenApiParameter("end_date", OpenApiTypes.DATE),
+        OpenApiParameter("day", OpenApiTypes.DATE),
+        OpenApiParameter("month", OpenApiTypes.STR),
+        OpenApiParameter("year", OpenApiTypes.STR),
+    ]
+)
 class ProfileStatisticsView(RetrieveAPIView):
     """
     Count of companies
+
+    ### Query Parameters:
+    - **start_date**  (format: **YYYY-MM-DD**)
+    - **end_date** (format: **YYYY-MM-DD**)
+    - **day** (format: **YYYY-MM-DD**)
+    - **month** (format: **YYYY-MM**)
+    - **year** (format: **YYYY**)
     """
 
     permission_classes = [IsStaffUser]
     serializer_class = StatisticsSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = ProfileStatisticsFilter
 
     def get_object(self):
-        return Profile.objects.aggregate(
+        queryset = self.filter_queryset(Profile.objects.all())
+        return queryset.aggregate(
             companies_count=Count("pk"),
             investors_count=Count("pk", filter=Q(is_registered=True)),
             startups_count=Count("pk", filter=Q(is_startup=True)),

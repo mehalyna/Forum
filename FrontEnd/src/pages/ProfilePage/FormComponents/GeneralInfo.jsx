@@ -3,6 +3,7 @@ import { PropTypes } from 'prop-types';
 import { useState, useEffect } from 'react';
 import { useContext } from 'react';
 import { toast } from 'react-toastify';
+import { Tooltip } from 'antd';
 import useSWR from 'swr';
 import { useAuth, useProfile } from '../../../hooks';
 import checkFormIsDirty from '../../../utils/checkFormIsDirty';
@@ -22,7 +23,7 @@ import BanerModeration from './BanerModeration';
 import ProfileFormButton from '../UI/ProfileFormButton/ProfileFormButton';
 
 const LABELS = {
-  name: 'Назва компанії',
+  name: 'Коротка назва компанії',
   official_name: 'Юридична назва компанії',
   edrpou: 'ЄДРПОУ',
   rnokpp: 'РНОКПП',
@@ -38,6 +39,10 @@ const LABELS = {
 
 const ERRORS = {
   name: {
+    error: false,
+    message: '',
+  },
+  official_name: {
     error: false,
     message: '',
   },
@@ -109,21 +114,31 @@ const GeneralInfo = (props) => {
     let isValid = true;
     const newFormState = {};
     for (const key in profile) {
-      if (
-        key in ERRORS &&
-        (!profile[key] ||
-          (Array.isArray(profile[key]) && profile[key]?.length === 0))
-      ) {
-        isValid = false;
-        newFormState[key] = {
-          error: true,
-          message: 'Обов’язкове поле',
-        };
-      } else {
-        newFormState[key] = {
-          error: false,
-          message: '',
-        };
+      if (key in ERRORS) {
+        if (!profile[key] || (Array.isArray(profile[key]) && profile[key]?.length === 0)) {
+          isValid = false;
+          newFormState[key] = {
+            error: true,
+            message: 'Це поле є обов’язковим для заповнення.',
+          };
+        } else if (key === 'name' && profile[key].length < 2) {
+          isValid = false;
+          newFormState[key] = {
+            error: true,
+            message: 'Введіть від 2 до 45 символів.',
+          };
+        } else if (key === 'official_name' && profile[key].length < 2) {
+          isValid = false;
+          newFormState[key] = {
+            error: true,
+            message: 'Введіть від 2 до 200 символів.',
+          };
+        } else {
+          newFormState[key] = {
+            error: false,
+            message: '',
+          };
+        }
       }
     }
     setFormStateErr({ ...formStateErr, ...newFormState });
@@ -161,31 +176,54 @@ const GeneralInfo = (props) => {
 
   const onUpdateField = (e) => {
     const { value: fieldValue, name: fieldName } = e.target;
-    const symbolCount = fieldValue.replace(/[\s]/g, '')?.length;
-    setFormStateErr({
-      ...formStateErr,
+    const symbolCount = fieldValue.replace(/[\s]/g, '').length;
+    const fieldValidationConfig = {
+      name: {
+        minLength: 2,
+        maxLength: 45,
+        errorMessage: 'Введіть від 2 до 45 символів.',
+      },
+      official_name: {
+        minLength: 2,
+        maxLength: 200,
+        errorMessage: 'Введіть від 2 до 200 символів.',
+      },
+    };
+    setFormStateErr((prev) => ({
+      ...prev,
       [fieldName]: { error: false, message: '' },
-    });
-    if (fieldName === 'name' && symbolCount < 2) {
-      setFormStateErr({
-        ...formStateErr,
-        [fieldName]: { error: true, message: 'Введіть від 2 до 100 символів' },
-      });
-    }
-    if (fieldName === 'official_name' && symbolCount !== 0 && symbolCount < 2) {
-      setFormStateErr({
-        ...formStateErr,
-        [fieldName]: { error: true, message: 'Введіть від 2 до 200 символів' },
-      });
+    }));
+    if (fieldValidationConfig[fieldName]) {
+      const { minLength, errorMessage } = fieldValidationConfig[fieldName];
+      if (symbolCount !== 0 && symbolCount < minLength) {
+        setFormStateErr((prev) => ({
+          ...prev,
+          [fieldName]: {
+            error: true,
+            message: errorMessage,
+          },
+        }));
+      }
     }
     setProfile((prevState) => {
       return { ...prevState, [fieldName]: fieldValue };
     });
   };
 
+
   const onBlurHandler = (e) => {
     const { value: rawFieldValue, name: fieldName } = e.target;
     const fieldValue = rawFieldValue.replace(/\s{2,}/g, ' ').trim();
+    const requiredFields = ['official_name', 'name'];
+    if (requiredFields.includes(fieldName) && !fieldValue) {
+      setFormStateErr((prev) => ({
+        ...prev,
+        [fieldName]: {
+          error: true,
+          message: 'Це поле є обов’язковим для заповнення.',
+        },
+      }));
+    }
     setProfile((prevState) => {
       return { ...prevState, [fieldName]: fieldValue };
     });
@@ -402,7 +440,6 @@ const GeneralInfo = (props) => {
       }
     }
   };
-
   return (
     <div className={css['form__container']}>
       <h3 className={css['form__head']}>Загальна інформація</h3>
@@ -415,11 +452,19 @@ const GeneralInfo = (props) => {
           noValidate
         >
           <div className={css['fields']}>
-            <div className={css['fields-groups']}>
-              <HalfFormField
+          <div className={css['fields-groups']}>
+            <div className={css['field-with-tooltip']}>
+            <HalfFormField
                 name="name"
                 fieldPlaceholder="Введіть назву компанії"
-                label={LABELS.name}
+                label={
+                  <span className={css['field-label']}>
+                    {LABELS.name}
+                    <Tooltip title="Назва буде використовуватися на картці компанії">
+                      <span className={css['tooltip-icon']}>?</span>
+                    </Tooltip>
+                  </span>
+                }
                 updateHandler={onUpdateField}
                 onBlur={onBlurHandler}
                 error={
@@ -429,8 +474,9 @@ const GeneralInfo = (props) => {
                 }
                 requiredField={true}
                 value={profile.name}
-                maxLength={100}
+                maxLength={45}
               />
+            </div>
               <HalfFormField
                 name="official_name"
                 fieldPlaceholder="Введіть юридичну назву компанії"
@@ -443,6 +489,7 @@ const GeneralInfo = (props) => {
                     ? formStateErr['official_name']['message']
                     : null
                 }
+                requiredField={true}
                 maxLength={200}
               />
             </div>

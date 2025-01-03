@@ -4,8 +4,7 @@
     flex-direction: column;
     align-items: flex-start;
     border-radius: 6px;
-    background: var(--Conditional-pop-over, #FFF);
-    box-shadow: 0px 9px 28px 8px rgba(0, 0, 0, 0.05), 0px 6px 16px 0px rgba(0, 0, 0, 0.08), 0px 3px 6px -4px rgba(0, 0, 0, 0.12);
+    background: #FFFFFF;
 }
 
 .modal-header {
@@ -50,7 +49,7 @@
 
 .modal-content--text {
     align-self: stretch;
-    color: var(--Main-Black-90, #292E32);
+    color: var(--main-text-color);
     font-feature-settings: 'calt' off;
     font-family: var(--font-main);
     font-size: 14px;
@@ -62,7 +61,7 @@
 
 .modal-footer {
     display: flex;
-    padding: 10px 16px 10px 24px;
+    padding: 10px 24px;
     justify-content: flex-start;
     align-items: center;
     gap: 8px;
@@ -78,7 +77,6 @@
 
 .modal-footer--button {
     display: flex;
-    padding: 9px 16px;
     justify-content: center;
     align-items: center;
     gap: 4px;
@@ -94,34 +92,30 @@
     cursor: pointer;
 }
 
+.modal-footer--button-delete {
+    padding: 10px 16px;
+    background: var(--warn-button-color);
+    color: var(--warn-button-text-color);
+
+}
+
+.modal-footer--button-delete:hover {
+    background: var(--warn-button-hover-color);
+}
+
 .modal-footer--button-cancel {
+    padding: 9px 16px;
     border: 1px solid var(--light-button-border-color);
     background: var(--light-button-color);
     color: var(--light-button-text-color);
-
 }
 
 .modal-footer--button-cancel:hover {
     background: var(--light-button-hover-color);
 }
 
-.modal-footer--button-continue {
-    border: 1px solid var(--main-button-border-color);
-    background: var(--main-button-color, #000000);
-    color: var(--main-button-text-color);
-}
-
-.modal-footer--button-continue:hover {
-    background: var(--main-button-hover-color);
-    border: 1px solid var(--main-button-hover-border-color);
-}
-
 @media only screen and (min-width: 768px) {
     .modal {
         width: 572px;
-    }
-
-    .modal-content {
-        height: 53px;
     }
 }

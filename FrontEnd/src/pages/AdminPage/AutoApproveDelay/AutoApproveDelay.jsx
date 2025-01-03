@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { Tooltip } from 'antd';
 import useSWR from 'swr';
@@ -12,15 +12,10 @@ const AutoApproveDelay = () => {
         }
     });
     const url = `${process.env.REACT_APP_BASE_API_URL}/api/admin/automoderation/`;
-    const { data, mutate } = useSWR(url, fetcher);
     const [delay, setDelay] = useState('');
     const [error, setError] = useState(null);
-
-    useEffect(() => {
-        if (data && data.auto_moderation_hours) {
-            setDelay(data.auto_moderation_hours);
-        }
-    }, [data]);
+    const { data, mutate } = useSWR(url, fetcher,
+        { onSuccess: (data) => setDelay(data.auto_moderation_hours) });
 
     const handleInputChange = (e) => {
         const value = Number(e.target.value);
@@ -31,6 +26,11 @@ const AutoApproveDelay = () => {
         }
     };
 
+    const handleCancel = () => {
+        setDelay(data?.auto_moderation_hours);
+        setError(null);
+    };
+
     const handleSubmit = () => {
         !error && axios.put(`${process.env.REACT_APP_BASE_API_URL}/api/admin/automoderation/`, { 'auto_moderation_hours': delay })
             .then(() => { toast.success('Зміни успішно застосовано.'); mutate({ ...data, auto_moderation_hours: delay }); })
@@ -38,15 +38,21 @@ const AutoApproveDelay = () => {
     };
     return (
         <div className={css['autoapprove-section']}>
+            <h3 className={css['autoapprove-section__head']}>Налаштуйте час, після якого зміни будуть автоматично затверджені у разі відсутності дій з боку модератора.</h3>
+            <label htmlFor="autoapprove" className={css['autoapprove_label']}>Час до автоматичного затвердження <br />
+            (години)</label>
             <Tooltip
                 title={'Введіть значення 1-48'}
                 placement="top"
                 pointAtCenter={true}>
-                <input className={css['autoapprove-input']} type="number" step={1} onChange={handleInputChange} value={delay} />
+                <input id="autoapprove" className={css['autoapprove-input']} type="number" step={1} onChange={handleInputChange} value={delay} />
             </Tooltip>
             {error &&
                 <p className={css['error-message']}>{error}</p>}
-            <button className={css['save-button']} onClick={handleSubmit}>Змінити</button>
+            <div className={css['buttons-group']}>
+                <button className={css['button']} onClick={handleSubmit}>Змінити</button>
+                <button className={`${css['button']} ${css['cancel-button']}`} onClick={handleCancel}>Скасувати</button>
+            </div>
         </div>
     );
 

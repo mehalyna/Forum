@@ -24,11 +24,17 @@ const MENU = [
         link: '/customadmin/automoderation/'
     },
     {
-        id: 'am7',
+        id: 'am5',
         title: 'Керування категоріями діяльності',
         link: '/customadmin/categories/'
     },
+    {
+        id: 'am6',
+        title: 'Статистика компаній',
+        link: '/customadmin/statistics/'
+    },
 ];
+
 
 const SUPERUSER_MENU = [
     {

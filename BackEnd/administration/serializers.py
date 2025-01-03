@@ -6,7 +6,12 @@ from authentication.models import CustomUser
 from profiles.models import (
     Profile,
     Region,
+    Activity,
     Category,
+)
+from utils.administration.profiles.profiles_functions import (
+    format_company_type,
+    format_business_entity,
 )
 from utils.administration.create_password import generate_password
 from utils.administration.send_email import send_email_about_admin_registration
@@ -21,6 +26,15 @@ class AdminRegionSerializer(serializers.ModelSerializer):
         fields = (
             "id",
             "name_ukr",
+        )
+
+
+class ActivitiesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Activity
+        fields = (
+            "id",
+            "name",
         )
 
 
@@ -82,6 +96,8 @@ class AdminUserListSerializer(serializers.ModelSerializer):
             "is_staff": obj.is_staff,
             "is_superuser": obj.is_superuser,
             "is_deleted": obj.email.startswith("is_deleted_"),
+            "is_inactive": not obj.is_active
+            and not obj.email.startswith("is_deleted_"),
         }
         return data
 
@@ -107,24 +123,34 @@ class AdminUserDetailSerializer(serializers.ModelSerializer):
 
 class AdminCompanyListSerializer(serializers.ModelSerializer):
     person = AdminUserDetailSerializer(read_only=True)
-    regions = AdminRegionSerializer(many=True, read_only=True)
+    company_type = serializers.SerializerMethodField(read_only=True)
+    activities = ActivitiesSerializer(many=True, read_only=True)
+    representative = serializers.CharField(read_only=True)
+    business_entity = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Profile
         fields = (
             "id",
             "name",
-            "is_registered",
-            "is_startup",
             "person",
-            "person_position",
-            "regions",
-            "official_name",
+            "business_entity",
             "phone",
-            "edrpou",
             "address",
+            "status",
+            "updated_at",
+            "created_at",
             "is_deleted",
+            "company_type",
+            "activities",
+            "representative",
         )
+
+    def get_company_type(self, obj) -> str:
+        return format_company_type(obj)
+
+    def get_business_entity(self, obj) -> str:
+        return format_business_entity(obj)
 
 
 class AdminCompanyDetailSerializer(serializers.ModelSerializer):

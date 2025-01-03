@@ -3,6 +3,9 @@ import { useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import useSWR from 'swr';
 import useWindowWidth from '../../hooks/useWindowWidth';
+import { definePageSize } from '../../utils/definePageSize';
+import { PAGE_SIZE } from '../../constants/constants';
+import { SCREEN_WIDTH } from '../../constants/constants';
 
 import ErrorPage404 from '../ErrorPages/ErrorPage404';
 import Loader from '../../components/Loader/Loader';
@@ -34,23 +37,15 @@ export default function ProfileListPage({ isAuthorized, isSaved }) {
   const [profiles, setProfiles] = useState([]);
   const [filters, setFilters] = useState([]);
   const [currentPage, setCurrentPage] = useState(pageNumber);
-  const [pageSize, setPageSize] = useState(16);
+  const [pageSize, setPageSize] = useState(PAGE_SIZE.mobile);
   const [activeTab, setActiveTab] = useState(searchParams.get('companyType') || 'all');
   const [activeBtn, setActiveBtn] = useState(searchParams.get('activity') || 'all');
 
   const windowWidth = useWindowWidth();
-  const linkText = windowWidth >= 768 ? 'Усі підприємства' : 'Усі';
+  const linkText = windowWidth >= SCREEN_WIDTH.tablet ? 'Усі підприємства' : 'Усі';
 
   useEffect(() => {
-    if (windowWidth < 768) {
-      setPageSize(4);
-    } else if (windowWidth >= 768 && windowWidth < 1200) {
-      setPageSize(16);
-    } else if (windowWidth >= 1200 && windowWidth < 1512) {
-      setPageSize(12);
-    } else if (windowWidth >= 1512) {
-      setPageSize(16);
-    }
+    definePageSize(windowWidth, setPageSize);
   }, [windowWidth]);
 
   const [url, setUrl] = useState(
@@ -126,6 +121,11 @@ export default function ProfileListPage({ isAuthorized, isSaved }) {
     }
   }, [fetchedProfiles, pageSize, currentPage, isSaved]);
 
+  useEffect(() => {
+    setActiveTab(searchParams.get('companyType') || 'all');
+    setActiveBtn(searchParams.get('activity') || 'all');
+  }, [searchParams]);
+
   const changeCompanies = (companyId, saved) => {
     setProfiles((prevProfiles) =>
         prevProfiles.map((profile) =>
@@ -160,14 +160,6 @@ export default function ProfileListPage({ isAuthorized, isSaved }) {
     updateQueryParams(page);
   };
 
-  const handleActiveTab = (activeTab) => {
-    setActiveTab(activeTab);
-  };
-
-  const handleActiveBtn = (activeBtn) => {
-    setActiveBtn(activeBtn);
-  };
-
   return (
     <div className={css.page}>
       {error && error.response.status !==401 ? (
@@ -188,7 +180,7 @@ export default function ProfileListPage({ isAuthorized, isSaved }) {
                           className={activeTab === item.key ?
                             css['company-list__tabs--element--active'] :
                             css['company-list__tabs--element']}
-                          onClick={() => (handleFilters(item.value, activity), handleActiveTab(item.key))}
+                          onClick={() => (handleFilters(item.value, activity))}
                         >
                           {item.title === 'Усі підприємства' ? linkText : item.title}
                         </span>
@@ -208,7 +200,7 @@ export default function ProfileListPage({ isAuthorized, isSaved }) {
                     className={activeBtn === item.key ?
                       css['company-list__btns--element--active'] :
                       css['company-list__btns--element']}
-                    onClick={() => (handleFilters(companyType, item.value), handleActiveBtn(item.key))}
+                    onClick={() => (handleFilters(companyType, item.value))}
                   >
                     {item.title}
                   </button>

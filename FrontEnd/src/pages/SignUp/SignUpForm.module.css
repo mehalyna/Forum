@@ -40,14 +40,15 @@
 
 .sign-up__button,
 .sign-up__button__disabled {
-  padding: 9px 16px;
+  display: flex;
+  padding: 10px 16px;
   justify-content: center;
   align-items: center;
   gap: 4px;
   border-radius: 4px;
-  background: #000000;
+  background: var(--main-button-color);
 
-  color: var(--light-button-text-color);
+  color: var(--main-button-text-color);
   text-align: center;
   font-feature-settings: "calt" off;
 
@@ -60,10 +61,13 @@
   cursor: pointer;
 }
 
+.sign-up__button:hover {
+  background: var(--main-button-hover-color);
+}
+
 .sign-up__button__disabled {
-  border: 1px solid #BFC6CF;
-  background: #EEEFF1;
-  color: #A3AAB0;
+  background: var(--main-button-disabled-color);
+  color: var(--main-button-disabled-text-color);
 }
 
 @media only screen and (min-width: 768px) {
