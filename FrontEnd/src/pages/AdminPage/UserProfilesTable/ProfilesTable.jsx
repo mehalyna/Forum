@@ -188,13 +188,13 @@ function ProfilesTable() {
         const tags = [];
 
         if (type === 'Компанія') {
-            tags.push(<Tag color="blue" key="active">Компанія</Tag>);
+            tags.push(<Tag color="#8fdde7" key="active">Компанія</Tag>);
         }
         if (type === 'Стартап') {
-            tags.push(<Tag color="yellow" key="deleted">Стартап</Tag>);
+            tags.push(<Tag color="#b6e5d8" key="deleted">Стартап</Tag>);
         }
         if (type === 'Компанія і стартап') {
-            tags.push(<Tag color="orange" key="deleted">Компанія і стартап</Tag>);
+            tags.push(<Tag color="#167d7f" key="deleted">Компанія і стартап</Tag>);
         }
 
         return <>{tags}</>;
@@ -204,22 +204,22 @@ function ProfilesTable() {
         const tags = [];
 
         if (status === 'undefined') {
-            tags.push(<Tag color="geekblue" key="active">Не визначена</Tag>);
+            tags.push(<Tag color="#a0e7e5" key="active">Не визначена</Tag>);
         }
         if (status === 'pending') {
-            tags.push(<Tag color="yellow" key="deleted">На модерації</Tag>);
+            tags.push(<Tag color="#fbe7c6" key="deleted">На модерації</Tag>);
         }
         if (status === 'blocked') {
-            tags.push(<Tag color="red-inverse" key="deleted">Заблокована</Tag>);
+            tags.push(<Tag color="#ffaebc" key="deleted">Заблокована</Tag>);
         }
         if (status === 'active') {
-            tags.push(<Tag color="green" key="deleted">Активна</Tag>);
+            tags.push(<Tag color="#b4f8c8" key="deleted">Активна</Tag>);
         }
         if (status === 'approved') {
-            tags.push(<Tag color="green-inverse" key="deleted">Підтверджена</Tag>);
+            tags.push(<Tag color="#7cf3a0" key="deleted">Підтверджена</Tag>);
         }
         if (status === 'auto_approved') {
-            tags.push(<Tag color="lime" key="deleted">Підтверджена</Tag>);
+            tags.push(<Tag color="#7cf3a0" key="deleted">Підтверджена</Tag>);
         }
 
         return <>{tags}</>;
@@ -229,16 +229,16 @@ function ProfilesTable() {
     const tags = [];
     activities.forEach((activity) => {
         if (activity.name === 'Виробник') {
-            tags.push(<Tag color="gold" key={activity.name}>Виробник</Tag>);
+            tags.push(<Tag color="#74F2BF" key={activity.name}>Виробник</Tag>);
         }
         if (activity.name === 'Імпортер') {
-            tags.push(<Tag color="green" key={activity.name}>Імпортер</Tag>);
+            tags.push(<Tag color="#74D3F2" key={activity.name}>Імпортер</Tag>);
         }
         if (activity.name === 'Роздрібна мережа') {
-            tags.push(<Tag color="cyan" key={activity.name}>Роздрібна мережа</Tag>);
+            tags.push(<Tag color="#74F2E9" key={activity.name}>Роздрібна мережа</Tag>);
         }
         if (activity.name === 'Інші послуги') {
-            tags.push(<Tag color="purple" key={activity.name}>Інші послуги</Tag>);
+            tags.push(<Tag color="#8FF5A9" key={activity.name}>Інші послуги</Tag>);
         }
     });
     return <>{tags}</>;
