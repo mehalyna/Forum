@@ -8,10 +8,10 @@ import Highlighter from 'react-highlight-words';
 
 import CategoriesActions from './CategoriesActions';
 import CategoryAdd from './CategoryAdd';
+import { DEFAULT_PAGE_SIZE } from '../constants';
 
 import css from './CategoriesTable.module.scss';
 
-const DEFAULT_PAGE_SIZE = 10;
 
 function FormatCategories() {
     const navigate = useNavigate();
