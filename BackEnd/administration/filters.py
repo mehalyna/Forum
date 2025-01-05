@@ -1,7 +1,7 @@
 from django.db.models import Q
+from rest_framework.exceptions import ValidationError
 from django_filters import filters
 from django_filters.rest_framework import FilterSet
-from datetime import datetime, timedelta
 
 
 class UsersFilter(FilterSet):
@@ -25,8 +25,8 @@ class UsersFilter(FilterSet):
     company_name = filters.CharFilter(
         field_name="profile__name", lookup_expr="icontains"
     )
-    registration_date = filters.CharFilter(
-        field_name="profile__created_at", lookup_expr="icontains"
+    registration_date = filters.DateFilter(
+        field_name="profile__created_at",
     )
 
     def is_inactive_filter(self, queryset, name, value):
@@ -56,6 +56,40 @@ class UsersFilter(FilterSet):
     )
 
 
+class ProfilesFilter(FilterSet):
+    """
+    Filters
+    /?name= , /?representative= , /?official_name= , /?phone= , /?address= ,
+    /?created_at= , /?updated_at= ,
+    Ordering sample:
+    /?ordering=id asc or /?ordering=-id desc
+    """
+
+    name = filters.CharFilter(lookup_expr="icontains")
+    representative = filters.CharFilter(
+        field_name="representative", lookup_expr="icontains"
+    )
+    official_name = filters.CharFilter(lookup_expr="icontains")
+    phone = filters.CharFilter(lookup_expr="icontains")
+    address = filters.CharFilter(lookup_expr="icontains")
+    created_at = filters.DateFromToRangeFilter()
+    updated_at = filters.DateFromToRangeFilter()
+
+    ordering = filters.OrderingFilter(
+        fields=(
+            ("name", "name"),
+            ("is_registered", "is_registered"),
+            ("representative", "representative"),
+            ("official_name", "official_name"),
+            ("phone", "phone"),
+            ("address", "address"),
+            ("status", "status"),
+            ("created_at", "created_at"),
+            ("updated_at", "updated_at"),
+        )
+    )
+
+
 class CategoriesFilter(FilterSet):
     id = filters.NumberFilter(lookup_expr="contains")
     name = filters.CharFilter(lookup_expr="icontains")
@@ -70,29 +104,30 @@ class CategoriesFilter(FilterSet):
 class ProfileStatisticsFilter(FilterSet):
     """
     Filters
-    /?period=
+    /?start_date= /?end_date= /?day= /?month= /?year=
     """
 
-    period = filters.CharFilter(method="period_filter")
+    start_date = filters.DateFilter(field_name="created_at", lookup_expr="gte")
+    end_date = filters.DateFilter(field_name="created_at", lookup_expr="lte")
+    day = filters.DateFilter(field_name="created_at")
+    month = filters.CharFilter(method="month_filter")
+    year = filters.NumberFilter(method="year_filter")
 
-    def period_filter(self, queryset, name, value):
-        if value == "month":
-            return queryset.filter(
-                created_at__gte=datetime.now().replace(day=20),
-                created_at__lte=datetime.now(),
+    def month_filter(self, queryset, name, value):
+        try:
+            year, month = [int(i) for i in value.split("-")]
+            if month < 1 or month > 12:
+                raise ValueError
+        except (ValueError, IndexError):
+            raise ValidationError(
+                {name: [f"Enter a valid {name}. Use YYYY-MM"]}
             )
-        elif value == "year":
-            return queryset.filter(
-                created_at__gte=datetime.now().replace(month=1, day=1),
-                created_at__lte=datetime.now(),
-            )
-        elif value == "week":
-            return queryset.filter(
-                created_at__gte=datetime.now() - timedelta(days=7),
-                created_at__lte=datetime.now(),
-            )
-        elif value == "day":
-            return queryset.filter(
-                created_at__gte=datetime.now() - timedelta(hours=24),
-                created_at__lte=datetime.now(),
-            )
+        return queryset.filter(created_at__month=month, created_at__year=year)
+
+    def year_filter(self, queryset, name, value):
+        try:
+            if value < 1:
+                raise ValueError
+        except ValueError:
+            raise ValidationError({name: [f"Enter a valid {name}. Use YYYY"]})
+        return queryset.filter(created_at__year=value)

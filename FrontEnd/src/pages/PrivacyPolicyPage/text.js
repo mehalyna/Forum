@@ -108,7 +108,8 @@ const privacyPolicyText = {
             id: 17,
             type: 'heading',
             level: 4,
-            text: '4. Використання файлів "cookies"'
+            text: '4. Використання файлів "cookies"',
+            sectionId: 'cookies-usage',
         },
         {
             id: 18,
