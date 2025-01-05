@@ -28,10 +28,13 @@ function ProfilesTable() {
         const updatedPageNumber = Number(queryParams.get('page')) || 1;
         setCurrentPage(updatedPageNumber);
     }, [location.search]);
-
-    const ordering = sortInfo.field
-        ? `&ordering=${sortInfo.order === 'ascend' ? sortInfo.field : '-' + sortInfo.field}`
-        : '';
+    function getOrdering(sortInfo) {
+        if (sortInfo.field) {
+            return `&ordering=${sortInfo.order === 'ascend' ? sortInfo.field : '-' + sortInfo.field}`;
+        }
+        return '';
+    }
+    const ordering = getOrdering(sortInfo);
     const filtering = statusFilters ? statusFilters.map((filter) => `&${filter}=true`).join('') : '';
     const query = new URLSearchParams(searchParams).toString();
     const url = `${process.env.REACT_APP_BASE_API_URL}/api/admin/profiles?page=${currentPage}&page_size=${pageSize}${ordering}${filtering}&${query}`;
