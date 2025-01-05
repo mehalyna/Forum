@@ -3,6 +3,26 @@ import useSWR from 'swr';
 import { Descriptions } from 'antd';
 import Loader from '../../../components/Loader/Loader';
 import css from './ProfilesStatistics.module.css';
+import React from 'react';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+import { Bar } from 'react-chartjs-2';
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 async function fetcher(url) {
   const response = await axios.get(url);
@@ -28,7 +48,7 @@ function ProfilesStatistics() {
         },
         {
           key: '3',
-          label: 'Кількість Cтратапів',
+          label: 'Кількість Cтартапів',
           children: statistics.startups_count,
         },
         {
@@ -39,6 +59,37 @@ function ProfilesStatistics() {
       ]
     : [];
 
+  const chartData = statistics
+  ?{
+      labels: ['Виробники', 'Імпортери', 'Роздрібніки', 'Інші'],
+      datasets: [
+          {
+              label: 'Типи компаній',
+              data: [
+                  statistics.manufacturers_count,
+                  statistics.importers_count,
+                  statistics.retail_networks_count,
+                  statistics.others_count
+              ],
+              backgroundColor: [
+                  '#87f3b0',
+              ]
+          },
+      ]
+  }: { labels: [], datasets: [] };
+  const options = {
+      responsive: true,
+      plugins: {
+        legend: {
+          position: 'top',
+        },
+        title: {
+          display: true,
+          text: 'Статистика по типам компаній',
+        },
+      },
+       maintainAspectRatio: false,
+    };
   return isLoading ? (
     <div className={css['loader-container']}>
       <Loader />
@@ -46,25 +97,28 @@ function ProfilesStatistics() {
   ) : error ? (
     <div className={css['error']}>Не вдалося отримати статистику компаній</div>
   ) : (
-    <div className={css['statistics-container']}>
-      <Descriptions
-        title="Статистика компаній"
-        column={1}
-        bordered
-        size="small"
-        items={items.map((item) => ({
-          ...item,
-          label: (
-            <span className={css['description-item-label']}>{item.label}</span>
-          ),
-          children: (
-            <span className={css['description-item-content']}>
+      <div className={css['statistics-container']}>
+          <Descriptions
+              title="Статистика компаній"
+              column={1}
+              bordered
+              size="small"
+              items={items.map((item) => ({
+                  ...item,
+                  label: (
+                      <span className={css['description-item-label']}>{item.label}</span>
+                  ),
+                  children: (
+                      <span className={css['description-item-content']}>
               {item.children}
             </span>
-          ),
-        }))}
-      />
-    </div>
+                  ),
+              }))}
+          />
+          <div className={css['chart-container']}>
+              <Bar options={options} data={chartData}/>
+          </div>
+      </div>
   );
 }
 

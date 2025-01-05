@@ -6,6 +6,14 @@
   height: 100%;
   padding: 30px;
 }
+.chart-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 600px;
+}
 
 .description-item-label {
   max-width: 150px;
