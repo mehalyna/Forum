@@ -1,12 +1,20 @@
-.menu-section {
+.admin-layout__wrapper {
     display: flex;
-    min-width: var(--menu-size__admin-panel);
+    justify-content: center;
+    background: var(--background__admin-panel);
+    min-height: calc(100vh - 75px);
+
+}
+
+.admin-layout {
+    display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    padding: 30px 104px;
+    width: 1304px;
     gap: 24px;
 }
 
-.menu-section-element {
+.admin-layout__title {
     color: var(--font-color__admin-panel);
     font-feature-settings: 'calt' off;
     text-decoration: none;
@@ -18,10 +26,7 @@
     letter-spacing: -0.16px;
 }
 
-.menu-section-element__active {
-    font-weight: 600;
-}
-
-.menu-section-element:hover {
-    opacity: 80%;
+.admin-layout__content {
+    display: flex;
+    gap: 64px;
 }
