@@ -182,4 +182,8 @@
   --tooltip-bg-color: #f0f0f0;
   --tooltip-border-radius: 50%;
   --tooltip-font-color: #292E32; 
+
+  /* Loader */
+  --loader-primary-color: #B4D27A;
+  --loader-secondary-color: #E0E0E0;
 }
