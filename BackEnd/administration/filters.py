@@ -131,3 +131,7 @@ class ProfileStatisticsFilter(FilterSet):
         except ValueError:
             raise ValidationError({name: [f"Enter a valid {name}. Use YYYY"]})
         return queryset.filter(created_at__year=value)
+
+
+class MonthlyProfileFilter(FilterSet):
+    year = filters.NumberFilter()
