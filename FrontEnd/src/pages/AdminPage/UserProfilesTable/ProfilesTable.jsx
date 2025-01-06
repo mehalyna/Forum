@@ -1,13 +1,12 @@
 import {useEffect, useState} from 'react';
 import {useLocation, useNavigate} from 'react-router-dom';
-import css from './ProfilesTable.module.scss';
 import axios from 'axios';
 import useSWR, {mutate} from 'swr';
-import {Button, Input, Pagination, Space, Table, Tag} from 'antd';
+import {Button, Input, Pagination, Space, Table, Tag, DatePicker} from 'antd';
 import {CaretDownOutlined, CaretUpOutlined, SearchOutlined} from '@ant-design/icons';
 import Highlighter from 'react-highlight-words';
 import UserActionsProfiles from './UserActionsProfiles';
-import { DatePicker } from 'antd';
+import css from './ProfilesTable.module.scss';
 
 
 const DEFAULT_PAGE_SIZE = 10;
