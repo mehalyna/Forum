@@ -2,6 +2,7 @@ import React from 'react';
 import { ToastContainer } from 'react-toastify';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { ConfigProvider } from 'antd';
+import ukUA from 'antd/es/locale/uk_UA';
 
 import { useAuth } from '../hooks';
 
@@ -59,13 +60,11 @@ function AdminRouter() {
         <ConfigProvider
             theme={customAdminTheme}
             locale={{
+                ...ukUA,
                 Table: {
                     filterReset: 'Скинути',
                     filterConfirm: 'Застосувати',
                 },
-                Pagination: {
-                    items_per_page: '/ сторінка'
-                }
             }}
         >
             <BurgerMenuProvider>
