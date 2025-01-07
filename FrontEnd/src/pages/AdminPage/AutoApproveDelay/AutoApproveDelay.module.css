@@ -1,19 +1,17 @@
 .autoapprove-section {
     display: flex;
     flex-direction: column;
-    padding: 20px;
     gap: 10px;
 }
 
 .autoapprove-section__head {
     font-size: 14px;
     font-weight: normal;
-    margin: 20px 0;
 }
 
 .autoapprove_label {
     font-size: 14px;
-    margin:  20px 0;
+    margin: 20px 0;
 }
 
 .autoapprove_label::before {
@@ -24,16 +22,11 @@
 
 .autoapprove-input {
     width: 269px;
-    height: 32px;
     box-sizing: border-box;
-    padding-left: 4px;
+    padding: 3px 6px;
     font-size: 16px;
     border: 1px solid var(--border-input__admin-panel);
     border-radius: 2px;
-}
-
-.autoapprove-input:focus {
-    outline: none;
 }
 
 .buttons-group {
@@ -67,8 +60,8 @@
 }
 
 .cancel-button {
-   background-color: white;
-   border: 1px solid #B4D27A;
+    background-color: white;
+    border: 1px solid #B4D27A;
 }
 
 .error-message {

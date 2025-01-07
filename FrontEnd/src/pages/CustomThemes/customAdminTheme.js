@@ -28,6 +28,10 @@ const customAdminTheme = {
         dotWidth: 32,
         dotHeight: 6,
         lineHeight: 1,
+      },
+      InputNumber: {
+        activeBorderColor: '#1f9a7c',
+        activeShadow: 'none',
       }
     },
     token: {

@@ -11,7 +11,7 @@ const AdminLayout = ({ children }) => {
             </NavLink>
             <div className={css['admin-layout__content']}>
                 <Menu />
-                <div>{children}</div>
+                <div className={css['admin-layout__children-section']}>{children}</div>
             </div>
         </div>
       </div>
