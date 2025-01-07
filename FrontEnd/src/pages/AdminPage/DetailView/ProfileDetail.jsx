@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router';
 import DeleteModal from './DeleteModal';
 import css from './ProfileDetail.module.css';
 import axios from 'axios';
 import useSWR from 'swr';
+import {Descriptions, Input, Switch} from 'antd';
 
 function ProfileDetail() {
     const [deleteModalActive, setDeleteModalActive] = useState(false);
@@ -11,24 +11,93 @@ function ProfileDetail() {
     const [updateSuccess, setUpdateSuccess] = useState(false);
     const profileId = usePathCompanyId();
     const url = `${process.env.REACT_APP_BASE_API_URL}/api/admin/profiles/${profileId}/`;
-    const navigateToProfiles = useNavigate();
-    const companyInfo = [
-        { label: 'Ім\'я', key: 'name' },
-        { label: 'person_position', key: 'person_position' },
-        { label: 'official_name', key: 'official_name' },
-        { label: 'region', key: 'regions' },
-        { label: 'phone', key: 'phone' },
-        { label: 'edrpou', key: 'edrpou' },
-        { label: 'address', key: 'address' },
-    ];
+    const navigateToProfiles = (path) => {
+        window.location.href = path;
+    };
+    const items =[
+        {
+            key: '1',
+            label: 'Ім\'я',
+            children: (
+                <Input
+                    value={profile.name || ''}
+                    onChange={(e) => setProfile({ ...profile, name: e.target.value })}
+                />
+            )
+        },
+        {
+            key: '2',
+            label: 'Позиція:',
+            children: profile.person_position
+        },
+        {
+            key: '3',
+            label: 'Офіційна назва',
+            children: profile.official_name
+        },
+        {
+            key: '4',
+            label: 'Регіон',
+            children: (Array.isArray(profile.regions)
+                ? profile.regions.map(region => region.name_ukr).join(', ') : null)
+        },
+        {
+            key: '5',
+            label: 'Телефон',
+            children: profile.phone
+        },
+        {
+            key: '6',
+            label: 'ЕРДПО',
+            children: profile.edrpou
+        },
+        {
+            key: '7',
+            label: 'Адреса',
+            children: profile.address,
+        },
+        {
+            key: '8',
+            label: 'Видаленний',
+            children: (
+                <Switch
+                    checked={profile.is_deleted || false}
+                    onChange={(checked) => setProfile({ ...profile, is_deleted: checked })}
+                />
+            ),
+            span: 2
+        },
+        {
+            key: '9',
+            label: 'Видалити профіль',
+            children: (
+                <button className={css['button__delete']} onClick={() => setDeleteModalActive(true)}>Видалити</button>
+            ),
+            span: 2
 
+        },
+        {
+            key: '10',
+            label: 'Логотип',
+            children: (
+                <img src={profile.logo_image} alt="logo" width={150} height={150}/>
+            ),
+            span: 2
+        },
+        {
+            key: '11',
+            label: 'Банер',
+            children: (
+                <img src={profile.banner_image} alt="banner" width={200} height={150}/>
+            ),
+            span: 2
+        }
+    ];
     const fetcher = url => axios.get(url).then(res => res.data);
     const { data, error, isValidating: loading } = useSWR(url, fetcher);
-
     if (data && !Object.keys(profile).length) {
         setProfile(data);
     }
-
     const handleSaveChanges = async () => {
         const response = await axios.put(
             url,
@@ -66,41 +135,8 @@ function ProfileDetail() {
                     {error && <li className={css['log']}>Виникла помилка: {error}</li>}
                     {updateSuccess && <li className={css['log']}>Профіль успішно оновлений!</li>}
                 </ul>
-                <ul className={css['profile-details-section_info']}>
-                    {companyInfo.map((info, index) => (
-                        <li key={index}>
-                            {info.label}: {
-                                Array.isArray(profile[info.key]) ?
-                                    profile[info.key].map(region => (
-                                        <p key={region.id}> {region.name_ukr} </p>
-                                    )) :
-                                    profile[info.key]
-                            }
-                        </li>
-                    ))}
-                    <li>Видалений: {profile.is_deleted ? 'Так' : 'Ні'}</li>
-                </ul>
-                <div className={css['form-section']}>
-                    <label className={css['form-info__text']}>Назва компанії</label>
-                    <input
-                        value={profile.name || ''}
-                        onChange={(e) => setProfile({ ...profile, name: e.target.value })}
-                        type="text"
-                        className={css['form-input']}
-                    />
-                    <label className={css['form-info__text_checkbox']}>Видалений</label>
-                    <input
-                        type="checkbox"
-                        checked={profile.is_deleted || false}
-                        onChange={(e) => setProfile({ ...profile, is_deleted: e.target.checked })}
-                        className={css['form-input_checkbox']}
-                    />
-                </div>
+                <Descriptions title="User Info" bordered items={items} column={2}/>
                 <button className={css['save-button']} onClick={handleSaveChanges}>Зберегти зміни</button>
-            </div>
-            <div className={css['delete-section']}>
-                <div className={css['form-info__text']}>Видалити Профіль</div>
-                <button className={css['button__delete']} onClick={() => setDeleteModalActive(true)}>Видалити</button>
             </div>
         </div>
     );
