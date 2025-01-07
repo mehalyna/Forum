@@ -38,7 +38,7 @@ const ModerationEmail = () => {
     return (
         <div className={css['moderation_email-section']}>
             <Tooltip
-                title={'Введіть Email'}
+                title={'Введіть електронну пошту адміністратора'}
                 placement="top"
                 pointAtCenter={true}>
                 <Input
@@ -46,7 +46,7 @@ const ModerationEmail = () => {
                     type="email"
                     onChange={handleInputChange}
                     value={email}
-                    placeholder="Введіть email адміністратора"
+                    placeholder="Введіть електронну пошту"
                 />
             </Tooltip>
             <div className={css['buttons-group']}>
