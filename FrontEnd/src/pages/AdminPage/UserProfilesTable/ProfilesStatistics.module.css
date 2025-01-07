@@ -1,9 +1,9 @@
 .statistics-container {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 400px;
   padding: 30px;
 }
 .chart-container {
@@ -15,15 +15,28 @@
   width: 600px;
 }
 
-.description-item-label {
-  max-width: 150px;
+.statistics-title {
+  font-size: 16px;
+  font-weight: 600;
+  padding-bottom: 8px;
+  text-align: left;
 }
 
-.description-item-content {
-  max-width: 200px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+.segmented-container {
+  max-width: 100%;
+  margin-bottom: 16px;
+}
+
+.period-container {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  max-width: 100%;
+  margin-bottom: 8px;
+}
+
+.descriptions-container {
+  width: 100%;
 }
 
 .error {
