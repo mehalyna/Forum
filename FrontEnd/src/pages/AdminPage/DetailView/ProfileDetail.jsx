@@ -135,7 +135,7 @@ function ProfileDetail() {
                     {error && <li className={css['log']}>Виникла помилка: {error}</li>}
                     {updateSuccess && <li className={css['log']}>Профіль успішно оновлений!</li>}
                 </ul>
-                <Descriptions title="User Info" bordered items={items} column={2}/>
+                <Descriptions title="Profile information" bordered items={items} column={2}/>
                 <button className={css['save-button']} onClick={handleSaveChanges}>Зберегти зміни</button>
             </div>
         </div>
