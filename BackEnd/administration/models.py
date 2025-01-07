@@ -52,12 +52,5 @@ class ContactInformation(models.Model):
         CustomUser, on_delete=models.SET_NULL, null=True, blank=True
     )
 
-    def save(self, *args, **kwargs):
-        """
-        Ensures that there is only one record for this model.
-        """
-        self.pk = 1
-        super().save(*args, **kwargs)
-
     def __str__(self):
         return self.company_name

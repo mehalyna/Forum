@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
+from rest_framework.exceptions import ValidationError
 from utils.administration.feedback_category import FeedbackCategory
 from authentication.models import CustomUser
 from profiles.models import (
@@ -290,23 +291,26 @@ class ContactInformationSerializer(serializers.ModelSerializer):
         read_only_fields = ["updated_at", "admin_user"]
 
     def validate_phone(self, value):
-        """
-        Validate phone field using imported validators.
-        """
-        validate_phone_number_len(value)
-        validate_phone_number_is_digit(value)
+        errors = []
+        try:
+            validate_phone_number_len(value)
+        except ValidationError as error:
+            errors.append(str(error))
+
+        try:
+            validate_phone_number_is_digit(value)
+        except ValidationError as error:
+            errors.append(str(error))
+
+        if errors:
+            raise serializers.ValidationError(errors)
+
         return value
 
     def validate_address(self, value):
-        """
-        Validate address field.
-        """
         validate_address(value)
         return value
 
     def validate_company_name(self, value):
-        """
-        Validate company name field.
-        """
         validate_company_name(value)
         return value

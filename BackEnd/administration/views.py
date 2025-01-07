@@ -55,10 +55,6 @@ from .filters import (
     ProfileStatisticsFilter,
 )
 from utils.administration.send_email_notification import send_email_to_user
-from utils.administration.backup_contact_info import (
-    backup_contact_info,
-    update_cache,
-)
 
 
 class UsersListView(ListAPIView):
@@ -108,7 +104,7 @@ class ProfilesListView(ListAPIView):
     View to list profiles with optional filtering and ordering.
     """
 
-    permission_classes = [IsStaffUser]
+    permission_classes = [IsStaffUserOrReadOnly]
     pagination_class = ListPagination
     serializer_class = AdminCompanyListSerializer
     filter_backends = [DjangoFilterBackend]
@@ -234,53 +230,35 @@ class ContactsView(RetrieveUpdateAPIView):
     """
     API view for retrieving and updating contact information.
     """
-
     permission_classes = [IsStaffUser]
     serializer_class = ContactInformationSerializer
 
     def get_object(self):
         """
-        Always returns the single contact information record.
-        If no record exists, a new one is created.
+        Retrieve or create the single contact information record.
         """
         contact, _ = ContactInformation.objects.get_or_create(pk=1)
         return contact
 
     def update(self, request, *args, **kwargs):
         """
-        Updates contact information and creates a backup.
+        Update the contact information.
         """
-        partial = kwargs.pop("partial", False)
         instance = self.get_object()
-        serializer = self.get_serializer(
-            instance, data=request.data, partial=partial
-        )
+        serializer = self.get_serializer(instance, data=request.data, partial=False)
         if serializer.is_valid():
             try:
-                backup_contact_info()
-            except Exception as e:
-                return Response(
-                    {"message": f"Backup failed: {str(e)}"},
-                    status=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                )
-
-            try:
                 serializer.save(admin_user=request.user)
-
-                update_cache()
                 return Response(
                     {"message": "Contact information successfully updated."},
                     status=status.HTTP_200_OK,
                 )
-            except Exception as e:
+            except Exception:
                 return Response(
-                    {"message": f"Cache update failed: {str(e)}"},
+                    {"message": "Failed to save changes. Please check the database connection."},
                     status=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 )
-
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
 class CreateAdminUserView(CreateAPIView):
     """
     View for creating an admin user.
