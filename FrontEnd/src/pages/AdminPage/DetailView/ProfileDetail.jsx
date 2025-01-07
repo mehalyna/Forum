@@ -80,7 +80,7 @@ function ProfileDetail() {
             key: '10',
             label: 'Логотип',
             children: (
-                <img src={profile.logo_image} alt="logo" width={150} height={150}/>
+                profile.logo_image ? <img src={profile.logo_image} alt="logo" width={150} height={150}/> : ''
             ),
             span: 2
         },
@@ -88,7 +88,7 @@ function ProfileDetail() {
             key: '11',
             label: 'Банер',
             children: (
-                <img src={profile.banner_image} alt="banner" width={200} height={150}/>
+                profile.banner_image ? <img src={profile.banner_image} alt="banner" width={200} height={150}/> : ''
             ),
             span: 2
         }
@@ -98,6 +98,7 @@ function ProfileDetail() {
     if (data && !Object.keys(profile).length) {
         setProfile(data);
     }
+    console.log(data);
     const handleSaveChanges = async () => {
         const response = await axios.put(
             url,
