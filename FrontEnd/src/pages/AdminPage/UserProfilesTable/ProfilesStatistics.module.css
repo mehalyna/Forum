@@ -1,10 +1,7 @@
 .statistics-container {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
   height: 100%;
-  padding: 30px;
 }
 
 .description-item-label {
@@ -20,7 +17,7 @@
 
 .error {
   color: #f5222d;
-  background-color: #fff1f0; 
+  background-color: #fff1f0;
   border: 1px solid #ffa39e;
   padding: 10px;
   border-radius: 4px;
