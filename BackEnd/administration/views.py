@@ -231,7 +231,7 @@ class ContactsView(RetrieveUpdateAPIView):
     API view for retrieving and updating contact information.
     """
 
-    permission_classes = [IsStaffUser]
+    permission_classes = [IsStaffUserOrReadOnly]
     serializer_class = ContactInformationSerializer
 
     def get_object(self):
