@@ -85,73 +85,6 @@ function ProfilesStatistics() {
   const handleRangeChange = (value, dateString) => {
     setPeriodRange({ start_date: dateString[0], end_date: dateString[1] });
   };
-
-  return (
-    <div className={css['statistics-container']}>
-      <p className={css['statistics-title']}>Статистика компаній</p>
-      <Segmented
-        className={css['segmented-container']}
-        value={tab}
-        options={[
-          { label: 'Загалом', value: 'overall' },
-          { label: 'Обрати період', value: 'period' },
-        ]}
-        onChange={(value) => {
-          setTab(value);
-          setPeriodType('');
-          setSelectedDate(null);
-        }}
-      />
-      {tab === 'period' && (
-        <div className={css['period-container']}>
-          <Select
-            placeholder="Оберіть тип періоду"
-            value={periodType === '' ? null : periodType}
-            onChange={(value) => {
-              setPeriodType(value);
-              setSelectedDate(null);
-              setPeriodRange({ start_date: '', end_date: '' });
-            }}
-            dropdownStyle={{ minWidth: '150px' }}
-          >
-            <Option value="range">Діапазон</Option>
-            <Option value="day">День</Option>
-            <Option value="month">Місяць</Option>
-            <Option value="year">Рік</Option>
-          </Select>
-          {periodType === 'range' && (
-            <DatePicker.RangePicker
-              onChange={handleRangeChange}
-              placeholder="Обрати"
-            />
-          )}
-          {periodType !== 'range' && (
-            <DatePicker
-              picker={periodType}
-              onChange={handleDateChange}
-              placeholder="Обрати"
-            />
-          )}
-        </div>
-      )}
-      {isLoading && (
-        <div className={css['loader-container']}>
-          <Loader />
-        </div>
-      )}
-      {error && (
-        <div className={css['error']}>Не вдалося отримати статистику компаній</div>
-      )}
-      {!isLoading && !error && (
-        <Descriptions
-          className={css['descriptions-container']}
-          column={1}
-          bordered
-          size="small"
-          items={items}
-        />
-      )}
-    </div>
   const chartData = statistics
   ?{
       labels: ['Виробники', 'Імпортери', 'Роздрібніки', 'Інші'],
@@ -183,31 +116,71 @@ function ProfilesStatistics() {
       },
        maintainAspectRatio: false,
     };
-  return isLoading ? (
-    <div className={css['loader-container']}>
-      <Loader />
-    </div>
-  ) : error ? (
-    <div className={css['error']}>Не вдалося отримати статистику компаній</div>
-  ) : (
+  return (
       <div className={css['statistics-container']}>
-          <Descriptions
-              title="Статистика компаній"
-              column={1}
-              bordered
-              size="small"
-              items={items.map((item) => ({
-                  ...item,
-                  label: (
-                      <span className={css['description-item-label']}>{item.label}</span>
-                  ),
-                  children: (
-                      <span className={css['description-item-content']}>
-              {item.children}
-            </span>
-                  ),
-              }))}
+          <p className={css['statistics-title']}>Статистика компаній</p>
+          <Segmented
+              className={css['segmented-container']}
+              value={tab}
+              options={[
+                  {label: 'Загалом', value: 'overall'},
+                  {label: 'Обрати період', value: 'period'},
+              ]}
+              onChange={(value) => {
+                  setTab(value);
+                  setPeriodType('');
+                  setSelectedDate(null);
+              }}
           />
+          {tab === 'period' && (
+              <div className={css['period-container']}>
+                  <Select
+                      placeholder="Оберіть тип періоду"
+                      value={periodType === '' ? null : periodType}
+                      onChange={(value) => {
+                          setPeriodType(value);
+                          setSelectedDate(null);
+                          setPeriodRange({start_date: '', end_date: ''});
+                      }}
+                      dropdownStyle={{minWidth: '150px'}}
+                  >
+                      <Option value="range">Діапазон</Option>
+                      <Option value="day">День</Option>
+                      <Option value="month">Місяць</Option>
+                      <Option value="year">Рік</Option>
+                  </Select>
+                  {periodType === 'range' && (
+                      <DatePicker.RangePicker
+                          onChange={handleRangeChange}
+                          placeholder="Обрати"
+                      />
+                  )}
+                  {periodType !== 'range' && (
+                      <DatePicker
+                          picker={periodType}
+                          onChange={handleDateChange}
+                          placeholder="Обрати"
+                      />
+                  )}
+              </div>
+          )}
+          {isLoading && (
+              <div className={css['loader-container']}>
+                  <Loader/>
+              </div>
+          )}
+          {error && (
+              <div className={css['error']}>Не вдалося отримати статистику компаній</div>
+          )}
+          {!isLoading && !error && (
+              <Descriptions
+                  className={css['descriptions-container']}
+                  column={1}
+                  bordered
+                  size="small"
+                  items={items}
+              />
+          )}
           <div className={css['chart-container']}>
               <Bar options={options} data={chartData}/>
           </div>
