@@ -1,7 +1,27 @@
 .moderation_email-section {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 20px;
+}
+
+.moderation_email-section__head {
+    font-size: 14px;
+    font-weight: normal;
+}
+
+.moderation_email-asterisk {
+    font-family: var(--font-main);
+    font-size: 14px;
+    padding-right: 3px;
+    color: var(--notification-text-color__admin-panel);
+}
+
+.moderation_email-label {
+    color: var(--main-black-90, #292E32);
+    font-family: var(--font-main);
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: -0.01em;
 }
 
 .moderation_email-input {
@@ -19,7 +39,6 @@
     flex-direction: row;
     justify-content: space-between;
     width: 269px;
-    margin-top: 24px;
 }
 
 .save-button {

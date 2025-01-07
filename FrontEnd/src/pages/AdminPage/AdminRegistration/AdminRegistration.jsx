@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { Tooltip } from 'antd';
+import { Tooltip, Input } from 'antd';
 import { useState } from 'react';
 import { EMAIL_PATTERN } from '../../../constants/constants';
 import css from './AdminRegistration.module.css';
@@ -35,10 +35,14 @@ const AdminRegistration = () => {
             setError('Будь ласка, введіть дійсну електронну адресу');
     };
 
+    const handleCancel = () => {
+        setEmail('');
+    };
+
     return (
         <div className={css['admin_registration-section']}>
-            <h3>Реєстрація Адміністратора</h3>
             <div className={css['admin_registration-outer-wrapper']}>
+                <p className={css['admin_registration-section__head']}>Зареєструйте користувача, який буде виконувати функції адміністратора сайту.</p>
                 <label className={css['admin_registration-label']} htmlFor="newAdminEmail">
                     <span className={css['admin_registration-asterisk']} >*</span>
                     Електронна адреса
@@ -47,16 +51,17 @@ const AdminRegistration = () => {
                     <Tooltip
                         title={'Введіть тут електронну пошту особи, яку потрібно зареєструвати в якості адміністратора'}
                         placement="top">
-                        <input className={css['admin_registration-input']}
+                        <Input className={css['admin_registration-input']}
                             id="newAdminEmail"
                             onChange={handleInputChange}
-                            type="text"
+                            type="email"
                             placeholder="Введіть електронну пошту"
                             autoComplete="off" />
                     </Tooltip>
-                    <button className={css['admin_registration-button']} onClick={handleSubmit}>
-                        Згенерувати та надіслати пароль
-                    </button>
+                    <div className={css['buttons-group']}>
+                        <button className={css['admin_registration-button']} onClick={handleSubmit}>Згенерувати та надіслати пароль</button>
+                        <button className={`${css['admin_registration-button']} ${css['cancel-button']}`} onClick={handleCancel}>Скасувати</button>
+                    </div>
                 </div>
                 {error && <p className={css['admin_registration-error']} >{error}</p>}
             </div>

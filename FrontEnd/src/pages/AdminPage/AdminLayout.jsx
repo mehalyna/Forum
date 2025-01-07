@@ -9,9 +9,9 @@ const AdminLayout = ({ children }) => {
             <NavLink className={css['admin-layout__title']} to={'/customadmin/'}>
                 <h2 className={css['admin-layout__title--text']}>Панель адміністратора</h2>
             </NavLink>
-            <div className={css['admin-layout__content']}>
+              <div className={css['admin-layout__content']}>
                 <Menu />
-                <div className={css['admin-layout__children-section']}>{children}</div>
+                  <div className={css['admin-layout__children-section']}>{children}</div>
             </div>
         </div>
       </div>

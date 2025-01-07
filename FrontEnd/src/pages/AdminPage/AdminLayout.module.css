@@ -1,9 +1,7 @@
 .admin-layout__wrapper {
     display: flex;
-    justify-content: center;
     background: var(--background__admin-panel);
     min-height: calc(100vh - 75px);
-
 }
 
 .admin-layout {
@@ -29,4 +27,8 @@
 .admin-layout__content {
     display: flex;
     gap: 96px;
+}
+
+.admin-layout__children-section {
+    flex-shrink: 0;
 }

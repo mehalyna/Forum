@@ -37,11 +37,17 @@ const ModerationEmail = () => {
 
     return (
         <div className={css['moderation_email-section']}>
+            <p className={css['moderation_email-section__head']}>Зареєструйте користувача, який буде виконувати функції модератора.</p>
+            <label className={css['moderation_email-label']} htmlFor="newModeratorEmail">
+                <span className={css['moderation_email-asterisk']} >*</span>
+                Електронна адреса
+            </label>
             <Tooltip
-                title={'Введіть електронну пошту адміністратора'}
+                title={'Введіть електронну пошту модератора'}
                 placement="top"
                 pointAtCenter={true}>
                 <Input
+                    id="newModeratorEmail"
                     className={css['moderation_email-input']}
                     type="email"
                     onChange={handleInputChange}

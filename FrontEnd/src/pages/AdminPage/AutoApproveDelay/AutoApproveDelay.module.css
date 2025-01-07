@@ -1,7 +1,7 @@
 .autoapprove-section {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 20px;
 }
 
 .autoapprove-section__head {
@@ -11,7 +11,6 @@
 
 .autoapprove_label {
     font-size: 14px;
-    margin: 20px 0;
 }
 
 .autoapprove_label::before {
@@ -34,7 +33,6 @@
     flex-direction: row;
     justify-content: space-between;
     width: 269px;
-    margin-top: 24px;
 }
 
 .button {
