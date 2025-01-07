@@ -39,7 +39,7 @@
 
 .button {
     display: flex;
-    padding: 5px 15px;
+    padding: 7px 15px;
     justify-content: center;
     align-items: center;
     gap: 10px;
