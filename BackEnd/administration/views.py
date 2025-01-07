@@ -37,7 +37,7 @@ from administration.serializers import (
     CategoriesListSerializer,
     CategoryDetailSerializer,
     StatisticsSerializer,
-    MonthlyProfileStatisticsSerializer
+    MonthlyProfileStatisticsSerializer,
 )
 from administration.pagination import ListPagination
 from administration.models import AutoModeration, ModerationEmail
@@ -51,7 +51,7 @@ from .filters import (
     CategoriesFilter,
     ProfilesFilter,
     ProfileStatisticsFilter,
-    MonthlyProfileFilter
+    MonthlyProfileFilter,
 )
 from utils.administration.send_email_notification import send_email_to_user
 
