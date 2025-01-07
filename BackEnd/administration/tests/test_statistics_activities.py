@@ -1,7 +1,7 @@
 from rest_framework.test import APITestCase
 from administration.factories import AdminUserFactory, AdminProfileFactory
 from rest_framework import status
-from profiles.models import Activity, Profile
+from profiles.models import Activity
 
 
 class ProfileStatisticsActivitiesTest(APITestCase):
