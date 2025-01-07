@@ -58,26 +58,23 @@ class TestProfileOrdering(APITestCase):
             user=self.user,
             company=self.company_delivery,
         )
-        self.saved_company_first.added_at = (timezone.now() - timedelta(days=3))
+        self.saved_company_first.added_at = timezone.now() - timedelta(days=3)
         self.saved_company_first.save()
-        
+
         self.saved_company_second = SavedCompanyFactory(
-            user=self.user,
-            company=self.company_winery
+            user=self.user, company=self.company_winery
         )
-        self.saved_company_second.added_at = (timezone.now() - timedelta(days=2))
+        self.saved_company_second.added_at = timezone.now() - timedelta(days=2)
         self.saved_company_second.save()
-        
+
         self.saved_startup_third = SavedStartupFactory(
-            user=self.user,
-            company=self.startup_bakery
+            user=self.user, company=self.startup_bakery
         )
-        self.saved_startup_third.added_at = (timezone.now() - timedelta(days=1))
+        self.saved_startup_third.added_at = timezone.now() - timedelta(days=1)
         self.saved_startup_third.save()
-        
+
         self.saved_startup_fourth = SavedStartupFactory(
-            user=self.user,
-            company=self.startup_catering
+            user=self.user, company=self.startup_catering
         )
         self.saved_startup_fourth.added_at = timezone.now()
         self.saved_startup_fourth.save()
