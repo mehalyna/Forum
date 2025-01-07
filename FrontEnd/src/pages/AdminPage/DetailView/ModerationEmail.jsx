@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
-import { Tooltip } from 'antd';
+import { Tooltip, Input } from 'antd';
 import useSWR from 'swr';
 import axios from 'axios';
 import css from './ModerationEmail.module.css';
@@ -10,10 +10,8 @@ const ModerationEmail = () => {
     const url = `${process.env.REACT_APP_BASE_API_URL}/api/admin/email/`;
     const { data, mutate } = useSWR(url, fetcher);
 
-    // Define email and setEmail using useState
     const [email, setEmail] = useState('');
 
-    // Update email state when data is fetched
     useEffect(() => {
         if (data && data.email_moderation) {
             setEmail(data.email_moderation);
@@ -33,15 +31,28 @@ const ModerationEmail = () => {
             .catch(() => toast.error('Eлектронна пошта вказана невірно.'));
     };
 
+    const handleCancel = () => {
+        setEmail(data?.email_moderation);
+    };
+
     return (
         <div className={css['moderation_email-section']}>
             <Tooltip
                 title={'Введіть Email'}
                 placement="top"
                 pointAtCenter={true}>
-                <input className={css['moderation_email-input']} type="email" onChange={handleInputChange} value={email} />
+                <Input
+                    className={css['moderation_email-input']}
+                    type="email"
+                    onChange={handleInputChange}
+                    value={email}
+                    placeholder="Введіть email адміністратора"
+                />
             </Tooltip>
-            <button className={css['save-button']} onClick={handleSubmit}>Змінити</button>
+            <div className={css['buttons-group']}>
+                <button className={css['save-button']} onClick={handleSubmit}>Змінити</button>
+                <button className={`${css['save-button']} ${css['cancel-button']}`} onClick={handleCancel}>Скасувати</button>
+            </div>
         </div>
     );
 

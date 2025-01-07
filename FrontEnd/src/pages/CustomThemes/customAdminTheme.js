@@ -32,6 +32,10 @@ const customAdminTheme = {
       InputNumber: {
         activeBorderColor: '#1f9a7c',
         activeShadow: 'none',
+      },
+      Input: {
+        activeBorderColor: '#1f9a7c',
+        activeShadow: 'none',
       }
     },
     token: {
