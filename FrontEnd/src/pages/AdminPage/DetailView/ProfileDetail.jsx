@@ -80,7 +80,7 @@ function ProfileDetail() {
             key: '10',
             label: 'Логотип',
             children: (
-                profile.logo_image ? <img src={profile.logo_image} alt="logo" width={150} height={150}/> : ''
+                profile.logo_image ? <img src={profile.logo_image} alt="logo" width={200} height={200} className={css['logo-image']}/> : ''
             ),
             span: 2
         },
@@ -88,7 +88,7 @@ function ProfileDetail() {
             key: '11',
             label: 'Банер',
             children: (
-                profile.banner_image ? <img src={profile.banner_image} alt="banner" width={200} height={150}/> : ''
+                profile.banner_image ? <img src={profile.banner_image} alt="banner" width={400} height={250} className={css['banner-image']}/> : ''
             ),
             span: 2
         }

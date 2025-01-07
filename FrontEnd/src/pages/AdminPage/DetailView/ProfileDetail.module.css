@@ -4,6 +4,14 @@
     margin-bottom: 150px;
 }
 
+.banner-image {
+    object-fit: cover;
+}
+
+.logo-image {
+    object-fit: contain;
+}
+
 .profile-details-section {
     margin-left: 10px;
     padding: 10px;
