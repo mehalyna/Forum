@@ -21,7 +21,7 @@ from rest_framework.generics import (
     CreateAPIView,
 )
 
-from administration.serializers import AdminRegistrationSerializer
+from administration.serializers import AdminRegistrationSerializer, StatisticsActivitiesSerializer
 from forum.settings import CONTACTS_INFO
 from administration.serializers import (
     AdminCompanyListSerializer,
@@ -162,11 +162,24 @@ class ProfileStatisticsView(RetrieveAPIView):
             investors_count=Count("pk", filter=Q(is_registered=True)),
             startups_count=Count("pk", filter=Q(is_startup=True)),
             blocked_companies_count=Count("pk", filter=Q(status="blocked")),
+        )
+
+
+class ProfileStatisticsActivitiesView(RetrieveAPIView):
+    """
+    Count of companies in terms of their activities
+    """
+
+    permission_classes = [IsStaffUser]
+    serializer_class = StatisticsActivitiesSerializer
+
+    def get_object(self):
+        queryset = self.filter_queryset(Profile.objects.all())
+        return queryset.aggregate(
             manufacturers_count=Count("pk", filter=Q(activities__name="Виробник")),
             importers_count=Count("pk", filter=Q(activities__name="Імпортер")),
             retail_networks_count=Count("pk", filter=Q(activities__name="Роздрібна мережа")),
             others_count=Count("pk", filter=Q(activities__name="Інші послуги")),
-
         )
 
 
