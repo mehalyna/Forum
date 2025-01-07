@@ -8,11 +8,10 @@
     border-radius: 4px;
     border: 1px solid var(--main-button-color);
     background: var(--main-button-color);
-    box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.04);
-    color: var(--light-button-text-color);
+    color: var(--main-button-text-color);
     font-feature-settings: 'calt' off;
     font-style: normal;
-    padding: 5px 15px 5px 15px;
+    padding: 7px 15px;
     font-family: var(--font-main);
     font-size: 16px;
     font-weight: 600;
@@ -20,6 +19,10 @@
     letter-spacing: -0.01em;
     text-align: center;
     cursor: pointer;
+}
+
+.admin-submit__button:hover {
+    background: var(--main-button-hover-color);
 }
 
 .admin-submit__button:active {

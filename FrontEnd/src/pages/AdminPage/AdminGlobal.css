@@ -13,4 +13,17 @@
     --button-text-color__admin-panel: #FFF;
     --error-notification-text-color__admin-panel: #f4282b;
     --box-shadow-color__admin-panel: rgba(0, 0, 0, 0.04);
+
+    --main-button-color: #000000;
+    --main-button-text-color: #FFFFFF;
+    --main-button-hover-color: #292929;
+    --main-button-disabled-color: #E5E5E5;
+    --main-button-disabled-text-color: #A1A1A1;
+    --main-button-border-color: #000000;
+    --main-button-hover-border-color: #333333;
+
+    --light-button-color: transparent;
+    --light-button-hover-color: #F1E7D280;
+    --light-button-text-color: #232424;
+    --light-button-border-color: #232424;
 }

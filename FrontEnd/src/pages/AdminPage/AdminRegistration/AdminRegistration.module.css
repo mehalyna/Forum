@@ -60,8 +60,8 @@
     align-items: center;
     gap: 10px;
     border-radius: 4px;
-    background: #B4D27A;
-    color: black;
+    background: var(--main-button-color);
+    color: var(--main-button-text-color);
     text-align: center;
     font-feature-settings: 'calt' off;
     text-decoration: none;
@@ -75,9 +75,18 @@
 }
 
 .cancel-button {
-    background-color: white;
-    border: 1px solid #B4D27A;
+    background-color: var(--light-button-color);
+    border: 1px solid var(--light-button-border-color);
+    color: var(--light-button-text-color);
     width: 120px;
+}
+
+.admin_registration-button:hover {
+    background: var(--main-button-hover-color);
+}
+
+.cancel-button:hover {
+    background: var(--light-button-hover-color);
 }
 
 .admin_registration-error {
