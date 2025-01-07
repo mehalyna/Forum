@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import DeleteModal from './DeleteModal';
-import css from './ProfileDetail.module.css';
 import axios from 'axios';
 import useSWR from 'swr';
 import {Descriptions, Input, Switch} from 'antd';
+import DeleteModal from './DeleteModal';
+import css from './ProfileDetail.module.css';
 
 function ProfileDetail() {
     const [deleteModalActive, setDeleteModalActive] = useState(false);
