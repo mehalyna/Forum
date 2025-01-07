@@ -16,9 +16,7 @@ class ContactsViewTest(APITestCase):
         self.client = APIClient()
 
         self.admin_user = CustomUser.objects.create_user(
-            email="admin@example.com",
-            password="admin123",
-            is_staff=True
+            email="admin@example.com", password="admin123", is_staff=True
         )
 
         self.client.force_authenticate(user=self.admin_user)
@@ -60,7 +58,10 @@ class ContactsViewTest(APITestCase):
         """
         response = self.client.put("/api/admin/contacts/", self.valid_data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["message"], "Contact information successfully updated.")
+        self.assertEqual(
+            response.data["message"],
+            "Contact information successfully updated.",
+        )
 
         contact_info = ContactInformation.objects.get(pk=1)
         self.assertEqual(contact_info.company_name, "Updated Company")
@@ -70,6 +71,8 @@ class ContactsViewTest(APITestCase):
         """
         Test updating contact information with an invalid phone number.
         """
-        response = self.client.put("/api/admin/contacts/", self.invalid_phone_data)
+        response = self.client.put(
+            "/api/admin/contacts/", self.invalid_phone_data
+        )
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertIn("phone", response.data)

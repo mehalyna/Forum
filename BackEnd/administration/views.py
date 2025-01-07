@@ -230,6 +230,7 @@ class ContactsView(RetrieveUpdateAPIView):
     """
     API view for retrieving and updating contact information.
     """
+
     permission_classes = [IsStaffUser]
     serializer_class = ContactInformationSerializer
 
@@ -245,7 +246,9 @@ class ContactsView(RetrieveUpdateAPIView):
         Update the contact information.
         """
         instance = self.get_object()
-        serializer = self.get_serializer(instance, data=request.data, partial=False)
+        serializer = self.get_serializer(
+            instance, data=request.data, partial=False
+        )
         if serializer.is_valid():
             try:
                 serializer.save(admin_user=request.user)
@@ -255,10 +258,14 @@ class ContactsView(RetrieveUpdateAPIView):
                 )
             except Exception:
                 return Response(
-                    {"message": "Failed to save changes. Please check the database connection."},
+                    {
+                        "message": "Failed to save changes. Please check the database connection."
+                    },
                     status=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 class CreateAdminUserView(CreateAPIView):
     """
     View for creating an admin user.
