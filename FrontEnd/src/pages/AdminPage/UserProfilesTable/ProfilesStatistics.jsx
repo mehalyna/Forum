@@ -50,8 +50,10 @@ function ProfilesStatistics() {
   const url = `${baseUrl}/api/admin/profiles/statistics/${
     queryParams.length ? `?${queryParams.join('&')}` : ''
   }`;
+  const activities_url = `${baseUrl}/api/admin/profiles/statistics-activities/`;
 
   const { data: statistics, error, isLoading } = useSWR(url, fetcher);
+  const { data: activities, error: activitiesError, isLoading: activitiesLoading } = useSWR(activities_url, fetcher);
 
   const items = statistics
     ? [
@@ -85,17 +87,17 @@ function ProfilesStatistics() {
   const handleRangeChange = (value, dateString) => {
     setPeriodRange({ start_date: dateString[0], end_date: dateString[1] });
   };
-  const chartData = statistics
+  const chartData = activities
   ?{
       labels: ['Виробники', 'Імпортери', 'Роздрібніки', 'Інші'],
       datasets: [
           {
               label: 'Типи компаній',
               data: [
-                  statistics.manufacturers_count,
-                  statistics.importers_count,
-                  statistics.retail_networks_count,
-                  statistics.others_count
+                  activities.manufacturers_count,
+                  activities.importers_count,
+                  activities.retail_networks_count,
+                  activities.others_count
               ],
               backgroundColor: [
                   '#87f3b0',
@@ -181,9 +183,20 @@ function ProfilesStatistics() {
                   items={items}
               />
           )}
-          <div className={css['chart-container']}>
-              <Bar options={options} data={chartData}/>
-          </div>
+          {activitiesLoading && (
+              <div className={css['loader-container']}>
+                  <Loader/>
+              </div>
+          )}
+          {activitiesError && (
+              <div className={css['error']}>Не вдалося отримати статистику компаній</div>
+          )}
+          {!activitiesLoading && !activitiesError && (
+                <div className={css['chart-container']}>
+                    <Bar options={options} data={chartData}/>
+                </div>
+            )
+          }
       </div>
   );
 }
