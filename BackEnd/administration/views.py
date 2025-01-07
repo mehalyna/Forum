@@ -196,7 +196,7 @@ class MonthlyProfileStatisticsView(ListAPIView):
                     "pk", filter=Q(is_startup=True, is_registered=True)
                 ),
             )
-            .order_by("month")
+            .order_by("month_datetime")
         )
         return queryset
 
