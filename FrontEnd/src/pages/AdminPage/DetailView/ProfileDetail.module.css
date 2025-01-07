@@ -25,67 +25,6 @@
     margin-bottom: 10px;
  }
 
-.profile-details-section_info {
-    font-family: var(--font__admin-panel);    
-    font-size: 16px;
-}
-
-.data-section {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    gap: 16px;
-}
-
-.form-section {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 3px;
-}
-
-.form-info__text {
-    color: var(--font-color__admin-panel);
-    font-feature-settings: 'calt' off;
-    font-family: var(--font__admin-panel);
-    font-size: 17px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 22px;
-    letter-spacing: -0.14px;
-}
-
-.form-input {
-    display: flex;
-    align-items: center;
-    flex-shrink: 0;
-    align-self: stretch;
-    padding: 7px 12px;
-    align-items: center;
-    gap: 4px;
-    flex: 1 0 0;
-    border-radius: 2px;
-    border: 1px solid var(--neutral-5, #D9D9D9);
-    background: var(--main-white, #FFF);
-}
-
-.form-info__text_checkbox {
-    color: var(--font-color__admin-panel);
-    font-family: var(--font-admin-panel);
-}
-
-.form-input_checkbox{
-    font-family: var(--font__admin-panel);
-    font-size: 17px;
-}
-.form-input:focus {
-    outline: none;
-}
-
-.delete-section {
-    margin-top: 120px;
-}
-
 .button__delete {
     color: #F15831;
     cursor: pointer;
