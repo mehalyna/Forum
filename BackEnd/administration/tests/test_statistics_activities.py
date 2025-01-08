@@ -10,7 +10,9 @@ class ProfileStatisticsActivitiesTest(APITestCase):
         self.activities = {
             "Виробник": Activity.objects.create(name="Виробник"),
             "Імпортер": Activity.objects.create(name="Імпортер"),
-            "Роздрібна мережа": Activity.objects.create(name="Роздрібна мережа"),
+            "Роздрібна мережа": Activity.objects.create(
+                name="Роздрібна мережа"
+            ),
             "Інші послуги": Activity.objects.create(name="Інші послуги"),
         }
         self.profiles = []

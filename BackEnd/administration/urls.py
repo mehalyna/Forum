@@ -13,7 +13,8 @@ from administration.views import (
     CreateAdminUserView,
     CategoriesListView,
     CategoryDetailView,
-    SendMessageView, ProfileStatisticsActivitiesView,
+    SendMessageView,
+    ProfileStatisticsActivitiesView,
 )
 
 app_name = "administration"
