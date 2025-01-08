@@ -1,14 +1,21 @@
 const customAdminTheme = {
     components: {
       Button: {
-        colorPrimary: '#1f9a7c',
-        colorPrimaryHover: '#0b6c61',
+        colorPrimary: ' #000000',
+        colorPrimaryHover: '#292929',
         fontWeight: 600,
         contentFontSize: 16,
         fontFamilyCode: 'Geologica',
         colorLink: '#1f9a7c',
         colorLinkActive: '#1f9a7c',
-        colorLinkHover: '#0b6c61'
+        colorLinkHover: '#0b6c61',
+        primaryShadow: 'none',
+        defaultBorderColor: '#232424',
+        defaultHoverBg: '#F1E7D280',
+        defaultColor: '#232424',
+        defaultActiveBg: '#ffffff',
+        defaultActiveColor: '#232424',
+        defaultActiveBorderColor: '#232424',
       },
       Pagination: {
         colorPrimary: '#1F9A7C',
@@ -33,9 +40,8 @@ const customAdminTheme = {
     },
     token: {
       fontFamily: 'Geologica',
-      colorPrimary: '#1f9a7c',
-      colorPrimaryHover: '#1f9a7c',
-      controlOutline: 'rgba(31, 154, 124, 0.4)'
+      colorPrimaryActive: '#000000',
+      colorPrimaryHover: '#292929',
     }
   };
 
