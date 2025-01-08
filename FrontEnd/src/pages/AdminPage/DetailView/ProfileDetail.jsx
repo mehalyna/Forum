@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 import useSWR from 'swr';
-import {Descriptions, Input, Switch} from 'antd';
+import {Descriptions, Input, Switch, Tag} from 'antd';
 import DeleteModal from './DeleteModal';
 import css from './ProfileDetail.module.css';
 
@@ -43,21 +43,43 @@ function ProfileDetail() {
         },
         {
             key: '5',
+            label: 'Активності',
+            children: (
+                Array.isArray(profile.activities)
+                ? profile.activities.map(activity => (
+                    <Tag color="cyan" key={activity}>{activity}</Tag>
+                  ))
+                : ''
+            )
+        },
+        {
+            key: '6',
+            label: 'Категорії',
+            children: (
+                Array.isArray(profile.categories)
+                ? profile.categories.map(category => (
+                    <Tag color="blue" key={category}>{category}</Tag>
+                  ))
+                : ''
+            )
+    },
+        {
+            key: '7',
             label: 'Телефон',
             children: profile.phone
         },
         {
-            key: '6',
+            key: '8',
             label: 'ЕРДПО',
             children: profile.edrpou
         },
         {
-            key: '7',
+            key: '9',
             label: 'Адреса',
             children: profile.address,
         },
         {
-            key: '8',
+            key: '10',
             label: 'Видаленний',
             children: (
                 <Switch
@@ -68,7 +90,7 @@ function ProfileDetail() {
             span: 2
         },
         {
-            key: '9',
+            key: '11',
             label: 'Видалити профіль',
             children: (
                 <button className={css['button__delete']} onClick={() => setDeleteModalActive(true)}>Видалити</button>
@@ -77,7 +99,7 @@ function ProfileDetail() {
 
         },
         {
-            key: '10',
+            key: '12',
             label: 'Логотип',
             children: (
                 profile.logo_image ? (
@@ -91,7 +113,7 @@ function ProfileDetail() {
             span: 2
         },
         {
-            key: '11',
+            key: '13',
             label: 'Банер',
             children: (
                 profile.banner_image ? (
