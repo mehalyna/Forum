@@ -3,13 +3,16 @@ import re
 
 
 def validate_company_name(value: str):
-    """
-    Validate company name: allows up to 100 characters and supports Ukrainian letters and common symbols.
-    """
+
     if len(value) > 100:
         raise ValidationError("Company name must not exceed 100 characters.")
-    if not re.match(r'^[\w\s.,\'"–-]+$', value):
-        raise ValidationError("Company name contains invalid characters.")
+
+    pattern = r'^[А-Яа-яЁёЇїІіЄєҐґA-Za-z0-9\s.,:;"\'"()№\-–/@+*=?!]+$'
+    if not re.match(pattern, value):
+        raise ValidationError(
+            "Company name contains invalid characters. Only Ukrainian and Latin letters, "
+            "numbers, and specific symbols are allowed."
+        )
 
 
 def validate_address(value: str):
