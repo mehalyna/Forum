@@ -1,7 +1,9 @@
 .statistics-container {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 400px;
 }
 
 .statistics-title {
