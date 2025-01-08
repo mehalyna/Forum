@@ -3,7 +3,6 @@ import re
 
 
 def validate_company_name(value: str):
-
     if len(value) > 100:
         raise ValidationError("Company name must not exceed 100 characters.")
 
