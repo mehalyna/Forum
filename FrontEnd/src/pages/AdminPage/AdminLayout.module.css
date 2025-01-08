@@ -2,6 +2,8 @@
     display: flex;
     background: var(--background__admin-panel);
     min-height: calc(100vh - 75px);
+    justify-content: safe center;
+    overflow-x: auto;
 }
 
 .admin-layout {
@@ -9,6 +11,7 @@
     flex-direction: column;
     padding: 30px 104px;
     width: 1304px;
+    min-width: 1304px;
     gap: 24px;
 }
 
