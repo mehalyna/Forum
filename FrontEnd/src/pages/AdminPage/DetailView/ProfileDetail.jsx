@@ -75,6 +75,40 @@ function ProfileDetail() {
             children: profile.rnokpp
         }
             ]),
+        ...(profile.is_startup && profile.is_registered
+            ? [{
+                key: '8',
+                label: 'Інформація про послуги',
+                children: profile.service_info
+        },
+            {
+                key: '8',
+                label: 'Інформація про товари',
+                children: profile.product_info
+            },
+            {
+            key: '8',
+            label: 'Ідея стартапу',
+            children: profile.startup_idea
+          }]
+        : profile.is_registered
+        ? [{
+                key: '8',
+                label: 'Інформація про послуги',
+                children: profile.service_info
+        },
+            {
+                key: '8',
+                label: 'Інформація про товари',
+                children: profile.product_info
+            }]
+        : profile.is_startup
+        ? [{
+            key: '8',
+            label: 'Ідея стартапу',
+            children: profile.startup_idea
+          }]
+        : []),
         {
             key: '9',
             label: 'Адреса',
@@ -92,7 +126,7 @@ function ProfileDetail() {
             span: 2
         },
         {
-            key: '12',
+            key: '11',
             label: 'Логотип',
             children: (
                 profile.logo_image ? (
@@ -106,7 +140,7 @@ function ProfileDetail() {
             span: 2
         },
         {
-            key: '13',
+            key: '12',
             label: 'Банер',
             children: (
                 profile.banner_image ? (
@@ -120,7 +154,7 @@ function ProfileDetail() {
             span: 2
         },
         {
-            key: '11',
+            key: '13',
             label: 'Заблоковати профіль',
             children: (
                 <button className={css['button__delete']} onClick={() => setBlockModalActive(true)}>Заблокувати</button>
