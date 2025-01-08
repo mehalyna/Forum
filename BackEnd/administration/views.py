@@ -1,8 +1,12 @@
-from django.db.models.functions import Concat
-from django.db.models import F, Value, CharField
+from django.db.models.functions import (
+    Concat,
+    TruncMonth,
+    ExtractMonth,
+    ExtractYear,
+)
+from django.db.models import F, Value, CharField, Count, Q
 from django.http import JsonResponse
 from django.views import View
-from django.db.models import Count, Q
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.types import OpenApiTypes
 
@@ -36,6 +40,7 @@ from administration.serializers import (
     CategoryDetailSerializer,
     StatisticsSerializer,
     ContactInformationSerializer,
+    MonthlyProfileStatisticsSerializer,
 )
 from administration.pagination import ListPagination
 from administration.models import (
@@ -53,6 +58,7 @@ from .filters import (
     CategoriesFilter,
     ProfilesFilter,
     ProfileStatisticsFilter,
+    MonthlyProfileFilter,
 )
 from utils.administration.send_email_notification import send_email_to_user
 
@@ -170,6 +176,36 @@ class ProfileStatisticsView(RetrieveAPIView):
             startups_count=Count("pk", filter=Q(is_startup=True)),
             blocked_companies_count=Count("pk", filter=Q(status="blocked")),
         )
+
+
+class MonthlyProfileStatisticsView(ListAPIView):
+    permission_classes = [IsStaffUser]
+    serializer_class = MonthlyProfileStatisticsSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = MonthlyProfileFilter
+
+    def get_queryset(self):
+        queryset = (
+            Profile.objects.annotate(
+                month_datetime=TruncMonth("created_at"),
+                month=ExtractMonth("created_at"),
+                year=ExtractYear("created_at"),
+            )
+            .values("month", "year")
+            .annotate(
+                investors_count=Count(
+                    "pk", filter=Q(is_registered=True, is_startup=False)
+                ),
+                startups_count=Count(
+                    "pk", filter=Q(is_startup=True, is_registered=False)
+                ),
+                startup_investor_count=Count(
+                    "pk", filter=Q(is_startup=True, is_registered=True)
+                ),
+            )
+            .order_by("month_datetime")
+        )
+        return queryset
 
 
 @extend_schema(

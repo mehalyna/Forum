@@ -276,7 +276,6 @@ class StatisticsSerializer(serializers.Serializer):
     startups_count = serializers.IntegerField()
     blocked_companies_count = serializers.IntegerField()
 
-
 class ContactInformationSerializer(serializers.ModelSerializer):
     class Meta:
         model = ContactInformation
@@ -314,3 +313,9 @@ class ContactInformationSerializer(serializers.ModelSerializer):
     def validate_company_name(self, value):
         validate_company_name(value)
         return value
+class MonthlyProfileStatisticsSerializer(serializers.Serializer):
+    month = serializers.IntegerField()
+    year = serializers.IntegerField()
+    investors_count = serializers.IntegerField()
+    startups_count = serializers.IntegerField()
+    startup_investor_count = serializers.IntegerField()
