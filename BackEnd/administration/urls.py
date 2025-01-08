@@ -5,6 +5,7 @@ from administration.views import (
     ProfilesListView,
     ProfileDetailView,
     ProfileStatisticsView,
+    MonthlyProfileStatisticsView,
     UsersListView,
     UserDetailView,
     AutoModerationHoursView,
@@ -32,6 +33,11 @@ urlpatterns = [
         "profiles/statistics-activities/",
         ProfileStatisticsActivitiesView.as_view(),
         name="profile-statistics-activities",
+    ),
+    path(
+        "profiles/statistics/monthly/",
+        MonthlyProfileStatisticsView.as_view(),
+        name="profile-statistics-monthly",
     ),
     path("profiles/<pk>/", ProfileDetailView.as_view(), name="profile-detail"),
     path(

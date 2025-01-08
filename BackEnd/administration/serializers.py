@@ -276,3 +276,11 @@ class StatisticsActivitiesSerializer(serializers.Serializer):
     importers_count = serializers.IntegerField()
     retail_networks_count = serializers.IntegerField()
     others_count = serializers.IntegerField()
+
+
+class MonthlyProfileStatisticsSerializer(serializers.Serializer):
+    month = serializers.IntegerField()
+    year = serializers.IntegerField()
+    investors_count = serializers.IntegerField()
+    startups_count = serializers.IntegerField()
+    startup_investor_count = serializers.IntegerField()
