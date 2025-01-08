@@ -1,12 +1,5 @@
 const customTheme = {
     components: {
-      Carousel: {
-        colorBgContainer: '#B4D27A',
-        dotActiveWidth: 32,
-        dotWidth: 32,
-        dotHeight: 6,
-        lineHeight: 1,
-      },
       Button: {
         defaultColor: '#1F9A7C',
         colorPrimaryHover: '#0b6c61',

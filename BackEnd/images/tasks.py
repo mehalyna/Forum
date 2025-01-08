@@ -21,8 +21,8 @@ def celery_send_email_images():
         total_size=Sum("image_size"), count=Count("uuid")
     )
 
-    logo_total_size_kb = round(logo_data["total_size"] / 1024, 2)
-    banner_total_size_kb = round(banner_data["total_size"] / 1024, 2)
+    logo_total_size_kb = round((logo_data["total_size"] or 0) / 1024, 2)
+    banner_total_size_kb = round((banner_data["total_size"] or 0) / 1024, 2)
 
     send_email_about_banners_and_logos(
         banner_data["count"],
