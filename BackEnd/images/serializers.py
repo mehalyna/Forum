@@ -1,5 +1,8 @@
 from rest_framework import serializers
 from images.models import ProfileImage
+from PIL import Image
+from io import BytesIO
+from django.core.files.base import ContentFile
 
 from validation.validate_image import (
     validate_banner_size,
@@ -43,3 +46,41 @@ class ImageSerializer(serializers.ModelSerializer):
         validator_function(value.get("image_path"))
 
         return value
+
+    def create(self, validated_data):
+        cropped_image_x_point = validated_data.pop("x", 0)
+        cropped_image_y_point = validated_data.pop("y", 0)
+        width = validated_data.pop("width", 0)
+        height = validated_data.pop("height", 0)
+
+        if (cropped_image_x_point and 
+            cropped_image_y_point and 
+            width and
+            height):
+
+            image = validated_data.get("image_path")
+            format = validated_data.get("content_type").upper()
+
+            dimensions = (
+                cropped_image_x_point,
+                cropped_image_y_point,
+                cropped_image_x_point + width,
+                cropped_image_y_point + height
+            )
+            img = Image.open(image)
+            cropped_img = img.crop(dimensions)
+            buffer = BytesIO()
+            cropped_img.save(buffer, format=format)
+            buffer.seek(0)
+
+            image_content = ContentFile(buffer.getvalue(), name=image.name)
+            validated_data["image_path"] = image_content
+            validated_data["image_size"] = image_content.size
+
+        return super().create(validated_data)
+
+
+
+
+
+
