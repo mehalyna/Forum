@@ -1,14 +1,13 @@
 import { useState } from 'react';
 import axios from 'axios';
 import useSWR from 'swr';
-import {Descriptions, Input, Switch, Tag} from 'antd';
+import {Descriptions, Tag, Badge} from 'antd';
 import DeleteModal from './DeleteModal';
 import css from './ProfileDetail.module.css';
 
 function ProfileDetail() {
-    const [deleteModalActive, setDeleteModalActive] = useState(false);
+    const [blockModalActive, setBlockModalActive] = useState(false);
     const [profile, setProfile] = useState({});
-    const [updateSuccess, setUpdateSuccess] = useState(false);
     const profileId = usePathCompanyId();
     const url = `${process.env.REACT_APP_BASE_API_URL}/api/admin/profiles/${profileId}/`;
     const navigateToProfiles = (path) => {
@@ -18,16 +17,11 @@ function ProfileDetail() {
         {
             key: '1',
             label: 'Ім\'я',
-            children: (
-                <Input
-                    value={profile.name || ''}
-                    onChange={(e) => setProfile({ ...profile, name: e.target.value })}
-                />
-            )
+            children: profile.name
         },
         {
             key: '2',
-            label: 'Позиція:',
+            label: 'Позиція',
             children: profile.person_position
         },
         {
@@ -68,11 +62,19 @@ function ProfileDetail() {
             label: 'Телефон',
             children: profile.phone
         },
-        {
+        ...(profile.edrpou
+        ? [{
             key: '8',
             label: 'ЕРДПО',
             children: profile.edrpou
-        },
+        }]
+        : [
+            {
+            key: '8',
+            label: 'РНОКПП',
+            children: profile.rnokpp
+        }
+            ]),
         {
             key: '9',
             label: 'Адреса',
@@ -80,23 +82,14 @@ function ProfileDetail() {
         },
         {
             key: '10',
-            label: 'Видаленний',
+            label: 'Чи заблокованний профіль?',
             children: (
-                <Switch
-                    checked={profile.is_deleted || false}
-                    onChange={(checked) => setProfile({ ...profile, is_deleted: checked })}
+                <Badge
+                    status={profile.status === 'blocked' ? 'error' : 'success'}
+                    text={profile.status === 'blocked'? 'Заблокованний' : 'Активний'}
                 />
             ),
             span: 2
-        },
-        {
-            key: '11',
-            label: 'Видалити профіль',
-            children: (
-                <button className={css['button__delete']} onClick={() => setDeleteModalActive(true)}>Видалити</button>
-            ),
-            span: 2
-
         },
         {
             key: '12',
@@ -125,7 +118,16 @@ function ProfileDetail() {
                 ) : ''
             ),
             span: 2
-        }
+        },
+        {
+            key: '11',
+            label: 'Заблоковати профіль',
+            children: (
+                <button className={css['button__delete']} onClick={() => setBlockModalActive(true)}>Заблокувати</button>
+            ),
+            span: 2
+
+        },
     ];
     const fetcher = url => axios.get(url).then(res => res.data);
     const { data, error, isValidating: loading } = useSWR(url, fetcher);
@@ -133,21 +135,6 @@ function ProfileDetail() {
         setProfile(data);
     }
     console.log(data);
-    const handleSaveChanges = async () => {
-        const response = await axios.put(
-            url,
-            {
-                name: profile.name,
-                is_deleted: profile.is_deleted,
-            },
-        );
-        if (response.status !== 200) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        setUpdateSuccess(true);
-        setTimeout(() => setUpdateSuccess(false), 3000);
-    };
-
     const handleDeleteUser = async () => {
         const response = await axios.delete(url);
         if (response.status !== 204) {
@@ -160,18 +147,16 @@ function ProfileDetail() {
     return (
         <div className={css['profile-detail-page']}>
             <DeleteModal
-                active={deleteModalActive}
-                setActive={setDeleteModalActive}
+                active={blockModalActive}
+                setActive={setBlockModalActive}
                 onDelete={handleDeleteUser}
             />
             <div className={css['profile-details-section']}>
                 <ul className={css['log-section']}>
                     {loading && <li className={css['log']} >Завантаження ...</li>}
                     {error && <li className={css['log']}>Виникла помилка: {error}</li>}
-                    {updateSuccess && <li className={css['log']}>Профіль успішно оновлений!</li>}
                 </ul>
                 <Descriptions title="Profile information" bordered items={items} column={2}/>
-                <button className={css['save-button']} onClick={handleSaveChanges}>Зберегти зміни</button>
             </div>
         </div>
     );

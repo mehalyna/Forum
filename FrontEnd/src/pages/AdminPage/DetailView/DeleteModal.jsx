@@ -15,13 +15,13 @@ function DeleteModal({ active, setActive, onDelete }) {
         >
             <div className={css['modal-content']}>
                 <p className={css['cookie-text']}>
-                    Впевнені, що хочете видалити цей запис?
+                    Впевнені, що хочете заблокувати цей запис?
                 </p>
                 <button className={css['green-button']} onClick={() => setActive(false)}>
                     Скасувати
                 </button>
                 <button className={css['red-button']} onClick={onDeleteClick}>
-                    Видалити
+                    Заблокувати
                 </button>
             </div>
         </div>
