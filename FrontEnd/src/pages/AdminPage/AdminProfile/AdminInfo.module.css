@@ -1,18 +1,17 @@
 .admin-info-form {
     display: flex;
-    padding: 0px 24px;
 }
 
 .admin-info-form__container {
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
+    gap: 16px;
 }
 
 .admin-info-form__column {
     display: flex;
     width: 257px;
-    min-height: 84px;
     flex-direction: column;
     align-items: flex-start;
     gap: 4px;

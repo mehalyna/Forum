@@ -1,20 +1,22 @@
-.admin-profile__container {
-    margin-top: 40px;
-    display: flex;
-    align-items: flex-start;
-    gap: 20px;
-    flex-direction: column;
-}
-
-.admin-profile__content {
+.admin-profile__page {
     display: flex;
     flex-direction: row;
+}
+
+.admin-profile__menu-section {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.admin-profile__menu-section--title {
+    font-size: 16px;
+    font-weight: 600;
 }
 
 .admin-profile__links {
     display: flex;
     flex-direction: column;
-    padding-left: 10%;
     align-items: flex-start;
     width: var(--menu-size__admin-panel);
     gap: 12px;
