@@ -10,8 +10,7 @@ from djoser.serializers import (
     TokenCreateSerializer,
 )
 from rest_framework import serializers
-from ratelimit.decorators import RateLimitDecorator
-from ratelimit.exception import RateLimitException
+from .ratelimiters import LoginRateLimit, RateLimitException
 
 from profiles.models import Profile
 from validation.validate_password import (
@@ -137,7 +136,7 @@ class CustomTokenCreateSerializer(TokenCreateSerializer):
                 "Invalid reCAPTCHA. Please try again."
             )
 
-    @RateLimitDecorator(
+    @LoginRateLimit(
         calls=django_settings.ATTEMPTS_FOR_LOGIN,
         period=django_settings.DELAY_FOR_LOGIN,
     )
