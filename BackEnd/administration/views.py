@@ -277,30 +277,6 @@ class ContactsView(RetrieveUpdateAPIView):
         contact, _ = ContactInformation.objects.get_or_create(pk=1)
         return contact
 
-    def update(self, request, *args, **kwargs):
-        """
-        Update the contact information.
-        """
-        instance = self.get_object()
-        serializer = self.get_serializer(
-            instance, data=request.data, partial=False
-        )
-        if serializer.is_valid():
-            try:
-                serializer.save(admin_user=request.user)
-                return Response(
-                    {"message": "Contact information successfully updated."},
-                    status=status.HTTP_200_OK,
-                )
-            except Exception:
-                return Response(
-                    {
-                        "message": "Failed to save changes. Please check the database connection."
-                    },
-                    status=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                )
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 
 class CreateAdminUserView(CreateAPIView):
     """

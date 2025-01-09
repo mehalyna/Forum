@@ -58,10 +58,9 @@ class ContactsViewTest(APITestCase):
         """
         response = self.client.put("/api/admin/contacts/", self.valid_data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(
-            response.data["message"],
-            "Contact information successfully updated.",
-        )
+
+        self.assertEqual(response.data["company_name"], "Updated Company")
+        self.assertEqual(response.data["phone"], "380987654321")
 
         contact_info = ContactInformation.objects.get(pk=1)
         self.assertEqual(contact_info.company_name, "Updated Company")
