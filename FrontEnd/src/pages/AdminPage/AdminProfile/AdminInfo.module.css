@@ -73,7 +73,8 @@
 
 .admin-info-form__input {
     display: flex;
-    height: 22px;
+    box-sizing: border-box;
+    height: 40px;
     padding: 5px 12px;
     align-items: center;
     gap: 4px;

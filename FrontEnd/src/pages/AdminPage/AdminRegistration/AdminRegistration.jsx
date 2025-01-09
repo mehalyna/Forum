@@ -42,7 +42,9 @@ const AdminRegistration = () => {
     return (
         <div className={css['admin_registration-section']}>
             <div className={css['admin_registration-outer-wrapper']}>
-                <p className={css['admin_registration-section__head']}>Зареєструйте користувача, який буде виконувати функції адміністратора сайту.</p>
+                <p className={css['admin_registration-section__head']}>Зареєструйте користувача, який буде виконувати функції адміністратора сайту.
+                    <br/>На вказану електронну адресу буде надіслано згенерований для користувача пароль.
+                </p>
                 <label className={css['admin_registration-label']} htmlFor="newAdminEmail">
                     <span className={css['admin_registration-asterisk']} >*</span>
                     Електронна адреса
@@ -56,10 +58,11 @@ const AdminRegistration = () => {
                             onChange={handleInputChange}
                             type="email"
                             placeholder="Введіть електронну пошту"
-                            autoComplete="off" />
+                            autoComplete="off"
+                            value={email}/>
                     </Tooltip>
                     <div className={css['buttons-group']}>
-                        <button className={css['admin_registration-button']} onClick={handleSubmit}>Згенерувати та надіслати пароль</button>
+                        <button className={css['admin_registration-button']} onClick={handleSubmit}>Надіслати</button>
                         <button className={`${css['admin_registration-button']} ${css['cancel-button']}`} onClick={handleCancel}>Скасувати</button>
                     </div>
                 </div>

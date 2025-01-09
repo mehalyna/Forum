@@ -1,6 +1,7 @@
 .admin-profile__page {
     display: flex;
     flex-direction: row;
+    gap: 96px;
 }
 
 .admin-profile__menu-section {

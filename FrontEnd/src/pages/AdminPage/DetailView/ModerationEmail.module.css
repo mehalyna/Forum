@@ -25,7 +25,7 @@
 }
 
 .moderation_email-input {
-    width: 269px;
+    width: 320px;
     height: 40px;
     box-sizing: border-box;
     padding: 9px 12px;
@@ -37,8 +37,8 @@
 .buttons-group {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    width: 269px;
+    gap: 16px;
+    width: 320px;
 }
 
 .save-button {
