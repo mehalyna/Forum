@@ -40,11 +40,10 @@ function CategoryAdd({ onActionComplete }) {
 
     return (
         <div className={styles.CategoryAddContainer}>
-            <h3 className={styles.CategoryAddTitle}>Додайте категорію діяльності</h3>
-            <p className={styles.CategoryAddText}>Назва категорії</p>
+            <h3 className={styles.CategoryAddTitle}>Додати нову категорію</h3>
             <Input.TextArea
                 rows={1}
-                placeholder="Нова категорія"
+                placeholder="Введіть назву категорії"
                 value={categoryAddName}
                 onChange={(e) => {
                     const input = e.target.value;
@@ -55,25 +54,23 @@ function CategoryAdd({ onActionComplete }) {
             />
             {error && <p className={styles.CategoryAddError}>{error}</p>}
             <div className={styles.CategoryAddButtonsBlock}>
-                <>
-                    <Button
-                        onClick={() => {
-                            setError('');
-                            setCategoryAddName('');
-                        }}
-                    >
-                        Відмінити
-                    </Button>
-                </>
-                <>
-                    <Button
-                        type="primary"
-                        loading={isAdded}
-                        onClick={handleCategoryAdd}
-                    >
-                        Зберегти
-                    </Button>
-                </>
+                <Button
+                    type="primary"
+                    loading={isAdded}
+                    onClick={handleCategoryAdd}
+                    className={styles.CategoryAddButton}
+                >
+                    Зберегти
+                </Button>
+                <Button
+                    onClick={() => {
+                        setError('');
+                        setCategoryAddName('');
+                    }}
+                    className={styles.CategoryAddButton}
+                >
+                    Скасувати
+                </Button>
             </div>
         </div>
     );

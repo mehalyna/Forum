@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { toast } from 'react-toastify';
-import { Tooltip } from 'antd';
+import { Tooltip, InputNumber } from 'antd';
 import useSWR from 'swr';
 import axios from 'axios';
 import css from './AutoApproveDelay.module.css';
@@ -17,8 +17,7 @@ const AutoApproveDelay = () => {
     const { data, mutate } = useSWR(url, fetcher,
         { onSuccess: (data) => setDelay(data.auto_moderation_hours) });
 
-    const handleInputChange = (e) => {
-        const value = Number(e.target.value);
+    const handleInputChange = (value) => {
         setError(null);
         setDelay(value);
         if (!(1 <= value && value <= 48) || !Number.isInteger(value)) {
@@ -38,14 +37,20 @@ const AutoApproveDelay = () => {
     };
     return (
         <div className={css['autoapprove-section']}>
-            <h3 className={css['autoapprove-section__head']}>Налаштуйте час, після якого зміни будуть автоматично затверджені у разі відсутності дій з боку модератора.</h3>
+            <p className={css['autoapprove-section__head']}>Налаштуйте час, після якого зміни будуть автоматично затверджені у разі відсутності дій з боку модератора.</p>
             <label htmlFor="autoapprove" className={css['autoapprove_label']}>Час до автоматичного затвердження <br />
             (години)</label>
             <Tooltip
                 title={'Введіть значення 1-48'}
                 placement="top"
                 pointAtCenter={true}>
-                <input id="autoapprove" className={css['autoapprove-input']} type="number" step={1} onChange={handleInputChange} value={delay} />
+                <InputNumber
+                    id="autoapprove"
+                    className={css['autoapprove-input']}
+                    min={1} max={48}
+                    onChange={handleInputChange}
+                    value={delay}
+                />
             </Tooltip>
             {error &&
                 <p className={css['error-message']}>{error}</p>}

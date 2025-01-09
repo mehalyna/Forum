@@ -28,12 +28,19 @@
 
 .CategoryAddButtonsBlock {
     display: flex;
-    justify-content: space-between;
-    padding-top: 10px;
+    flex-direction: row;
+    gap: 16px;
+    width: 100%;
+}
+
+.CategoryAddButton {
+    width: 124px;
+    height: 36px;
 }
 
 .CategoryAddTextarea {
-    width: 100%;
+    min-height: 40px;
+    border-radius: 2px;
 }
 
 .CategoryAddError {

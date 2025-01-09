@@ -126,18 +126,17 @@ function FormatCategories() {
             ...getColumnSearchProps('name'),
         },
         {
-            title: '',
+            title: 'Дія',
             dataIndex: 'actions',
             key: 'actions',
+            align: 'center',
             render: (_, category) => (
-                <div style={{ textAlign: 'center' }}>
-                    <CategoriesActions
-                        category={category}
-                        onActionComplete={() => {
-                            mutate(generateUrl);
-                        }}
-                    />
-                </div>
+                <CategoriesActions
+                    category={category}
+                    onActionComplete={() => {
+                        mutate(generateUrl);
+                    }}
+                />
             ),
         },
     ];

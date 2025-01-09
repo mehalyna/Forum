@@ -39,7 +39,7 @@ function UserTable() {
         return response.data;
     }
     const { data, isValidating: loading } = useSWR(url, fetcher);
-    const users = data ? data.results : [];
+    const users = data ? data.results.map((user) => ({ ...user, key: user.id })) : [];
     const totalItems = data ? data.total_items : 0;
 
     const updateQueryParams = (newPage) => {
