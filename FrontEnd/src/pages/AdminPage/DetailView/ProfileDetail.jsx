@@ -2,7 +2,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import useSWR from 'swr';
 import {Descriptions, Tag, Badge} from 'antd';
-import DeleteModal from './DeleteModal';
+import BlockModal from './BlockModal';
 import css from './ProfileDetail.module.css';
 
 function ProfileDetail() {
@@ -10,9 +10,6 @@ function ProfileDetail() {
     const [profile, setProfile] = useState({});
     const profileId = usePathCompanyId();
     const url = `${process.env.REACT_APP_BASE_API_URL}/api/admin/profiles/${profileId}/`;
-    const navigateToProfiles = (path) => {
-        window.location.href = path;
-    };
     const items =[
         {
             key: '1',
@@ -76,32 +73,46 @@ function ProfileDetail() {
         }
             ]),
         ...(profile.is_startup && profile.is_registered
-            ? [{
+            ? [
+                {
+                    key: '8',
+                    label: 'Інформація про послуги',
+                    children: profile.service_info
+                },
+                {
+                    key: '8',
+                    label: 'Інформація про товари',
+                    children: profile.product_info
+                },
+                {
+                    key: '8',
+                    label: 'Ідея стартапу',
+                    children: profile.startup_idea
+                },
+                {
+                    key: '8',
+                    label: 'Рік заснування',
+                    children: profile.founded
+                }
+          ]
+        : profile.is_registered
+        ? [
+            {
                 key: '8',
                 label: 'Інформація про послуги',
                 children: profile.service_info
-        },
+            },
             {
                 key: '8',
                 label: 'Інформація про товари',
                 children: profile.product_info
             },
             {
-            key: '8',
-            label: 'Ідея стартапу',
-            children: profile.startup_idea
-          }]
-        : profile.is_registered
-        ? [{
                 key: '8',
-                label: 'Інформація про послуги',
-                children: profile.service_info
-        },
-            {
-                key: '8',
-                label: 'Інформація про товари',
-                children: profile.product_info
-            }]
+                label: 'Рік заснування',
+                children: profile.founded
+            }
+            ]
         : profile.is_startup
         ? [{
             key: '8',
@@ -169,21 +180,19 @@ function ProfileDetail() {
         setProfile(data);
     }
     console.log(data);
-    const handleDeleteUser = async () => {
-        const response = await axios.delete(url);
-        if (response.status !== 204) {
+    const handleBlockUser = async () => {
+        const response = await axios.patch(url, { status: 'blocked' });
+        if (response.status !== 200) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
-        setProfile({});
-        navigateToProfiles('/customadmin/profiles');
-    };
-
+        setProfile((prevProfile) => ({ ...prevProfile, status: 'blocked' }));
+        setBlockModalActive(false);    };
     return (
         <div className={css['profile-detail-page']}>
-            <DeleteModal
+            <BlockModal
                 active={blockModalActive}
                 setActive={setBlockModalActive}
-                onDelete={handleDeleteUser}
+                onDelete={handleBlockUser}
             />
             <div className={css['profile-details-section']}>
                 <ul className={css['log-section']}>
