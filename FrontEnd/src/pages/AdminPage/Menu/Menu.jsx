@@ -20,6 +20,10 @@ const MENU = [
         link: '/customadmin/automoderation/'
     },
     {
+        title: 'Керування категоріями діяльності',
+        link: '/customadmin/categories/'
+    },
+    {
         title: 'Статистика компаній',
         link: '/customadmin/statistics/'
     },
