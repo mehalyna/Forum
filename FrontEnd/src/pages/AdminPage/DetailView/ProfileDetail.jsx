@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import {useState} from 'react';
 import axios from 'axios';
 import useSWR from 'swr';
 import {Descriptions, Tag, Badge} from 'antd';
@@ -10,7 +10,7 @@ function ProfileDetail() {
     const [profile, setProfile] = useState({});
     const profileId = usePathCompanyId();
     const url = `${process.env.REACT_APP_BASE_API_URL}/api/admin/profiles/${profileId}/`;
-    const items =[
+    const items = [
         {
             key: '1',
             label: 'Ім\'я',
@@ -37,10 +37,10 @@ function ProfileDetail() {
             label: 'Активності',
             children: (
                 Array.isArray(profile.activities)
-                ? profile.activities.map(activity => (
-                    <Tag color="cyan" key={activity}>{activity}</Tag>
-                  ))
-                : ''
+                    ? profile.activities.map(activity => (
+                        <Tag color="cyan" key={activity}>{activity}</Tag>
+                    ))
+                    : ''
             )
         },
         {
@@ -48,29 +48,29 @@ function ProfileDetail() {
             label: 'Категорії',
             children: (
                 Array.isArray(profile.categories)
-                ? profile.categories.map(category => (
-                    <Tag color="blue" key={category}>{category}</Tag>
-                  ))
-                : ''
+                    ? profile.categories.map(category => (
+                        <Tag color="blue" key={category}>{category}</Tag>
+                    ))
+                    : ''
             )
-    },
+        },
         {
             key: '7',
             label: 'Телефон',
             children: profile.phone
         },
         ...(profile.edrpou
-        ? [{
-            key: '8',
-            label: 'ЕРДПО',
-            children: profile.edrpou
-        }]
-        : [
-            {
-            key: '8',
-            label: 'РНОКПП',
-            children: profile.rnokpp
-        }
+            ? [{
+                key: '8',
+                label: 'ЕРДПО',
+                children: profile.edrpou
+            }]
+            : [
+                {
+                    key: '8',
+                    label: 'РНОКПП',
+                    children: profile.rnokpp
+                }
             ]),
         ...(profile.is_startup && profile.is_registered
             ? [
@@ -94,32 +94,32 @@ function ProfileDetail() {
                     label: 'Рік заснування',
                     children: profile.founded
                 }
-          ]
-        : profile.is_registered
-        ? [
-            {
-                key: '8',
-                label: 'Інформація про послуги',
-                children: profile.service_info
-            },
-            {
-                key: '8',
-                label: 'Інформація про товари',
-                children: profile.product_info
-            },
-            {
-                key: '8',
-                label: 'Рік заснування',
-                children: profile.founded
-            }
             ]
-        : profile.is_startup
-        ? [{
-            key: '8',
-            label: 'Ідея стартапу',
-            children: profile.startup_idea
-          }]
-        : []),
+            : profile.is_registered
+                ? [
+                    {
+                        key: '8',
+                        label: 'Інформація про послуги',
+                        children: profile.service_info
+                    },
+                    {
+                        key: '8',
+                        label: 'Інформація про товари',
+                        children: profile.product_info
+                    },
+                    {
+                        key: '8',
+                        label: 'Рік заснування',
+                        children: profile.founded
+                    }
+                ]
+                : profile.is_startup
+                    ? [{
+                        key: '8',
+                        label: 'Ідея стартапу',
+                        children: profile.startup_idea
+                    }]
+                    : []),
         {
             key: '9',
             label: 'Адреса',
@@ -131,7 +131,7 @@ function ProfileDetail() {
             children: (
                 <Badge
                     status={profile.status === 'blocked' ? 'error' : 'success'}
-                    text={profile.status === 'blocked'? 'Заблокованний' : 'Активний'}
+                    text={profile.status === 'blocked' ? 'Заблокованний' : 'Активний'}
                 />
             ),
             span: 2
@@ -175,18 +175,19 @@ function ProfileDetail() {
         },
     ];
     const fetcher = url => axios.get(url).then(res => res.data);
-    const { data, error, isValidating: loading } = useSWR(url, fetcher);
+    const {data, error, isValidating: loading} = useSWR(url, fetcher);
     if (data && !Object.keys(profile).length) {
         setProfile(data);
     }
     console.log(data);
     const handleBlockUser = async () => {
-        const response = await axios.patch(url, { status: 'blocked' });
+        const response = await axios.patch(url, {status: 'blocked'});
         if (response.status !== 200) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
-        setProfile((prevProfile) => ({ ...prevProfile, status: 'blocked' }));
-        setBlockModalActive(false);    };
+        setProfile((prevProfile) => ({...prevProfile, status: 'blocked'}));
+        setBlockModalActive(false);
+    };
     return (
         <div className={css['profile-detail-page']}>
             <BlockModal
@@ -196,7 +197,7 @@ function ProfileDetail() {
             />
             <div className={css['profile-details-section']}>
                 <ul className={css['log-section']}>
-                    {loading && <li className={css['log']} >Завантаження ...</li>}
+                    {loading && <li className={css['log']}>Завантаження ...</li>}
                     {error && <li className={css['log']}>Виникла помилка: {error}</li>}
                 </ul>
                 <Descriptions title="Profile information" bordered items={items} column={2}/>
@@ -209,4 +210,5 @@ function usePathCompanyId() {
     const pathname = window.location.pathname;
     return pathname.substring(pathname.lastIndexOf('/') + 1);
 }
+
 export default ProfileDetail;
