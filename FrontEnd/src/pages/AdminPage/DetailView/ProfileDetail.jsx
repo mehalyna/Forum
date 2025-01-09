@@ -193,7 +193,7 @@ function ProfileDetail() {
             <BlockModal
                 active={blockModalActive}
                 setActive={setBlockModalActive}
-                onDelete={handleBlockUser}
+                onBlock={handleBlockUser}
             />
             <div className={css['profile-details-section']}>
                 <ul className={css['log-section']}>

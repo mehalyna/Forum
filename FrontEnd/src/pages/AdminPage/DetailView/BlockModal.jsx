@@ -1,10 +1,10 @@
 import css from './DeleteModal.module.css';
 import PropTypes from 'prop-types';
 
-function BlockModal({ active, setActive, onDelete }) {
+function BlockModal({ active, setActive, onBlock }) {
 
-    const onDeleteClick = async () => {
-        await onDelete();
+    const onBlockClick = async () => {
+        await onBlock();
         setActive(false);
     };
 
@@ -20,7 +20,7 @@ function BlockModal({ active, setActive, onDelete }) {
                 <button className={css['green-button']} onClick={() => setActive(false)}>
                     Скасувати
                 </button>
-                <button className={css['red-button']} onClick={onDeleteClick}>
+                <button className={css['red-button']} onClick={onBlockClick}>
                     Заблокувати
                 </button>
             </div>
@@ -31,7 +31,7 @@ function BlockModal({ active, setActive, onDelete }) {
 BlockModal.propTypes = {
     active: PropTypes.bool.isRequired,
     setActive: PropTypes.func.isRequired,
-    onDelete: PropTypes.func.isRequired
+    onBlock: PropTypes.func.isRequired
 };
 export default BlockModal;
 
