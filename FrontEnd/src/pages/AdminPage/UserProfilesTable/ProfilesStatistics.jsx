@@ -89,7 +89,7 @@ function ProfilesStatistics() {
   };
   const chartData = activities
   ?{
-      labels: ['Виробники', 'Імпортери', 'Роздрібніки', 'Інші'],
+      labels: ['Виробники', 'Імпортери', 'Роздрібніки', 'HORECA', 'Інші'],
       datasets: [
           {
               label: 'Типи компаній',
@@ -97,6 +97,7 @@ function ProfilesStatistics() {
                   activities.manufacturers_count,
                   activities.importers_count,
                   activities.retail_networks_count,
+                  activities.horeca_count,
                   activities.others_count
               ],
               backgroundColor: [

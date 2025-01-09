@@ -192,6 +192,7 @@ class ProfileStatisticsActivitiesView(RetrieveAPIView):
             retail_networks_count=Count(
                 "pk", filter=Q(activities__name="Роздрібна мережа")
             ),
+            horeca_count=Count("pk", filter=Q(activities__name="HORECA")),
             others_count=Count(
                 "pk", filter=Q(activities__name="Інші послуги")
             ),

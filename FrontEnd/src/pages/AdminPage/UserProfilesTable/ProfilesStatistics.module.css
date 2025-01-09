@@ -11,8 +11,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100%;
-  width: 600px;
+  height: 250px;
 }
 
 .statistics-title {

@@ -275,6 +275,7 @@ class StatisticsActivitiesSerializer(serializers.Serializer):
     manufacturers_count = serializers.IntegerField()
     importers_count = serializers.IntegerField()
     retail_networks_count = serializers.IntegerField()
+    horeca_count =  serializers.IntegerField()
     others_count = serializers.IntegerField()
 
 
