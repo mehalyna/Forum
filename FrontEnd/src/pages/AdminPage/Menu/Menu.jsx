@@ -25,6 +25,11 @@ const MENU = [
     },
     {
         id: 'am5',
+        title: 'Керування категоріями діяльності',
+        link: '/customadmin/categories/'
+    },
+    {
+        id: 'am6',
         title: 'Статистика компаній',
         link: '/customadmin/statistics/'
     },
@@ -33,12 +38,12 @@ const MENU = [
 
 const SUPERUSER_MENU = [
     {
-        id: 'am6',
+        id: 'am10',
         title: 'Пошта адміністратора',
         link: '/customadmin/email/'
     },
     {
-        id: 'am7',
+        id: 'am11',
         title: 'Реєстрація адміністратора',
         link: '/customadmin/admin-create/'
     }
