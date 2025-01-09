@@ -1,3 +1,7 @@
+.tag {
+    margin: 0 8px 8px 0;
+}
+
 .profile-detail-page {
     display: flex;
     gap: 50px;

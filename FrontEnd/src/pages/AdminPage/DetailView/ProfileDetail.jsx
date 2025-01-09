@@ -38,7 +38,7 @@ function ProfileDetail() {
             children: (
                 Array.isArray(profile.activities)
                     ? profile.activities.map(activity => (
-                        <Tag color="cyan" key={activity}>{activity}</Tag>
+                        <Tag className={css['tag']} color="cyan" key={activity}>{activity}</Tag>
                     ))
                     : ''
             )
@@ -49,7 +49,7 @@ function ProfileDetail() {
             children: (
                 Array.isArray(profile.categories)
                     ? profile.categories.map(category => (
-                        <Tag color="blue" key={category}>{category}</Tag>
+                        <Tag className={css['tag']} color="blue" key={category}>{category}</Tag>
                     ))
                     : ''
             )
