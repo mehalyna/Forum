@@ -19,6 +19,7 @@ import ModerationEmail from '../pages/AdminPage/DetailView/ModerationEmail';
 import Contacts from '../pages/AdminPage/DetailView/Contacts';
 import AdminProfilePage from '../pages/AdminPage/AdminProfile/AdminProfilePage';
 import AdminRegistration from '../pages/AdminPage/AdminRegistration/AdminRegistration';
+import FormatCategories from '../pages/AdminPage/FormatCategories/CategoriesTable';
 import ProfilesStatistics from '../pages/AdminPage/UserProfilesTable/ProfilesStatistics';
 
 import customAdminTheme from '../pages/CustomThemes/customAdminTheme.js';
@@ -48,6 +49,7 @@ function AdminRouter() {
             )}
             <Route path="/contacts" element={<Contacts />} />
             <Route path="/admin-profile/*" element={<AdminProfilePage />} />
+            <Route path="/categories/" element={<FormatCategories />} />
             <Route path="/statistics" element={<ProfilesStatistics />} />
         </>
     ) : (

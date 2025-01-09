@@ -1,0 +1,43 @@
+.CategoryAddContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 341px;
+
+}
+
+.CategoryAddTitle {
+    width: 100%;
+}
+
+.CategoryAddText {
+    width: 100%;
+}
+
+.CategoryAddContainer,
+.CategoryAddTitle,
+.CategoryAddText {
+    color: #000;
+    font-feature-settings: 'calt' off;
+    text-decoration: none;
+    font-family: var(--font__admin-panel);
+    font-size: 14px;
+    line-height: 22px;
+    letter-spacing: -0.14px;
+}
+
+.CategoryAddButtonsBlock {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 10px;
+}
+
+.CategoryAddTextarea {
+    width: 100%;
+}
+
+.CategoryAddError {
+    color: red;
+    font-size: 12px;
+    margin: 0;
+}
