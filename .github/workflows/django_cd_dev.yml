@@ -33,8 +33,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Docker compose UP container with Redis
-        run: docker compose -f docker-compose.redis.yml up -d --build
+
       - name: Docker compouse DOWN old Django container and frontend container (+internal nginx)
         run:  docker compose -f docker-compose.dev.yml down -v
       - name: Docker compouse UP Django container and frontend container (+internal nginx)
