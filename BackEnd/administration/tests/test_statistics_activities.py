@@ -13,23 +13,24 @@ class ProfileStatisticsActivitiesTest(APITestCase):
             "Роздрібна мережа": Activity.objects.create(
                 name="Роздрібна мережа"
             ),
+            "HORECA": Activity.objects.create(name="HORECA"),
             "Інші послуги": Activity.objects.create(name="Інші послуги"),
         }
         self.profiles = []
         profile1 = AdminProfileFactory()
-        profile1.activities.set([self.activities["Виробник"]])
+        profile1.activities.set([self.activities["Виробник"], self.activities["HORECA"]])
         self.profiles.append(profile1)
 
         profile2 = AdminProfileFactory()
-        profile2.activities.set([self.activities["Імпортер"]])
+        profile2.activities.set([self.activities["Імпортер"], self.activities["HORECA"]])
         self.profiles.append(profile2)
 
         profile3 = AdminProfileFactory()
-        profile3.activities.set([self.activities["Роздрібна мережа"]])
+        profile3.activities.set([self.activities["Роздрібна мережа"], self.activities["HORECA"]])
         self.profiles.append(profile3)
 
         profile4 = AdminProfileFactory()
-        profile4.activities.set([self.activities["Інші послуги"]])
+        profile4.activities.set([self.activities["Інші послуги"], self.activities["HORECA"]])
         self.profiles.append(profile4)
 
         profile5 = AdminProfileFactory()
@@ -48,6 +49,7 @@ class ProfileStatisticsActivitiesTest(APITestCase):
             "manufacturers_count": 2,
             "importers_count": 1,
             "retail_networks_count": 1,
+            "horeca_count": 4,
             "others_count": 1,
         }
         self.assertEqual(response.json(), data)
