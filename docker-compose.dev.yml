@@ -118,11 +118,6 @@ services:
       - RECAPTCHA_URL=${RECAPTCHA_URL}
     networks:
       - forum_network
-  redis:
-    image: redis:7
-    container_name: redis
-    networks:
-      - forum_network
 networks:
   forum_network:
 
