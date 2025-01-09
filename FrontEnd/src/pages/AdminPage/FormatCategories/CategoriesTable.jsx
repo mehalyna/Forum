@@ -130,18 +130,30 @@ function FormatCategories() {
             dataIndex: 'actions',
             key: 'actions',
             render: (_, category) => (
-                <CategoriesActions
-                    category={category}
-                    onActionComplete={() => {
-                        mutate(generateUrl);
-                    }}
-                />
+                <div style={{ textAlign: 'center' }}>
+                    <CategoriesActions
+                        category={category}
+                        onActionComplete={() => {
+                            mutate(generateUrl);
+                        }}
+                    />
+                </div>
             ),
         },
     ];
 
     return (
         <div className={css['table-container']}>
+            <Pagination
+                showSizeChanger
+                current={currentPage}
+                pageSize={pageSize}
+                total={data?.total_items || 0}
+                onChange={handlePageChange}
+                onShowSizeChange={handlePageChange}
+                showTitle={false}
+                className={css['pagination']}
+            />
             <Table
                 columns={columns}
                 dataSource={data?.results || []}
