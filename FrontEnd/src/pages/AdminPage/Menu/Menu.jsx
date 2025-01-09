@@ -12,16 +12,16 @@ const MENU = [
         link: '/customadmin/profiles/'
     },
     {
+        title: 'Керування категоріями діяльності',
+        link: '/customadmin/categories/'
+    },
+    {
         title: 'Керування контактами',
         link: '/customadmin/contacts/'
     },
     {
         title: 'Налаштування часу автоапруву',
         link: '/customadmin/automoderation/'
-    },
-    {
-        title: 'Керування категоріями діяльності',
-        link: '/customadmin/categories/'
     },
     {
         title: 'Статистика компаній',

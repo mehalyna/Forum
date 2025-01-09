@@ -42,6 +42,7 @@ const customAdminTheme = {
       fontFamily: 'Geologica',
       colorPrimaryActive: '#000000',
       colorPrimaryHover: '#292929',
+      borderRadius: '4px',
     }
   };
 
