@@ -18,19 +18,27 @@ class ProfileStatisticsActivitiesTest(APITestCase):
         }
         self.profiles = []
         profile1 = AdminProfileFactory()
-        profile1.activities.set([self.activities["Виробник"], self.activities["HORECA"]])
+        profile1.activities.set(
+            [self.activities["Виробник"], self.activities["HORECA"]]
+        )
         self.profiles.append(profile1)
 
         profile2 = AdminProfileFactory()
-        profile2.activities.set([self.activities["Імпортер"], self.activities["HORECA"]])
+        profile2.activities.set(
+            [self.activities["Імпортер"], self.activities["HORECA"]]
+        )
         self.profiles.append(profile2)
 
         profile3 = AdminProfileFactory()
-        profile3.activities.set([self.activities["Роздрібна мережа"], self.activities["HORECA"]])
+        profile3.activities.set(
+            [self.activities["Роздрібна мережа"], self.activities["HORECA"]]
+        )
         self.profiles.append(profile3)
 
         profile4 = AdminProfileFactory()
-        profile4.activities.set([self.activities["Інші послуги"], self.activities["HORECA"]])
+        profile4.activities.set(
+            [self.activities["Інші послуги"], self.activities["HORECA"]]
+        )
         self.profiles.append(profile4)
 
         profile5 = AdminProfileFactory()
