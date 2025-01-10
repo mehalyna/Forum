@@ -1,30 +1,29 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import { useAuth } from '../../../hooks';
 import css from './Menu.module.css';
 
 const MENU = [
     {
-        id: 'am1',
         title: 'Керування користувачами',
         link: '/customadmin/users/'
     },
     {
-        id: 'am2',
         title: 'Керування компаніями',
         link: '/customadmin/profiles/'
     },
     {
-        id: 'am3',
+        title: 'Керування категоріями діяльності',
+        link: '/customadmin/categories/'
+    },
+    {
         title: 'Керування контактами',
         link: '/customadmin/contacts/'
     },
     {
-        id: 'am4',
         title: 'Налаштування часу автоапруву',
         link: '/customadmin/automoderation/'
     },
     {
-        id: 'am5',
         title: 'Статистика компаній',
         link: '/customadmin/statistics/'
     },
@@ -33,12 +32,10 @@ const MENU = [
 
 const SUPERUSER_MENU = [
     {
-        id: 'am6',
         title: 'Пошта адміністратора',
         link: '/customadmin/email/'
     },
     {
-        id: 'am7',
         title: 'Реєстрація адміністратора',
         link: '/customadmin/admin-create/'
     }
@@ -46,20 +43,23 @@ const SUPERUSER_MENU = [
 ];
 
 function Menu() {
-    const { isSuperUser } = useAuth();
+    const { isStaff, isAuth, isSuperUser } = useAuth();
+    const { pathname } = useLocation();
+    const hideMenu = pathname.includes('/admin-profile/');
+    const menuItems = [...MENU, ...(isSuperUser ? SUPERUSER_MENU : [])];
+    const renderMenu = isStaff && isAuth && !hideMenu;
 
     return (
-        <div className={css['menu-section']}>
-            {[
-                ...MENU,
-                ...(isSuperUser ? SUPERUSER_MENU : [])
-            ].map((element) => (
-                <NavLink
-                    className={({ isActive }) => (`${css['menu-section-element']} ${isActive && css['menu-section-element__active']}`)}
-                    key={element.id} to={element.link}>{element.title}
-                </NavLink>
-            ))}
-        </div>
+        renderMenu ? (
+            <div className={css['menu-section']}>
+                {menuItems.map((element) => (
+                    <NavLink
+                        className={({ isActive }) => (`${css['menu-section-element']} ${isActive && css['menu-section-element__active']}`)}
+                        key={element.title} to={element.link}>{element.title}
+                    </NavLink>
+                ))}
+            </div>
+        ) : null
     );
 }
 

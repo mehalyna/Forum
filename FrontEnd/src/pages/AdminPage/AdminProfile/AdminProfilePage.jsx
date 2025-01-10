@@ -2,7 +2,6 @@ import { NavLink, Route, Routes } from 'react-router-dom';
 
 import { useAuth } from '../../../hooks';
 
-import BreadCrumbs from '../../../components/BreadCrumbs/BreadCrumbs';
 import ChangeAdminPassword from './ChangeAdminPassword';
 import AdminInfo from './AdminInfo';
 
@@ -24,9 +23,9 @@ const AdminProfilePage = () => {
     const { user, mutate } = useAuth();
 
     return (
-        <div className={classes['admin-profile__container']}>
-            <BreadCrumbs currentPage="Профіль адміністратора" user={user}/>
-            <div className={classes['admin-profile__content']}>
+        <div className={classes['admin-profile__page']}>
+            <div className={classes['admin-profile__menu-section']}>
+                <p className={classes['admin-profile__menu-section--title']}>Профіль адміністратора</p>
                 <div className={classes['admin-profile__links']}>
                     {ADMIN_PAGE_TABS.map((element) => (
                         <NavLink
@@ -38,15 +37,15 @@ const AdminProfilePage = () => {
                         </NavLink>
                     ))}
                 </div>
-                <Routes>
-                    <Route
-                        path="admin-info"
-                        element={<AdminInfo user={user} mutate={mutate} />} />
-                    <Route
-                        path="change-password"
-                        element={<ChangeAdminPassword user={user}/>} />
-                </Routes>
             </div>
+            <Routes>
+                <Route
+                    path="admin-info"
+                    element={<AdminInfo user={user} mutate={mutate} />} />
+                <Route
+                    path="change-password"
+                    element={<ChangeAdminPassword user={user}/>} />
+            </Routes>
         </div>
     );
 };
