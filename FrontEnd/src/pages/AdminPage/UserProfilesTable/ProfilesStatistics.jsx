@@ -5,7 +5,7 @@ import { Descriptions, Segmented, Select, DatePicker } from 'antd';
 import Loader from '../../../components/Loader/Loader';
 import css from './ProfilesStatistics.module.css';
 import React from 'react';
-import ActivitiesBarChart from './ActivitiesBarChart';
+import ActivitiesBarChart from '../Charts/ActivitiesBarChart';
 
 const { Option } = Select;
 
