@@ -1,0 +1,22 @@
+.main-page {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    color: var(--font-color__admin-panel);
+}
+
+.main-page__content {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.intro-text {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.text-item {
+    margin-bottom: 20px;
+    font-size: 16px;
+}

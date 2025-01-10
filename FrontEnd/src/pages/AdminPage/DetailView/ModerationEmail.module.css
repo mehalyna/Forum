@@ -1,32 +1,56 @@
 .moderation_email-section {
     display: flex;
     flex-direction: column;
-    padding: 20px;
-    gap: 10px;
+    gap: 20px;
+}
+
+.moderation_email-section__head {
+    font-size: 14px;
+    font-weight: normal;
+}
+
+.moderation_email-asterisk {
+    font-family: var(--font-main);
+    font-size: 14px;
+    padding-right: 3px;
+    color: var(--notification-text-color__admin-panel);
+}
+
+.moderation_email-label {
+    color: var(--main-black-90, #292E32);
+    font-family: var(--font-main);
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: -0.01em;
 }
 
 .moderation_email-input {
-    width: 250px;
-    height: 22px;
-    padding: 0 2px;
+    width: 320px;
+    height: 40px;
+    box-sizing: border-box;
+    padding: 9px 12px;
+    font-size: 14px;
+    border: 1px solid var(--border-input__admin-panel);
+    border-radius: 2px;
+}
+
+.buttons-group {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+    width: 320px;
 }
 
 .save-button {
     display: flex;
-    padding: 5px 15px;
+    padding: 7px 15px;
     justify-content: center;
     align-items: center;
     gap: 10px;
-    width: 150px;
-
+    width: 124px;
     border-radius: 4px;
-    border: 1px solid #1F9A7C;
-    background: #1F9A7C;
-
-    box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.04);
-
-    /* Button Text */
-    color: #FFF;
+    background: var(--main-button-color);
+    color: var(--main-button-text-color);
     text-align: center;
     font-feature-settings: 'calt' off;
     text-decoration: none;
@@ -37,6 +61,20 @@
     line-height: 20px;
     letter-spacing: -0.16px;
     cursor: pointer;
+}
+
+.cancel-button {
+    background-color: var(--light-button-color);
+    border: 1px solid var(--light-button-border-color);
+    color: var(--light-button-text-color);
+}
+
+.save-button:hover {
+    background: var(--main-button-hover-color);
+}
+
+.cancel-button:hover {
+    background: var(--light-button-hover-color);
 }
 
 .error-message {
