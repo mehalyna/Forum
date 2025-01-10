@@ -61,8 +61,14 @@ function ActivitiesBarChart() {
                 display: true,
                 text: 'Статистика по типам компаній',
             },
+            scales: {
+            y: {
+                ticks: {
+                    stepSize: 1,
+                },
+            },
+    },
         },
-        maintainAspectRatio: false,
     };
     return (
         <div className={css['chart-container']}>

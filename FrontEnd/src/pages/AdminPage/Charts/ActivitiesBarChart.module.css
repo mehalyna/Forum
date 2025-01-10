@@ -1,8 +1,4 @@
 .chart-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  height: 250px;
   width: 400px;
 }
 
@@ -13,6 +9,7 @@
   padding: 10px;
   border-radius: 4px;
   margin-top: 10px;
+
 }
 
 .loader-container {
