@@ -30,7 +30,7 @@ async function fetcher(url) {
 
 function ActivitiesBarChart() {
     const baseUrl = process.env.REACT_APP_BASE_API_URL;
-    const activities_url = `${baseUrl}/api/admin/profiles/statistics-activities/`;
+    const activities_url = `${baseUrl}/api/admin/profiles/statistics/`;
     const {data: activities, error: activitiesError, isLoading: activitiesLoading} = useSWR(activities_url, fetcher);
     const chartData = activities
         ? {

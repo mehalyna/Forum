@@ -97,7 +97,7 @@ class AdminUserListSerializer(serializers.ModelSerializer):
             "is_superuser": obj.is_superuser,
             "is_deleted": obj.email.startswith("is_deleted_"),
             "is_inactive": not obj.is_active
-            and not obj.email.startswith("is_deleted_"),
+                           and not obj.email.startswith("is_deleted_"),
         }
         return data
 
@@ -274,3 +274,11 @@ class StatisticsSerializer(serializers.Serializer):
     retail_networks_count = serializers.IntegerField()
     horeca_count = serializers.IntegerField()
     others_count = serializers.IntegerField()
+
+
+class MonthlyProfileStatisticsSerializer(serializers.Serializer):
+    month = serializers.IntegerField()
+    year = serializers.IntegerField()
+    investors_count = serializers.IntegerField()
+    startups_count = serializers.IntegerField()
+    startup_investor_count = serializers.IntegerField()

@@ -15,7 +15,6 @@ from administration.views import (
     CategoriesListView,
     CategoryDetailView,
     SendMessageView,
-    ProfileStatisticsActivitiesView,
 )
 
 app_name = "administration"
@@ -28,11 +27,6 @@ urlpatterns = [
         "profiles/statistics/",
         ProfileStatisticsView.as_view(),
         name="profile-statistics",
-    ),
-    path(
-        "profiles/statistics-activities/",
-        ProfileStatisticsActivitiesView.as_view(),
-        name="profile-statistics-activities",
     ),
     path(
         "profiles/statistics/monthly/",
