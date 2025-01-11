@@ -1,8 +1,12 @@
-from django.db.models.functions import Concat
-from django.db.models import F, Value, CharField
+from django.db.models.functions import (
+    Concat,
+    TruncMonth,
+    ExtractMonth,
+    ExtractYear,
+)
+from django.db.models import F, Value, CharField, Count, Q
 from django.http import JsonResponse
 from django.views import View
-from django.db.models import Count, Q
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.types import OpenApiTypes
 
@@ -21,7 +25,10 @@ from rest_framework.generics import (
     CreateAPIView,
 )
 
-from administration.serializers import AdminRegistrationSerializer
+from administration.serializers import (
+    AdminRegistrationSerializer,
+    StatisticsActivitiesSerializer,
+)
 from forum.settings import CONTACTS_INFO
 from administration.serializers import (
     AdminCompanyListSerializer,
@@ -33,6 +40,7 @@ from administration.serializers import (
     CategoriesListSerializer,
     CategoryDetailSerializer,
     StatisticsSerializer,
+    MonthlyProfileStatisticsSerializer,
 )
 from administration.pagination import ListPagination
 from administration.models import AutoModeration, ModerationEmail
@@ -46,6 +54,7 @@ from .filters import (
     CategoriesFilter,
     ProfilesFilter,
     ProfileStatisticsFilter,
+    MonthlyProfileFilter,
 )
 from utils.administration.send_email_notification import send_email_to_user
 
@@ -174,6 +183,61 @@ class ProfileStatisticsView(RetrieveAPIView):
                 "pk", filter=Q(activities__name="Інші послуги")
             ),
         )
+
+
+class ProfileStatisticsActivitiesView(RetrieveAPIView):
+    """
+    Count of companies in terms of their activities
+    """
+
+    permission_classes = [IsStaffUser]
+    serializer_class = StatisticsActivitiesSerializer
+
+    def get_object(self):
+        queryset = self.filter_queryset(Profile.objects.all())
+        return queryset.aggregate(
+            manufacturers_count=Count(
+                "pk", filter=Q(activities__name="Виробник")
+            ),
+            importers_count=Count("pk", filter=Q(activities__name="Імпортер")),
+            retail_networks_count=Count(
+                "pk", filter=Q(activities__name="Роздрібна мережа")
+            ),
+            horeca_count=Count("pk", filter=Q(activities__name="HORECA")),
+            others_count=Count(
+                "pk", filter=Q(activities__name="Інші послуги")
+            ),
+        )
+
+
+class MonthlyProfileStatisticsView(ListAPIView):
+    permission_classes = [IsStaffUser]
+    serializer_class = MonthlyProfileStatisticsSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = MonthlyProfileFilter
+
+    def get_queryset(self):
+        queryset = (
+            Profile.objects.annotate(
+                month_datetime=TruncMonth("created_at"),
+                month=ExtractMonth("created_at"),
+                year=ExtractYear("created_at"),
+            )
+            .values("month", "year")
+            .annotate(
+                investors_count=Count(
+                    "pk", filter=Q(is_registered=True, is_startup=False)
+                ),
+                startups_count=Count(
+                    "pk", filter=Q(is_startup=True, is_registered=False)
+                ),
+                startup_investor_count=Count(
+                    "pk", filter=Q(is_startup=True, is_registered=True)
+                ),
+            )
+            .order_by("month_datetime")
+        )
+        return queryset
 
 
 @extend_schema(

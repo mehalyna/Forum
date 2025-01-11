@@ -214,9 +214,6 @@ function ProfilesTable() {
         if (status === 'blocked') {
             tags.push(<Tag color="#ffaebc" key="deleted">Заблокована</Tag>);
         }
-        if (status === 'active') {
-            tags.push(<Tag color="#b4f8c8" key="deleted">Активна</Tag>);
-        }
         if (status === 'approved') {
             tags.push(<Tag color="#7cf3a0" key="deleted">Підтверджена</Tag>);
         }
@@ -360,7 +357,6 @@ function ProfilesTable() {
                 { text: 'Не визначена', value: 'undefined' },
                 { text: 'На модерації', value: 'pending' },
                 { text: 'Заблокована', value: 'blocked' },
-                { text: 'Активна', value: 'active' },
                 { text: 'Підтверджена', value: ['approved', 'auto_approved']},
             ],
             onFilter: (value, record) => {
