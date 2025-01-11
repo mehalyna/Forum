@@ -4,7 +4,6 @@
   align-items: flex-start;
   width: 100%;
   max-width: 400px;
-  padding: 30px;
 }
 
 .statistics-title {
@@ -33,7 +32,7 @@
 
 .error {
   color: #f5222d;
-  background-color: #fff1f0; 
+  background-color: #fff1f0;
   border: 1px solid #ffa39e;
   padding: 10px;
   border-radius: 4px;

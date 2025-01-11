@@ -1,5 +1,7 @@
 .table-container {
-    overflow-x: auto;
+    width: 100%;
+    max-width: 500px;
+    padding-left: 100px;
 }
 
 .icon {
@@ -28,7 +30,7 @@
     margin-top: 16px;
     text-align: center;
     justify-content: center;
-    margin-bottom: 16px;
+    margin-bottom: 24px;
 }
 
 .icon {
@@ -40,5 +42,5 @@
 .filteredIcon {
     font-size: 25px;
     font-weight: bold;
-    color: #1f9a7c;
+    color: #46c636;
 }
