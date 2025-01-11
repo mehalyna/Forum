@@ -162,6 +162,17 @@ class ProfileStatisticsView(RetrieveAPIView):
             investors_count=Count("pk", filter=Q(is_registered=True)),
             startups_count=Count("pk", filter=Q(is_startup=True)),
             blocked_companies_count=Count("pk", filter=Q(status="blocked")),
+            manufacturers_count=Count(
+                "pk", filter=Q(activities__name="Виробник")
+            ),
+            importers_count=Count("pk", filter=Q(activities__name="Імпортер")),
+            retail_networks_count=Count(
+                "pk", filter=Q(activities__name="Роздрібна мережа")
+            ),
+            horeca_count=Count("pk", filter=Q(activities__name="HORECA")),
+            others_count=Count(
+                "pk", filter=Q(activities__name="Інші послуги")
+            ),
         )
 
 
