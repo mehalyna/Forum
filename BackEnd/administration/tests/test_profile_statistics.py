@@ -61,7 +61,7 @@ class TestProfileStatisticsStaff(APITestCase):
             "importers_count": 1,
             "retail_networks_count": 1,
             "horeca_count": 2,
-            "others_count": 0
+            "others_count": 0,
         }
         print(response.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -78,7 +78,7 @@ class TestProfileStatisticsStaff(APITestCase):
             "importers_count": 1,
             "retail_networks_count": 1,
             "horeca_count": 1,
-            "others_count": 0
+            "others_count": 0,
         }
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data, data)
@@ -96,7 +96,7 @@ class TestProfileStatisticsStaff(APITestCase):
             "importers_count": 1,
             "retail_networks_count": 1,
             "horeca_count": 1,
-            "others_count": 0
+            "others_count": 0,
         }
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data, data)
@@ -114,7 +114,7 @@ class TestProfileStatisticsStaff(APITestCase):
             "importers_count": 0,
             "retail_networks_count": 0,
             "horeca_count": 1,
-            "others_count": 0
+            "others_count": 0,
         }
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data, data)
@@ -132,7 +132,7 @@ class TestProfileStatisticsStaff(APITestCase):
             "importers_count": 0,
             "retail_networks_count": 0,
             "horeca_count": 1,
-            "others_count": 0
+            "others_count": 0,
         }
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data, data)
