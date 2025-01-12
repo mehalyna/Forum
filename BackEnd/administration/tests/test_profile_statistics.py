@@ -1,6 +1,7 @@
 from rest_framework.test import APITestCase
 from rest_framework import status
 from administration.factories import AdminUserFactory, AdminProfileFactory
+from profiles.models import Activity
 from utils.unittest_helper import utc_datetime
 
 
@@ -8,6 +9,17 @@ class TestProfileStatisticsStaff(APITestCase):
     def setUp(self):
         self.user = AdminUserFactory()
         self.client.force_authenticate(self.user)
+
+        self.activities = {
+            "Виробник": Activity.objects.create(name="Виробник"),
+            "Імпортер": Activity.objects.create(name="Імпортер"),
+            "Роздрібна мережа": Activity.objects.create(
+                name="Роздрібна мережа"
+            ),
+            "HORECA": Activity.objects.create(name="HORECA"),
+            "Інші послуги": Activity.objects.create(name="Інші послуги"),
+        }
+
         self.test_startup_user = AdminUserFactory(is_staff=False)
         self.test_investor_user = AdminUserFactory(is_staff=False)
         self.test_blocked_company_user = AdminUserFactory(is_staff=False)
@@ -15,16 +27,27 @@ class TestProfileStatisticsStaff(APITestCase):
             person_id=self.test_startup_user.id, is_registered=False
         )
         self.startup_company.created_at = utc_datetime(2023, 12, 7)
+
+        self.startup_company.activities.set(
+            [self.activities["Виробник"], self.activities["HORECA"]]
+        )
         self.startup_company.save()
         self.investor_company = AdminProfileFactory(
             person_id=self.test_investor_user.id, is_startup=False
         )
         self.investor_company.created_at = utc_datetime(2024, 5, 10)
+        self.investor_company.activities.set(
+            [self.activities["Імпортер"], self.activities["HORECA"]]
+        )
+
         self.investor_company.save()
         self.blocked_company = AdminProfileFactory(
             person_id=self.test_blocked_company_user.id, status="blocked"
         )
         self.blocked_company.created_at = utc_datetime(2024, 12, 12)
+        self.blocked_company.activities.set(
+            [self.activities["Роздрібна мережа"]]
+        )
         self.blocked_company.save()
 
     def test_get_profile_statistics(self):
@@ -34,7 +57,13 @@ class TestProfileStatisticsStaff(APITestCase):
             "investors_count": 2,
             "startups_count": 2,
             "blocked_companies_count": 1,
+            "manufacturers_count": 1,
+            "importers_count": 1,
+            "retail_networks_count": 1,
+            "horeca_count": 2,
+            "others_count": 0
         }
+        print(response.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data, data)
 
@@ -45,6 +74,11 @@ class TestProfileStatisticsStaff(APITestCase):
             "investors_count": 2,
             "startups_count": 1,
             "blocked_companies_count": 1,
+            "manufacturers_count": 0,
+            "importers_count": 1,
+            "retail_networks_count": 1,
+            "horeca_count": 1,
+            "others_count": 0
         }
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data, data)
@@ -58,6 +92,11 @@ class TestProfileStatisticsStaff(APITestCase):
             "investors_count": 2,
             "startups_count": 1,
             "blocked_companies_count": 1,
+            "manufacturers_count": 0,
+            "importers_count": 1,
+            "retail_networks_count": 1,
+            "horeca_count": 1,
+            "others_count": 0
         }
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data, data)
@@ -71,6 +110,11 @@ class TestProfileStatisticsStaff(APITestCase):
             "investors_count": 0,
             "startups_count": 1,
             "blocked_companies_count": 0,
+            "manufacturers_count": 1,
+            "importers_count": 0,
+            "retail_networks_count": 0,
+            "horeca_count": 1,
+            "others_count": 0
         }
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data, data)
@@ -84,6 +128,11 @@ class TestProfileStatisticsStaff(APITestCase):
             "investors_count": 0,
             "startups_count": 1,
             "blocked_companies_count": 0,
+            "manufacturers_count": 1,
+            "importers_count": 0,
+            "retail_networks_count": 0,
+            "horeca_count": 1,
+            "others_count": 0
         }
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data, data)
