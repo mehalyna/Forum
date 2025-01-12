@@ -5,7 +5,9 @@ import { Descriptions, Segmented, Select, DatePicker } from 'antd';
 import Loader from '../../../components/Loader/Loader';
 import css from './ProfilesStatistics.module.css';
 import React from 'react';
+
 import ActivitiesBarChart from '../Charts/ActivitiesBarChart';
+
 
 const { Option } = Select;
 
@@ -20,7 +22,6 @@ function ProfilesStatistics() {
   const [periodType, setPeriodType] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
   const [tab, setTab] = useState('overall');
-
   const queryParams = [];
   if (tab === 'period' && periodType !== 'range' && selectedDate) {
     queryParams.push(`${periodType}=${selectedDate}`);
@@ -130,7 +131,7 @@ function ProfilesStatistics() {
                   items={items}
               />
           )}
-          <ActivitiesBarChart/>
+          <ActivitiesBarChart statistics={statistics} isLoading={isLoading} error={error}/>
       </div>
   );
 }
