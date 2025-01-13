@@ -39,7 +39,7 @@ const NotificationBanner = ({ missingFields }) => {
 
     return (
         <div className={css.notification} onClick={handleClick}>
-            Ваш профіль не відображається. Заповніть усі  <span className={css.required}>*</span>обов’язкові поля, щоб зробити його видимим.
+            Ваш профіль не відображається. Заповніть усі <span className={css.required}>*</span> обов’язкові поля, щоб зробити його видимим.
         </div>
     );
 };
