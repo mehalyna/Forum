@@ -2,13 +2,12 @@ import {useState} from 'react';
 import axios from 'axios';
 import useSWR from 'swr';
 import {Descriptions, Tag, Badge} from 'antd';
-import BlockModal from './BlockModal';
+import ChangeModal from './ChangeModal';
 import css from './ProfileDetail.module.css';
-import UnblockModal from './UnblockModal';
 
 function ProfileDetail() {
-    const [blockModalActive, setBlockModalActive] = useState(false);
-    const [unblockModalActive, setUnblockModalActive] = useState(false);
+    const [changeModalActive, setChangeModalActive] = useState(false);
+    const [action, setAction] = useState('');
     const [profile, setProfile] = useState({});
     const profileId = usePathCompanyId();
     const url = `${process.env.REACT_APP_BASE_API_URL}/api/admin/profiles/${profileId}/`;
@@ -172,7 +171,13 @@ function ProfileDetail() {
                 key: '13',
                 label: 'Розблоковати профіль',
                 children: (
-                    <button className={css['button__unblock']} onClick={() => setUnblockModalActive(true)}>Розблокувати</button>
+                    <button
+                        className={css['button__unblock']}
+                        onClick={() => {
+                            setChangeModalActive(true);
+                            setAction('unblock');
+                        }}
+                    >Розблокувати</button>
                 ),
                 span: 2
             }:
@@ -180,7 +185,13 @@ function ProfileDetail() {
             key: '13',
             label: 'Заблоковати профіль',
             children: (
-                <button className={css['button__block']} onClick={() => setBlockModalActive(true)}>Заблокувати</button>
+                <button
+                    className={css['button__block']}
+                    onClick={() => {
+                        setChangeModalActive(true);
+                        setAction('block');
+                    }}
+                >Заблокувати</button>
             ),
             span: 2
 
@@ -192,33 +203,24 @@ function ProfileDetail() {
     if (data && !Object.keys(profile).length) {
         setProfile(data);
     }
-    const handleBlockUser = async () => {
-        const response = await axios.patch(url_moderate, {action: 'block'});
+    const handleChangeUser = async (change) => {
+        const response = await axios.patch(url_moderate, {action: change});
         if (response.status !== 200) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
-        setProfile((prevProfile) => ({...prevProfile, status: 'blocked'}));
-        setBlockModalActive(false);
-    };
-    const handleUnblockUser = async () => {
-        const response = await axios.patch(url_moderate, {action: 'unblock'});
-        if (response.status !== 200) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
+        if (change === 'block') {
+            setProfile((prevProfile) => ({...prevProfile, status: 'blocked'}));
+        } else if (change === 'unblock') {
+            setProfile((prevProfile) => ({...prevProfile, status: 'approved'}));
         }
-        setProfile((prevProfile) => ({...prevProfile, status: 'approved'}));
-        setBlockModalActive(false);
-    };
+        setChangeModalActive(false);};
     return (
         <div className={css['profile-detail-page']}>
-            <BlockModal
-                active={blockModalActive}
-                setActive={setBlockModalActive}
-                onBlock={handleBlockUser}
-            />
-            <UnblockModal
-                active={unblockModalActive}
-                setActive={setUnblockModalActive}
-                onUnblock={handleUnblockUser}
+            <ChangeModal
+                active={changeModalActive}
+                setActive={setChangeModalActive}
+                onChange={handleChangeUser}
+                action={action}
             />
             <div className={css['profile-details-section']}>
                 <ul className={css['log-section']}>
