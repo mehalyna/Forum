@@ -14,7 +14,8 @@ from administration.views import (
     CreateAdminUserView,
     CategoriesListView,
     CategoryDetailView,
-    SendMessageView, BlockAndUnblockProfileUserView,
+    SendMessageView,
+    BlockAndUnblockProfileUserView,
 )
 
 app_name = "administration"
@@ -23,7 +24,11 @@ urlpatterns = [
     path("users/", UsersListView.as_view(), name="users-list"),
     path("users/<pk>/", UserDetailView.as_view(), name="user-detail"),
     path("profiles/", ProfilesListView.as_view(), name="profile-list"),
-    path("manage-profiles/<pk>/", BlockAndUnblockProfileUserView.as_view(), name="manage-profiles"),
+    path(
+        "manage-profiles/<pk>/",
+        BlockAndUnblockProfileUserView.as_view(),
+        name="manage-profiles",
+    ),
     path(
         "profiles/statistics/",
         ProfileStatisticsView.as_view(),

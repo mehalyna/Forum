@@ -22,10 +22,14 @@ from rest_framework.generics import (
     RetrieveAPIView,
     RetrieveUpdateDestroyAPIView,
     RetrieveUpdateAPIView,
-    CreateAPIView, UpdateAPIView,
+    CreateAPIView,
+    UpdateAPIView,
 )
 
-from administration.serializers import AdminRegistrationSerializer, BlockUnblockProfileUserSerializer
+from administration.serializers import (
+    AdminRegistrationSerializer,
+    BlockUnblockProfileUserSerializer,
+)
 from forum.settings import CONTACTS_INFO
 from administration.serializers import (
     AdminCompanyListSerializer,
@@ -142,7 +146,9 @@ class BlockAndUnblockProfileUserView(UpdateAPIView):
             user = profile.person
             user.is_active = False
             user.save()
-            return JsonResponse({"message": "Profile and user have been blocked."})
+            return JsonResponse(
+                {"message": "Profile and user have been blocked."}
+            )
         elif action == "unblock":
             profile.status = "approved"
             profile.save()
@@ -150,7 +156,9 @@ class BlockAndUnblockProfileUserView(UpdateAPIView):
             user = profile.person
             user.is_active = True
             user.save()
-            return JsonResponse({"message": "Profile and user have been unblocked."})
+            return JsonResponse(
+                {"message": "Profile and user have been unblocked."}
+            )
 
 
 class ProfileDetailView(RetrieveUpdateDestroyAPIView):
