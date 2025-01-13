@@ -41,6 +41,8 @@ class TestCompletenessUpdate(APITestCase):
             name="Kryvyi_rig_art",
             person=self.kryvyi_rig_user,
             regions=[self.dnipro_region],
+            categories=[],
+            activities=[],
         )
 
     def test_completeness_after_update_region(self):
