@@ -1,10 +1,10 @@
-import css from './BlockModal.module.css';
+import css from './UnblockModal.module.css';
 import PropTypes from 'prop-types';
 
-function BlockModal({ active, setActive, onBlock }) {
+function UnblockModal({ active, setActive, onUnblock }) {
 
     const onBlockClick = async () => {
-        await onBlock();
+        await onUnblock();
         setActive(false);
     };
 
@@ -15,23 +15,23 @@ function BlockModal({ active, setActive, onBlock }) {
         >
             <div className={css['modal-content']}>
                 <p className={css['cookie-text']}>
-                    Впевнені, що хочете заблокувати цей запис?
+                    Впевнені, що хочете розблокувати цей запис?
                 </p>
                 <button className={css['green-button']} onClick={() => setActive(false)}>
                     Скасувати
                 </button>
                 <button className={css['red-button']} onClick={onBlockClick}>
-                    Заблокувати
+                    Розблокувати
                 </button>
             </div>
         </div>
     );
 }
 
-BlockModal.propTypes = {
+UnblockModal.propTypes = {
     active: PropTypes.bool.isRequired,
     setActive: PropTypes.func.isRequired,
-    onBlock: PropTypes.func.isRequired
+    onUnblock: PropTypes.func.isRequired
 };
-export default BlockModal;
+export default UnblockModal;
 

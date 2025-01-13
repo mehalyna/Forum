@@ -4,12 +4,15 @@ import useSWR from 'swr';
 import {Descriptions, Tag, Badge} from 'antd';
 import BlockModal from './BlockModal';
 import css from './ProfileDetail.module.css';
+import UnblockModal from './UnblockModal';
 
 function ProfileDetail() {
     const [blockModalActive, setBlockModalActive] = useState(false);
+    const [unblockModalActive, setUnblockModalActive] = useState(false);
     const [profile, setProfile] = useState({});
     const profileId = usePathCompanyId();
     const url = `${process.env.REACT_APP_BASE_API_URL}/api/admin/profiles/${profileId}/`;
+    const url_moderate = `${process.env.REACT_APP_BASE_API_URL}/api/admin/manage-profiles/${profileId}/`;
     const items = [
         {
             key: '1',
@@ -164,28 +167,45 @@ function ProfileDetail() {
             ),
             span: 2
         },
-        {
+        {...profile.status === 'blocked'
+            ? {
+                key: '13',
+                label: 'Розблоковати профіль',
+                children: (
+                    <button className={css['button__unblock']} onClick={() => setUnblockModalActive(true)}>Розблокувати</button>
+                ),
+                span: 2
+            }:
+                {
             key: '13',
             label: 'Заблоковати профіль',
             children: (
-                <button className={css['button__delete']} onClick={() => setBlockModalActive(true)}>Заблокувати</button>
+                <button className={css['button__block']} onClick={() => setBlockModalActive(true)}>Заблокувати</button>
             ),
             span: 2
 
         },
+        }
     ];
     const fetcher = url => axios.get(url).then(res => res.data);
     const {data, error, isValidating: loading} = useSWR(url, fetcher);
     if (data && !Object.keys(profile).length) {
         setProfile(data);
     }
-    console.log(data);
     const handleBlockUser = async () => {
-        const response = await axios.patch(url, {status: 'blocked'});
+        const response = await axios.patch(url_moderate, {action: 'block'});
         if (response.status !== 200) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
         setProfile((prevProfile) => ({...prevProfile, status: 'blocked'}));
+        setBlockModalActive(false);
+    };
+    const handleUnblockUser = async () => {
+        const response = await axios.patch(url_moderate, {action: 'unblock'});
+        if (response.status !== 200) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        setProfile((prevProfile) => ({...prevProfile, status: 'approved'}));
         setBlockModalActive(false);
     };
     return (
@@ -195,12 +215,17 @@ function ProfileDetail() {
                 setActive={setBlockModalActive}
                 onBlock={handleBlockUser}
             />
+            <UnblockModal
+                active={unblockModalActive}
+                setActive={setUnblockModalActive}
+                onUnblock={handleUnblockUser}
+            />
             <div className={css['profile-details-section']}>
                 <ul className={css['log-section']}>
                     {loading && <li className={css['log']}>Завантаження ...</li>}
                     {error && <li className={css['log']}>Виникла помилка: {error}</li>}
                 </ul>
-                <Descriptions title="Profile information" bordered items={items} column={2}/>
+                <Descriptions title="Детальна інформація профілю" bordered items={items} column={2}/>
             </div>
         </div>
     );

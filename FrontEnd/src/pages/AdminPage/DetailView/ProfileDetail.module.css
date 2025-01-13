@@ -37,7 +37,7 @@
     margin-bottom: 10px;
  }
 
-.button__delete {
+.button__block {
     color: #F15831;
     cursor: pointer;
     height: 32px;
@@ -48,6 +48,25 @@
     background: linear-gradient(0deg, #FFFFFF, #FFFFFF),
         linear-gradient(0deg, #F15831, #F15831);
     border: 1px solid #F15831;
+    font-family: var(--font-main);
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 20px;
+    letter-spacing: -0.01em;
+    text-align: center;
+}
+
+.button__unblock {
+    color: #29d623;
+    cursor: pointer;
+    height: 32px;
+    padding: 5px 15px 5px 15px;
+    margin-top: 8px;
+    border-radius: 4px;
+    gap: 10px;
+    background: linear-gradient(0deg, #FFFFFF, #FFFFFF),
+        linear-gradient(0deg, #29d623, #29d623);
+    border: 1px solid #29d623;
     font-family: var(--font-main);
     font-size: 16px;
     font-weight: 600;
