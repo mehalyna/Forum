@@ -1,16 +1,29 @@
 :root {
-    --font__admin-panel: "Inter", sans-serif;
+    --font__admin-panel: "Geologica", sans-serif;
     --block-size__admin-panel: 1512px;
-    --menu-size__admin-panel: 222px;
+    --menu-size__admin-panel: 270px;
     --table-size__admin-panel: 1000px;
     --font-color__admin-panel: #292E32;
     --notification-text-color__admin-panel: #ff4d4f;
-    --background__admin-panel: #F1FFF7;
+    --background__admin-panel: #FEFDF9;
     --background-input__admin-panel: #FFF;
     --border-input__admin-panel: #d9d9d9;
-    --background-butons__admin-panel: #1F9A7C;
-    --button-color__admin-panel: #1F9A7C;
+    --background-butons__admin-panel: #B4D27A;
+    --button-color__admin-panel: #B4D27A;
     --button-text-color__admin-panel: #FFF;
     --error-notification-text-color__admin-panel: #f4282b;
     --box-shadow-color__admin-panel: rgba(0, 0, 0, 0.04);
+
+    --main-button-color: #000000;
+    --main-button-text-color: #FFFFFF;
+    --main-button-hover-color: #292929;
+    --main-button-disabled-color: #E5E5E5;
+    --main-button-disabled-text-color: #A1A1A1;
+    --main-button-border-color: #000000;
+    --main-button-hover-border-color: #333333;
+
+    --light-button-color: transparent;
+    --light-button-hover-color: #F1E7D280;
+    --light-button-text-color: #232424;
+    --light-button-border-color: #232424;
 }

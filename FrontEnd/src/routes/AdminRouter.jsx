@@ -1,13 +1,12 @@
-import React from 'react';
 import { ToastContainer } from 'react-toastify';
-import { Routes, Route, useLocation } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import { ConfigProvider } from 'antd';
 import ukUA from 'antd/es/locale/uk_UA';
 
 import { useAuth } from '../hooks';
 
+import AdminLayout from '../pages/AdminPage/AdminLayout.jsx';
 import Header from '../components/Header/Header';
-import Menu from '../pages/AdminPage/Menu/Menu';
 import UserDetail from '../pages/AdminPage/DetailView/UserDetail';
 import UserTable from '../pages/AdminPage/UserProfilesTable/UserTable';
 import ProfilesTable from '../pages/AdminPage/UserProfilesTable/ProfilesTable';
@@ -19,18 +18,15 @@ import ModerationEmail from '../pages/AdminPage/DetailView/ModerationEmail';
 import Contacts from '../pages/AdminPage/DetailView/Contacts';
 import AdminProfilePage from '../pages/AdminPage/AdminProfile/AdminProfilePage';
 import AdminRegistration from '../pages/AdminPage/AdminRegistration/AdminRegistration';
+import FormatCategories from '../pages/AdminPage/FormatCategories/CategoriesTable';
 import ProfilesStatistics from '../pages/AdminPage/UserProfilesTable/ProfilesStatistics';
 
 import customAdminTheme from '../pages/CustomThemes/customAdminTheme.js';
 import '../pages/AdminPage/AdminGlobal.css';
-import css from '../pages/AdminPage/AdminPage.module.css';
 import { BurgerMenuProvider } from '../context/BurgerMenuContext';
 
 function AdminRouter() {
     const { isLoading, isAuth, isStaff, isSuperUser, user } = useAuth();
-    const { pathname } = useLocation();
-    const hideMenu = pathname.includes('/admin-profile/');
-    const renderMenu = isStaff && isAuth && !hideMenu ? <Menu /> : null;
 
     const authRoutes = isStaff && isAuth ? (
         <>
@@ -48,10 +44,11 @@ function AdminRouter() {
             )}
             <Route path="/contacts" element={<Contacts />} />
             <Route path="/admin-profile/*" element={<AdminProfilePage />} />
+            <Route path="/categories/" element={<FormatCategories />} />
             <Route path="/statistics" element={<ProfilesStatistics />} />
         </>
     ) : (
-        <Route path="/customadmin/" />
+        <Route path="/customadmin/" element={<MainPage />}/>
     );
 
     return (
@@ -66,25 +63,22 @@ function AdminRouter() {
             }}
         >
             <BurgerMenuProvider>
-                <div className={css['admin_block']}>
-                    <Header isAuthorized={isAuth} user={user} className={css['header_content']} />
+                <Header isAuthorized={isAuth} user={user} />
+                <AdminLayout>
                     {isLoading ? (
                         <Loader />
                     ) : (
-                        <div className={css['content']}>
-                            {renderMenu}
-                            <Routes className={css['content-block']}>
-                                {authRoutes}
-                            </Routes>
-                        </div>
+                        <Routes>
+                            {authRoutes}
+                        </Routes>
                     )}
-                    <ToastContainer
-                        position="top-right"
-                        autoClose={3000}
-                        theme="colored"
-                        icon={false}
-                    />
-                </div>
+                </AdminLayout>
+                <ToastContainer
+                    position="top-right"
+                    autoClose={3000}
+                    theme="colored"
+                    icon={false}
+                />
             </BurgerMenuProvider>
         </ConfigProvider>
     );

@@ -1,12 +1,5 @@
 .admin_block {
     width: var(--block-size__admin-panel);
-}
-
-.content-block {
-    width: 80%;
-}
-
-.content {
     display: flex;
-    align-items: flex-start;
+    flex-direction: row;
 }

@@ -55,7 +55,7 @@ export default function ChangeAdminPassword(props) {
   return (
     <div className={classes['form__container']}>
       {props.user ? (
-        <form id="ChangeAdminPassword" onSubmit={handleSubmit(handleFormSubmit)} >
+        <form className={classes['change-password-form']} id="ChangeAdminPassword" onSubmit={handleSubmit(handleFormSubmit)} >
             <PasswordField
               inputId="currentAdminPassword"
               name="currentPassword"
