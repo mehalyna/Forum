@@ -1,5 +1,5 @@
 from django.db import models
-from django.db.models import Q, Count, OuterRef, Exists
+from django.db.models import Q
 
 
 class ProfileManager(models.QuerySet):
