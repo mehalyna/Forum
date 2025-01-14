@@ -53,7 +53,7 @@ class ProfileFactory(factory.django.DjangoModelFactory):
     is_deleted = False
 
     @factory.post_generation
-    def activities(self, create, extracted):
+    def activities(self, create, extracted=None):
         if not create:
             return
         if extracted is not None:
@@ -63,7 +63,7 @@ class ProfileFactory(factory.django.DjangoModelFactory):
             self.activities.add(activity)
 
     @factory.post_generation
-    def categories(self, create, extracted):
+    def categories(self, create, extracted=None):
         if not create:
             return
         if extracted is not None:
