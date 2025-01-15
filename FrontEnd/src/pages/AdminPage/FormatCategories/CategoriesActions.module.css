@@ -1,0 +1,24 @@
+.CategoriesActionsModalContent {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+}
+
+.CategoriesActionsInput {
+    width: 100%;
+}
+
+.CategoriesActionsSelect {
+    width: 100%;
+}
+
+.CategoriesActionsTextarea {
+    width: 100%;
+}
+
+.CategoriesActionsError {
+    color: red;
+    font-size: 12px;
+    margin: 0;
+}

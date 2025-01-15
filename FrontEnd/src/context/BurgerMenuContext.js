@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext, useEffect } from 'react';
+import { createContext, useState, useContext, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useLocation } from 'react-router-dom';
 
@@ -7,8 +7,9 @@ const BurgerMenuContext = createContext();
 export const BurgerMenuProvider = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false);
   const { pathname } = useLocation();
+  const menuRef = useRef(null);
 
-  const toggleMenu = () => setIsOpen((prev) => !prev);
+  const toggleMenu = (state = !isOpen) => setIsOpen(state);
 
   useEffect(() => {
     const handleResize = () => {
@@ -18,18 +19,31 @@ export const BurgerMenuProvider = ({ children }) => {
     };
 
     window.addEventListener('resize', handleResize);
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   useEffect(() => {
     setIsOpen(false);
   }, [pathname]);
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener('click', handleClickOutside);
+    } else {
+      document.removeEventListener('click', handleClickOutside);
+    }
+
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, [isOpen]);
+
   return (
-    <BurgerMenuContext.Provider value={{ isOpen, toggleMenu }}>
+    <BurgerMenuContext.Provider value={{ isOpen, toggleMenu, menuRef }}>
       {children}
     </BurgerMenuContext.Provider>
   );

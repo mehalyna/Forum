@@ -1,0 +1,38 @@
+.admin-layout__wrapper {
+    display: flex;
+    background: var(--background__admin-panel);
+    min-height: calc(100vh - 75px);
+    justify-content: safe center;
+    overflow-x: auto;
+}
+
+.admin-layout {
+    display: flex;
+    flex-direction: column;
+    padding: 30px 104px;
+    width: 1304px;
+    min-width: 1304px;
+    gap: 24px;
+}
+
+.admin-layout__title {
+    color: var(--font-color__admin-panel);
+    font-feature-settings: 'calt' off;
+    text-decoration: none;
+    font-family: var(--font__admin-panel);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 22px;
+    letter-spacing: -0.16px;
+}
+
+.admin-layout__content {
+    display: flex;
+    gap: 96px;
+}
+
+.admin-layout__children-section {
+    flex-shrink: 0;
+    max-width: 938px;
+}
