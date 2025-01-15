@@ -508,9 +508,6 @@ class ProfileModerationSerializer(serializers.Serializer):
             instance.person.is_active = False
             instance.person.save()
 
-        else:
-            raise serializers.ValidationError("Invalid action provided.")
-
         moderation_manager = ModerationManager(profile=instance)
         moderation_manager.revoke_deprecated_autoapprove()
 
