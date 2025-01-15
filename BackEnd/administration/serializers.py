@@ -14,7 +14,9 @@ from utils.administration.profiles.profiles_functions import (
     format_company_type,
     format_business_entity,
 )
-from utils.administration.profiles.DetailedDescriptionAction import DetailedDescriptionAction
+from utils.administration.profiles.DetailedDescriptionAction import (
+    DetailedDescriptionAction,
+)
 from utils.administration.create_password import generate_password
 from utils.administration.send_email import send_email_about_admin_registration
 from .models import AutoModeration, ModerationEmail
