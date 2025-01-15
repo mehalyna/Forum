@@ -14,7 +14,8 @@ from administration.views import (
     CreateAdminUserView,
     CategoriesListView,
     CategoryDetailView,
-    SendMessageView, ModerationProfilesView,
+    SendMessageView,
+    ModerationProfilesView,
 )
 
 app_name = "administration"
@@ -34,7 +35,11 @@ urlpatterns = [
         name="profile-statistics-monthly",
     ),
     path("profiles/<pk>/", ProfileDetailView.as_view(), name="profile-detail"),
-    path("moderation-profiles/<pk>/", ModerationProfilesView.as_view(), name="moderation-profiles"),
+    path(
+        "moderation-profiles/<pk>/",
+        ModerationProfilesView.as_view(),
+        name="moderation-profiles",
+    ),
     path(
         "automoderation/",
         AutoModerationHoursView.as_view(),

@@ -12,7 +12,8 @@ from profiles.models import (
 )
 from utils.administration.profiles.profiles_functions import (
     format_company_type,
-    format_business_entity, ModerationProfilesAction,
+    format_business_entity,
+    ModerationProfilesAction,
 )
 from utils.administration.create_password import generate_password
 from utils.administration.send_email import send_email_about_admin_registration
@@ -98,7 +99,7 @@ class AdminUserListSerializer(serializers.ModelSerializer):
             "is_superuser": obj.is_superuser,
             "is_deleted": obj.email.startswith("is_deleted_"),
             "is_inactive": not obj.is_active
-                           and not obj.email.startswith("is_deleted_"),
+            and not obj.email.startswith("is_deleted_"),
         }
         return data
 
@@ -284,8 +285,8 @@ class MonthlyProfileStatisticsSerializer(serializers.Serializer):
 
 class ModerationProfilesSerializer(serializers.Serializer):
     action = serializers.ChoiceField(
-        choices=ModerationProfilesAction.choices(),
-        write_only=True)
+        choices=ModerationProfilesAction.choices(), write_only=True
+    )
 
     def update(self, instance, validated_data):
         action = validated_data.get("action")
@@ -307,9 +308,7 @@ class ModerationProfilesSerializer(serializers.Serializer):
             user.save()
 
         else:
-            raise serializers.ValidationError(
-                {"action": "Invalid action."}
-            )
+            raise serializers.ValidationError({"action": "Invalid action."})
 
         instance.status_updated_at = now()
         instance.save()

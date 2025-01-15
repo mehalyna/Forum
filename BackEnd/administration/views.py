@@ -22,10 +22,14 @@ from rest_framework.generics import (
     RetrieveAPIView,
     RetrieveUpdateDestroyAPIView,
     RetrieveUpdateAPIView,
-    CreateAPIView, UpdateAPIView,
+    CreateAPIView,
+    UpdateAPIView,
 )
 
-from administration.serializers import AdminRegistrationSerializer, ModerationProfilesSerializer
+from administration.serializers import (
+    AdminRegistrationSerializer,
+    ModerationProfilesSerializer,
+)
 from forum.settings import CONTACTS_INFO
 from administration.serializers import (
     AdminCompanyListSerializer,
