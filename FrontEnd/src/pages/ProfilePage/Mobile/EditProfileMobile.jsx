@@ -30,19 +30,45 @@ const EditProfileMobile = () => {
       setMissingFields([...generalInfoMissing, ...userInfoMissing]);
     }
   }, [profile, user]);
-
   if (user && profile) {
     const sections = [
-      { title: 'Інформація про користувача', content: <UserInfo user={user} profile={profile} /> },
-      { title: 'Загальна інформація', content: <GeneralInfo profile={profile} /> },
-      { title: 'Контакти', content: <ContactsInfo profile={profile} /> },
-      { title: 'Інформація про товари/послуги', content: <ProductServiceInfo profile={profile} />, disabled: !profile.is_registered },
-      { title: 'Додаткова інформація', content: <AdditionalInfo profile={profile} />, disabled: !profile.is_registered },
-      { title: 'Стартап', content: <StartupInfo profile={profile} />, disabled: !profile.is_startup },
-      { title: 'Змінити пароль', content: <ChangePassword user={user} /> },
-      { title: 'Видалити профіль', content: <DeleteProfilePage /> },
+      {
+        title: 'Інформація про користувача',
+        content: <UserInfo user={user}
+          profile={profile} />
+      },
+      {
+        title: 'Загальна інформація',
+        content: <GeneralInfo profile={profile} />
+      },
+      {
+        title: 'Контакти',
+        content: <ContactsInfo profile={profile} />
+      },
+      {
+        title: 'Інформація про товари/послуги',
+        content: <ProductServiceInfo profile={profile} />,
+        disabled: !profile.is_registered
+      },
+      {
+        title: 'Додаткова інформація',
+        content: <AdditionalInfo profile={profile} />,
+        disabled: !profile.is_registered
+      },
+      {
+        title: 'Стартап',
+        content: <StartupInfo profile={profile} />,
+        disabled: !profile.is_startup
+      },
+      {
+        title: 'Змінити пароль',
+        content: <ChangePassword user={user} />
+      },
+      {
+        title: 'Видалити профіль',
+        content: <DeleteProfilePage />
+      },
     ];
-
     return (
       <div className={css['container']}>
         {missingFields.length > 0 && (
