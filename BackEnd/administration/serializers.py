@@ -291,21 +291,21 @@ class ContactInformationSerializer(serializers.ModelSerializer):
         read_only_fields = ["updated_at", "admin_user"]
 
     def validate_phone(self, value):
-        errors = []
-        try:
-            validate_phone_number_len(value)
-        except ValidationError as error:
-            errors.append(str(error))
+     errors = []
+     try:
+        validate_phone_number_len(value)
+     except ValidationError as error:
+        errors.append(error.message)
 
-        try:
-            validate_phone_number_is_digit(value)
-        except ValidationError as error:
-            errors.append(str(error))
+     try:
+        validate_phone_number_is_digit(value)
+     except ValidationError as error:
+        errors.append(error.message)
 
-        if errors:
-            raise serializers.ValidationError(errors)
+     if errors:
+        raise serializers.ValidationError(errors)
 
-        return value
+     return value
 
     def validate_address(self, value):
         validate_address(value)
