@@ -1,4 +1,4 @@
-import css from './BlockModal.module.css';
+import css from './ChangeModal.module.scss';
 import PropTypes from 'prop-types';
 
 function ChangeModal({ active, setActive, onChange, action }) {
@@ -19,27 +19,22 @@ function ChangeModal({ active, setActive, onChange, action }) {
                         <p className={css['cookie-text']}>
                             Впевнені, що хочете заблокувати цей запис?
                         </p>
-                        <button className={css['green-button']} onClick={() => setActive(false)}>
-                            Скасувати
-                        </button>
-                        <button className={css['red-button']} onClick={onChangeClick}>
-                            Заблокувати
-                        </button>
                     </div>
                     :
                     <div>
                         <p className={css['cookie-text']}>
                             Впевнені, що хочете розблокувати цей запис?
                         </p>
-                        <button className={css['green-button']} onClick={() => setActive(false)}>
-                            Скасувати
-                        </button>
-                        <button className={css['red-button']} onClick={onChangeClick}>
-                            Розблокувати
-                        </button>
                     </div>
                 }
-
+                <div className={css['buttons-group']}>
+                    <button className={`${css['save-button']} ${css['cancel-button']}`} onClick={() => setActive(false)}>
+                        Скасувати
+                    </button>
+                    <button className={css['save-button']} onClick={onChangeClick}>
+                        Прийняти
+                    </button>
+                </div>
 
             </div>
         </div>
