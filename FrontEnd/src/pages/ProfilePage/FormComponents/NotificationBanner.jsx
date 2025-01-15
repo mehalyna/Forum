@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import css from './NotificationBanner.module.css';
 
-const NotificationBanner = ({ missingFields }) => {
+const NotificationBanner = ({ missingFields, setOpenSection }) => {
     const navigate = useNavigate();
     const [isVisible, setIsVisible] = useState(missingFields.length > 0);
 
@@ -22,7 +22,6 @@ const NotificationBanner = ({ missingFields }) => {
     useEffect(() => {
         if (missingFields.length > 0) {
             setIsVisible(true);
-            focusFirstUnfilledField();
         } else {
             setIsVisible(false);
         }
@@ -31,21 +30,35 @@ const NotificationBanner = ({ missingFields }) => {
     if (!isVisible) return null;
 
     const handleClick = () => {
-        navigate('/profile/general-info');
-        setTimeout(() => {
-            focusFirstUnfilledField();
-        }, 300);
+        if (typeof setOpenSection === 'function') { // Перевірка, що передана функція
+            const firstMissingField = missingFields[0];
+            const sectionToOpen = ['surname', 'name', 'email'].includes(firstMissingField)
+                ? 'Інформація про користувача'
+                : 'Загальна інформація';
+
+            setOpenSection(sectionToOpen);
+
+            navigate('/profile/general-info');
+
+            setTimeout(() => {
+                focusFirstUnfilledField();
+            }, 300);
+        } else {
+            console.error('setOpenSection is not a function');
+        }
     };
 
     return (
         <div className={css.notification} onClick={handleClick}>
-            Ваш профіль не відображається. Заповніть усі <span className={css.required}>*</span> обов’язкові поля, щоб зробити його видимим.
+            Ваш профіль не відображається на сайті. Заповніть усі <span className={css.required}>*</span> обов’язкові поля, щоб зробити його видимим.
         </div>
     );
 };
 
 NotificationBanner.propTypes = {
     missingFields: PropTypes.array.isRequired,
+    setOpenSection: PropTypes.func.isRequired,
 };
 
 export default NotificationBanner;
+

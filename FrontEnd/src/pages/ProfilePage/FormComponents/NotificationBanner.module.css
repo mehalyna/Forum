@@ -19,15 +19,31 @@
 .required {
     color: red;
     margin-left: 4px;
+    display: inline;
 }
 
 @media (max-width: 768px) {
     .notification {
         font-size: 13px;
-        margin: 10px auto;
         width: calc(100% - 50px);
         height: auto;
         min-height: 48px;
         flex-wrap: wrap;
+    }
+}
+@media (max-width: 426px) {
+    .notification {
+        font-size: 13px;
+        padding: 12px;
+        width: calc(100% - 32px);
+        margin: 10px auto;
+        min-height: auto;
+        line-height: 1.6;
+        text-align: center;
+        display: block;
+    }
+    .required {
+        margin-left: 2px;
+        margin-right: -3px;
     }
 }
