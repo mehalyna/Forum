@@ -6,8 +6,6 @@ from administration.models import ContactInformation
 
 class ContactsViewTest(APITestCase):
     def setUp(self):
-        self.client = APIClient()
-
         self.admin_user = CustomUser.objects.create_user(
             email="admin@example.com", password="admin123", is_staff=True
         )
