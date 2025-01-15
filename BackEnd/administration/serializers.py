@@ -14,7 +14,7 @@ from utils.administration.profiles.profiles_functions import (
     format_company_type,
     format_business_entity,
 )
-from utils.administration.profiles.DetailedDescriptionAction import (
+from utils.administration.profiles.admin_moderation_action import (
     DetailedDescriptionAction,
 )
 from utils.administration.create_password import generate_password
