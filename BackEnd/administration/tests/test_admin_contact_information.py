@@ -5,9 +5,7 @@ from administration.models import ContactInformation
 
 
 class ContactsViewTest(APITestCase):
-
     def setUp(self):
-
         self.client = APIClient()
 
         self.admin_user = CustomUser.objects.create_user(
@@ -39,26 +37,24 @@ class ContactsViewTest(APITestCase):
         }
 
     def test_get_contact_information(self):
+        response = self.client.get("/api/admin/contacts/")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-       response = self.client.get("/api/admin/contacts/")
-       self.assertEqual(response.status_code, status.HTTP_200_OK)
+        expected_response = {
+            "company_name": "Initial Company",
+            "address": "123 Initial Street",
+            "email": "initial@example.com",
+            "phone": "380123456789",
+            "updated_at": response.data["updated_at"],
+            "admin_user": self.admin_user.id,
+        }
 
-       expected_response = {
-        "company_name": "Initial Company",
-        "address": "123 Initial Street",
-        "email": "initial@example.com",
-        "phone": "380123456789",
-        "updated_at": response.data["updated_at"],
-        "admin_user": self.admin_user.id,
-    }
-    
-       self.assertEqual(response.data, expected_response)
-    
-       self.assertEqual(response.data["company_name"], "Initial Company")
-       self.assertEqual(response.data["phone"], "380123456789")
+        self.assertEqual(response.data, expected_response)
+
+        self.assertEqual(response.data["company_name"], "Initial Company")
+        self.assertEqual(response.data["phone"], "380123456789")
 
     def test_update_contact_information_valid(self):
-       
         response = self.client.put("/api/admin/contacts/", self.valid_data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -70,7 +66,6 @@ class ContactsViewTest(APITestCase):
         self.assertEqual(contact_info.phone, "380987654321")
 
     def test_update_contact_information_invalid_phone(self):
-    
         response = self.client.put(
             "/api/admin/contacts/", self.invalid_phone_data
         )
