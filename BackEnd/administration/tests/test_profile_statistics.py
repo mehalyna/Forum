@@ -1,7 +1,7 @@
 from rest_framework.test import APITestCase
 from rest_framework import status
 from administration.factories import AdminUserFactory
-from profiles.factories import ProfileFactory, ActivityFactory
+from profiles.factories import ProfileFactory, ActivityFactory, ProfileCompanyFactory, ProfileStartupFactory
 from utils.unittest_helper import utc_datetime
 
 
@@ -23,23 +23,23 @@ class TestProfileStatisticsStaff(APITestCase):
         self.test_startup_user = AdminUserFactory(is_staff=False)
         self.test_investor_user = AdminUserFactory(is_staff=False)
         self.test_blocked_company_user = AdminUserFactory(is_staff=False)
-        self.startup_company = ProfileFactory(
+        self.startup_company = ProfileStartupFactory(
             person_id=self.test_startup_user.id,
-            is_registered=False,
             activities=[self.activities["Виробник"], self.activities["HORECA"]],
         )
         self.startup_company.created_at = utc_datetime(2023, 12, 7)
 
         self.startup_company.save()
-        self.investor_company = ProfileFactory(
+        self.investor_company = ProfileCompanyFactory(
             person_id=self.test_investor_user.id,
-            is_startup=False,
             activities=[self.activities["Імпортер"], self.activities["HORECA"]]
         )
         self.investor_company.created_at = utc_datetime(2024, 5, 10)
 
         self.investor_company.save()
         self.blocked_company = ProfileFactory(
+            is_registered=True,
+            is_startup=True,
             person_id=self.test_blocked_company_user.id,
             status="blocked",
             activities=[self.activities["Роздрібна мережа"]],
