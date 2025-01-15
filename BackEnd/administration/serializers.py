@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.utils.timezone import now
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from utils.administration.feedback_category import FeedbackCategory
@@ -11,7 +12,7 @@ from profiles.models import (
 )
 from utils.administration.profiles.profiles_functions import (
     format_company_type,
-    format_business_entity,
+    format_business_entity, ModerationProfilesAction,
 )
 from utils.administration.create_password import generate_password
 from utils.administration.send_email import send_email_about_admin_registration
@@ -97,7 +98,7 @@ class AdminUserListSerializer(serializers.ModelSerializer):
             "is_superuser": obj.is_superuser,
             "is_deleted": obj.email.startswith("is_deleted_"),
             "is_inactive": not obj.is_active
-            and not obj.email.startswith("is_deleted_"),
+                           and not obj.email.startswith("is_deleted_"),
         }
         return data
 
@@ -279,3 +280,37 @@ class MonthlyProfileStatisticsSerializer(serializers.Serializer):
     investors_count = serializers.IntegerField()
     startups_count = serializers.IntegerField()
     startup_investor_count = serializers.IntegerField()
+
+
+class ModerationProfilesSerializer(serializers.Serializer):
+    action = serializers.ChoiceField(
+        choices=ModerationProfilesAction.choices(),
+        write_only=True)
+
+    def update(self, instance, validated_data):
+        action = validated_data.get("action")
+
+        if action == ModerationProfilesAction.block:
+            instance.status = "blocked"
+            instance.save()
+
+            user = instance.person
+            user.is_active = False
+            user.save()
+
+        elif action == ModerationProfilesAction.unblock:
+            instance.status = "approved"
+            instance.save()
+
+            user = instance.person
+            user.is_active = True
+            user.save()
+
+        else:
+            raise serializers.ValidationError(
+                {"action": "Invalid action."}
+            )
+
+        instance.status_updated_at = now()
+        instance.save()
+        return instance

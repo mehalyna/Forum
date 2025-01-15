@@ -1,3 +1,15 @@
+class ModerationProfilesAction:
+    block = "block"
+    unblock = "unblock"
+
+    @classmethod
+    def choices(cls):
+        return [
+            (cls.block, "block"),
+            (cls.unblock, "unblock"),
+        ]
+
+
 def format_company_type(obj):
     if obj.is_startup and obj.is_registered:
         return "Компанія і стартап"

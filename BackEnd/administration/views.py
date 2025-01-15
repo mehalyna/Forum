@@ -22,10 +22,10 @@ from rest_framework.generics import (
     RetrieveAPIView,
     RetrieveUpdateDestroyAPIView,
     RetrieveUpdateAPIView,
-    CreateAPIView,
+    CreateAPIView, UpdateAPIView,
 )
 
-from administration.serializers import AdminRegistrationSerializer
+from administration.serializers import AdminRegistrationSerializer, ModerationProfilesSerializer
 from forum.settings import CONTACTS_INFO
 from administration.serializers import (
     AdminCompanyListSerializer,
@@ -367,3 +367,9 @@ class SendMessageView(CreateAPIView):
             email=email,
             sender_name="Адміністратор CraftMerge",
         )
+
+
+class ModerationProfilesView(UpdateAPIView):
+    queryset = Profile.objects.all()
+    permission_classes = [IsStaffUser]
+    serializer_class = ModerationProfilesSerializer
