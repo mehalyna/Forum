@@ -13,8 +13,8 @@ from profiles.models import (
 from utils.administration.profiles.profiles_functions import (
     format_company_type,
     format_business_entity,
-    ModerationProfilesAction,
 )
+from utils.administration.profiles.DetailedDescriptionAction import DetailedDescriptionAction
 from utils.administration.create_password import generate_password
 from utils.administration.send_email import send_email_about_admin_registration
 from .models import AutoModeration, ModerationEmail
@@ -285,30 +285,29 @@ class MonthlyProfileStatisticsSerializer(serializers.Serializer):
 
 class ModerationProfilesSerializer(serializers.Serializer):
     action = serializers.ChoiceField(
-        choices=ModerationProfilesAction.choices(), write_only=True
+        choices=DetailedDescriptionAction.choices(),
+        write_only=True,
+        error_messages={"invalid_choice": "Action is not allowed"},
     )
 
     def update(self, instance, validated_data):
         action = validated_data.get("action")
 
-        if action == ModerationProfilesAction.block:
-            instance.status = "blocked"
+        if action == DetailedDescriptionAction.block:
+            instance.status = instance.BLOCKED
             instance.save()
 
             user = instance.person
             user.is_active = False
             user.save()
 
-        elif action == ModerationProfilesAction.unblock:
-            instance.status = "approved"
+        elif action == DetailedDescriptionAction.unblock:
+            instance.status = instance.APPROVED
             instance.save()
 
             user = instance.person
             user.is_active = True
             user.save()
-
-        else:
-            raise serializers.ValidationError({"action": "Invalid action."})
 
         instance.status_updated_at = now()
         instance.save()
