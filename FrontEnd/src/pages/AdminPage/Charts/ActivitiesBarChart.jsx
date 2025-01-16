@@ -17,7 +17,7 @@ ChartJS.register(
     Legend
 );
 import { Bar } from 'react-chartjs-2';
-import css from './ActivitiesBarChart.module.css';
+import css from './ActivitiesBarChart.module.scss';
 import Loader from '../../../components/Loader/Loader';
 
 
