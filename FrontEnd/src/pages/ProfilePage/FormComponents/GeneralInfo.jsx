@@ -5,6 +5,7 @@ import { useContext } from 'react';
 import { toast } from 'react-toastify';
 import { Tooltip } from 'antd';
 import useSWR from 'swr';
+import  Cropper  from 'react-easy-crop';
 import { useAuth, useProfile } from '../../../hooks';
 import checkFormIsDirty from '../../../utils/checkFormIsDirty';
 import defineChanges from '../../../utils/defineChanges';
