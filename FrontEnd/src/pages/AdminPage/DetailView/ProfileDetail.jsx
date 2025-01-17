@@ -7,7 +7,7 @@ import css from './ProfileDetail.module.css';
 
 function ProfileDetail() {
     const [changeModalActive, setChangeModalActive] = useState(false);
-    const [action, setAction] = useState('');
+    // const [action, setAction] = useState('');
     const [profile, setProfile] = useState({});
     const profileId = usePathCompanyId();
     const url = `${process.env.REACT_APP_BASE_API_URL}/api/admin/profiles/${profileId}/`;
@@ -176,20 +176,14 @@ function ProfileDetail() {
         const response = await axios.patch(url_moderate, {action: change});
         if (response.status !== 200) {
             throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        if (change === 'block') {
-            setProfile((prevProfile) => ({...prevProfile, status: 'blocked'}));
-        } else if (change === 'unblock') {
-            setProfile((prevProfile) => ({...prevProfile, status: 'approved'}));
-        }
-        setChangeModalActive(false);};
+        }};
     return (
         <div className={css['profile-detail-page']}>
             <ChangeModal
                 active={changeModalActive}
                 setActive={setChangeModalActive}
                 onChange={handleChangeUser}
-                action={action}
+                // action={action}
             />
             <div className={css['profile-details-section']}>
                 <ul className={css['log-section']}>
@@ -200,6 +194,7 @@ function ProfileDetail() {
             </div>
         </div>
     );
+
 }
 
 function usePathCompanyId() {
