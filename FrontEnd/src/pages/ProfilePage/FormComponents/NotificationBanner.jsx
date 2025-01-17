@@ -23,8 +23,6 @@ const NotificationBanner = ({ missingFields, setOpenSection }) => {
         setIsVisible(missingFields.length > 0);
     }, [missingFields]);
 
-    if (!isVisible) return null;
-
     const handleClick = () => {
         if (typeof setOpenSection === 'function') {
             setOpenSection('Загальна інформація');
@@ -35,13 +33,15 @@ const NotificationBanner = ({ missingFields, setOpenSection }) => {
         }
     };
 
-    return (
+    return ( isVisible ?
+        (
         <div className={css.notification} onClick={handleClick}>
             <p>
                 Ваш профіль не відображається на сайті. Заповніть усі{' '}
                 <span className={css.required}>*</span> обов’язкові поля, щоб зробити його видимим.
             </p>
         </div>
+        ): null
     );
 };
 
