@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useAuth, useProfile } from '../../../hooks';
-import { validateRequiredFields, REQUIRED_FIELDS_GENERAL_INFO, REQUIRED_FIELDS_USER_INFO } from '../../../utils/validateRequiredFields';
+import { validateRequiredFields, REQUIRED_FIELDS_GENERAL_INFO } from '../../../utils/validateRequiredFields';
 import NotificationBanner from '../FormComponents/NotificationBanner';
 import Accordion from './Accordion';
 import AdditionalInfo from '../FormComponents/AdditionalInfo';
@@ -24,10 +24,8 @@ const EditProfileMobile = () => {
     if (profile && user) {
       const generalInfoMissing = validateRequiredFields(profile, user)
         .filter(field => REQUIRED_FIELDS_GENERAL_INFO.includes(field));
-      const userInfoMissing = validateRequiredFields(profile, user)
-        .filter(field => REQUIRED_FIELDS_USER_INFO.includes(field));
 
-      setMissingFields([...generalInfoMissing, ...userInfoMissing]);
+      setMissingFields([...generalInfoMissing ]);
     }
   }, [profile, user]);
   if (user && profile) {

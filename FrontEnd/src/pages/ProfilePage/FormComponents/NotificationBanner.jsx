@@ -20,29 +20,16 @@ const NotificationBanner = ({ missingFields, setOpenSection }) => {
     };
 
     useEffect(() => {
-        if (missingFields.length > 0) {
-            setIsVisible(true);
-        } else {
-            setIsVisible(false);
-        }
+        setIsVisible(missingFields.length > 0);
     }, [missingFields]);
 
     if (!isVisible) return null;
 
     const handleClick = () => {
-        if (typeof setOpenSection === 'function') { // Перевірка, що передана функція
-            const firstMissingField = missingFields[0];
-            const sectionToOpen = ['surname', 'name', 'email'].includes(firstMissingField)
-                ? 'Інформація про користувача'
-                : 'Загальна інформація';
-
-            setOpenSection(sectionToOpen);
-
+        if (typeof setOpenSection === 'function') {
+            setOpenSection('Загальна інформація');
             navigate('/profile/general-info');
-
-            setTimeout(() => {
-                focusFirstUnfilledField();
-            }, 300);
+            focusFirstUnfilledField();
         } else {
             console.error('setOpenSection is not a function');
         }
@@ -50,7 +37,10 @@ const NotificationBanner = ({ missingFields, setOpenSection }) => {
 
     return (
         <div className={css.notification} onClick={handleClick}>
-            Ваш профіль не відображається на сайті. Заповніть усі <span className={css.required}>*</span> обов’язкові поля, щоб зробити його видимим.
+            <p>
+                Ваш профіль не відображається на сайті. Заповніть усі{' '}
+                <span className={css.required}>*</span> обов’язкові поля, щоб зробити його видимим.
+            </p>
         </div>
     );
 };
@@ -61,4 +51,3 @@ NotificationBanner.propTypes = {
 };
 
 export default NotificationBanner;
-

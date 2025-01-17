@@ -18,7 +18,7 @@
 
 .required {
     color: red;
-    margin-left: 4px;
+    margin-right: -3px;
     display: inline;
 }
 
@@ -41,9 +41,5 @@
         line-height: 1.6;
         text-align: center;
         display: block;
-    }
-    .required {
-        margin-left: 2px;
-        margin-right: -3px;
-    }
+    } 
 }

@@ -3,7 +3,6 @@ import { toast } from 'react-toastify';
 import { useState, useEffect } from 'react';
 import { useContext } from 'react';
 import { DirtyFormContext } from '../../../context/DirtyFormContext';
-import { validateRequiredFields, REQUIRED_FIELDS_USER_INFO} from '../../../utils/validateRequiredFields';
 import { useAuth, useProfile } from '../../../hooks';
 import checkFormIsDirty from '../../../utils/checkFormIsDirty';
 import defineChanges from '../../../utils/defineChanges';
@@ -47,20 +46,6 @@ const UserInfo = (props) => {
     name: { defaultValue: user?.name ?? '', context: 'user' },
     person_position: { defaultValue: profile?.person_position ?? null },
   };
-
-  useEffect(() => {
-    if (!profile || !user) return;
-    const missing = validateRequiredFields(profile, user)
-      .filter(field => REQUIRED_FIELDS_USER_INFO.includes(field.field))
-      .map(field => field.field);
-    setFormStateErr(prev => ({
-      ...prev,
-      ...missing.reduce((acc, field) => ({
-        ...acc,
-        [field]: { error: true, message: 'Це поле є обов’язковим для заповнення.' }
-      }), {})
-    }));
-  }, [profile, user]);
 
   useEffect(() => {
     const isDirty = checkFormIsDirty(fields, updateUser, updateProfile);
