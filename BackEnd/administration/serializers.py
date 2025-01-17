@@ -279,9 +279,3 @@ class MonthlyProfileStatisticsSerializer(serializers.Serializer):
     investors_count = serializers.IntegerField()
     startups_count = serializers.IntegerField()
     startup_investor_count = serializers.IntegerField()
-
-
-class BlockUnblockProfileUserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Profile
-        fields = ("status",)

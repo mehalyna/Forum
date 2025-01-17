@@ -127,40 +127,6 @@ class ProfilesListView(ListAPIView):
     )
 
 
-class BlockAndUnblockProfileUserView(UpdateAPIView):
-    permission_classes = [IsStaffUser]
-    seializer_class = BlockUnblockProfileUserSerializer
-    queryset = Profile.objects.all()
-
-    def update(self, request, *args, **kwargs):
-        profile = self.get_object()
-        action = request.data.get("action")
-        print(action)
-        if action not in ("block", "unblock"):
-            return self.http_method_not_allowed(request, *args, **kwargs)
-
-        if action == "block":
-            profile.status = "blocked"
-            profile.save()
-
-            user = profile.person
-            user.is_active = False
-            user.save()
-            return JsonResponse(
-                {"message": "Profile and user have been blocked."}
-            )
-        elif action == "unblock":
-            profile.status = "approved"
-            profile.save()
-
-            user = profile.person
-            user.is_active = True
-            user.save()
-            return JsonResponse(
-                {"message": "Profile and user have been unblocked."}
-            )
-
-
 class ProfileDetailView(RetrieveUpdateDestroyAPIView):
     """
     Retrieve, update or delete a Profiles.
