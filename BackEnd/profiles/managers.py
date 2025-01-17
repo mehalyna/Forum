@@ -12,6 +12,7 @@ class ProfileManager(models.QuerySet):
             person__is_active=True,
         ).exclude(
             Q(name__isnull=True)
+            | Q(official_name__isnull=True)
             | Q(common_info="")
             | Q(categories__isnull=True)
             | Q(activities__isnull=True)
