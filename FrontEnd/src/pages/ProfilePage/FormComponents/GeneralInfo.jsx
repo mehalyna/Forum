@@ -11,7 +11,6 @@ import defineChanges from '../../../utils/defineChanges';
 import css from './FormComponents.module.css';
 
 import { DirtyFormContext } from '../../../context/DirtyFormContext';
-import { validateRequiredFields, REQUIRED_FIELDS_GENERAL_INFO } from '../../../utils/validateRequiredFields';
 import CheckBoxField from './FormFields/CheckBoxField';
 import HalfFormField from './FormFields/HalfFormField';
 import ImageField from './FormFields/ImageField';
@@ -105,20 +104,6 @@ const GeneralInfo = (props) => {
     is_registered: { defaultValue: mainProfile?.is_registered ?? null },
     is_startup: { defaultValue: mainProfile?.is_startup ?? null },
   };
-
-  useEffect(() => {
-    if (!profile || !user) return;
-    const missing = validateRequiredFields(profile, user)
-      .filter(field => REQUIRED_FIELDS_GENERAL_INFO.includes(field.field))
-      .map(field => field.field);
-    setFormStateErr(prev => ({
-      ...prev,
-      ...missing.reduce((acc, field) => ({
-        ...acc,
-        [field]: { error: true, message: 'Це поле є обов’язковим для заповнення.' }
-      }), {})
-    }));
-  }, [profile, user]);
 
   useEffect(() => {
     const isDirty = checkFormIsDirty(fields, null, profile);
