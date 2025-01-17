@@ -166,37 +166,6 @@ function ProfileDetail() {
             ),
             span: 2
         },
-        {...profile.status === 'blocked'
-            ? {
-                key: '13',
-                label: 'Розблоковати профіль',
-                children: (
-                    <button
-                        className={css['button__unblock']}
-                        onClick={() => {
-                            setChangeModalActive(true);
-                            setAction('unblock');
-                        }}
-                    >Розблокувати</button>
-                ),
-                span: 2
-            }:
-                {
-            key: '13',
-            label: 'Заблоковати профіль',
-            children: (
-                <button
-                    className={css['button__block']}
-                    onClick={() => {
-                        setChangeModalActive(true);
-                        setAction('block');
-                    }}
-                >Заблокувати</button>
-            ),
-            span: 2
-
-        },
-        }
     ];
     const fetcher = url => axios.get(url).then(res => res.data);
     const {data, error, isValidating: loading} = useSWR(url, fetcher);
