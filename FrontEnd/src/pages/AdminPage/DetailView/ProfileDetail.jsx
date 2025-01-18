@@ -2,16 +2,12 @@ import {useState} from 'react';
 import axios from 'axios';
 import useSWR from 'swr';
 import {Descriptions, Tag, Badge} from 'antd';
-import ChangeModal from './ChangeModal';
 import css from './ProfileDetail.module.css';
 
 function ProfileDetail() {
-    const [changeModalActive, setChangeModalActive] = useState(false);
-    // const [action, setAction] = useState('');
     const [profile, setProfile] = useState({});
     const profileId = usePathCompanyId();
     const url = `${process.env.REACT_APP_BASE_API_URL}/api/admin/profiles/${profileId}/`;
-    const url_moderate = `${process.env.REACT_APP_BASE_API_URL}/api/admin/manage-profiles/${profileId}/`;
     const items = [
         {
             key: '1',
@@ -172,19 +168,8 @@ function ProfileDetail() {
     if (data && !Object.keys(profile).length) {
         setProfile(data);
     }
-    const handleChangeUser = async (change) => {
-        const response = await axios.patch(url_moderate, {action: change});
-        if (response.status !== 200) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }};
     return (
         <div className={css['profile-detail-page']}>
-            <ChangeModal
-                active={changeModalActive}
-                setActive={setChangeModalActive}
-                onChange={handleChangeUser}
-                // action={action}
-            />
             <div className={css['profile-details-section']}>
                 <ul className={css['log-section']}>
                     {loading && <li className={css['log']}>Завантаження ...</li>}

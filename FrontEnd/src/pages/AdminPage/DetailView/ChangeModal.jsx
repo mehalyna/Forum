@@ -16,7 +16,7 @@ function ChangeModal({ active, setActive, onChange, action }) {
             <div className={css['modal-content']}>
                 {action === 'block' ?
                     <div>
-                        <p className={css['cookie-text']}>
+                        <p className={css['cooki-text']}>
                             Впевнені, що хочете заблокувати цей запис?
                         </p>
                     </div>
