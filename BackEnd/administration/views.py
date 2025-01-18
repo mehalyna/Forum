@@ -24,12 +24,9 @@ from rest_framework.generics import (
     RetrieveUpdateAPIView,
     CreateAPIView,
 )
-
-from administration.serializers import (
-    AdminRegistrationSerializer,
-)
 from forum.settings import CONTACTS_INFO
 from administration.serializers import (
+    AdminRegistrationSerializer,
     AdminCompanyListSerializer,
     AdminCompanyDetailSerializer,
     AdminUserListSerializer,
