@@ -65,7 +65,7 @@ function ProfileDetail() {
             }]
             : [
                 {
-                    key: '8',
+                    key: '9',
                     label: 'РНОКПП',
                     children: profile.rnokpp
                 }
@@ -73,22 +73,22 @@ function ProfileDetail() {
         ...(profile.is_startup && profile.is_registered
             ? [
                 {
-                    key: '8',
+                    key: '10',
                     label: 'Інформація про послуги',
                     children: profile.service_info
                 },
                 {
-                    key: '8',
+                    key: '11',
                     label: 'Інформація про товари',
                     children: profile.product_info
                 },
                 {
-                    key: '8',
+                    key: '12',
                     label: 'Ідея стартапу',
                     children: profile.startup_idea
                 },
                 {
-                    key: '8',
+                    key: '13',
                     label: 'Рік заснування',
                     children: profile.founded
                 }
@@ -96,35 +96,35 @@ function ProfileDetail() {
             : profile.is_registered
                 ? [
                     {
-                        key: '8',
+                        key: '14',
                         label: 'Інформація про послуги',
                         children: profile.service_info
                     },
                     {
-                        key: '8',
+                        key: '15',
                         label: 'Інформація про товари',
                         children: profile.product_info
                     },
                     {
-                        key: '8',
+                        key: '16',
                         label: 'Рік заснування',
                         children: profile.founded
                     }
                 ]
                 : profile.is_startup
                     ? [{
-                        key: '8',
+                        key: '17',
                         label: 'Ідея стартапу',
                         children: profile.startup_idea
                     }]
                     : []),
         {
-            key: '9',
+            key: '18',
             label: 'Адреса',
             children: profile.address,
         },
         {
-            key: '10',
+            key: '19',
             label: 'Чи заблокованний профіль?',
             children: (
                 <Badge
@@ -135,7 +135,7 @@ function ProfileDetail() {
             span: 2
         },
         {
-            key: '11',
+            key: '20',
             label: 'Логотип',
             children: (
                 profile.logo_image ? (
@@ -149,7 +149,7 @@ function ProfileDetail() {
             span: 2
         },
         {
-            key: '12',
+            key: '21',
             label: 'Банер',
             children: (
                 profile.banner_image ? (
