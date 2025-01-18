@@ -5,8 +5,6 @@ from django.db.models.functions import (
     ExtractYear,
 )
 from django.db.models import F, Value, CharField, Count, Q
-from django.http import JsonResponse
-from django.views import View
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.types import OpenApiTypes
 
@@ -24,9 +22,6 @@ from rest_framework.generics import (
     RetrieveUpdateAPIView,
     CreateAPIView,
 )
-
-from rest_framework.response import Response
-from rest_framework import status
 
 from administration.serializers import (
     AdminRegistrationSerializer,
