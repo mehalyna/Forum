@@ -24,7 +24,10 @@ from rest_framework.generics import (
     RetrieveUpdateAPIView,
     CreateAPIView,
 )
-from forum.settings import CONTACTS_INFO
+
+from rest_framework.response import Response
+from rest_framework import status
+
 from administration.serializers import (
     AdminRegistrationSerializer,
     AdminCompanyListSerializer,
@@ -36,10 +39,15 @@ from administration.serializers import (
     CategoriesListSerializer,
     CategoryDetailSerializer,
     StatisticsSerializer,
+    ContactInformationSerializer,
     MonthlyProfileStatisticsSerializer,
 )
 from administration.pagination import ListPagination
-from administration.models import AutoModeration, ModerationEmail
+from administration.models import (
+    AutoModeration,
+    ModerationEmail,
+    ContactInformation,
+)
 from authentication.models import CustomUser
 from profiles.models import Profile, Category
 from .permissions import IsStaffUser, IsStaffUserOrReadOnly, IsSuperUser
@@ -254,13 +262,20 @@ class ModerationEmailView(RetrieveUpdateAPIView):
         return ModerationEmail.objects.first()
 
 
-class ContactsView(View):
+class ContactsView(RetrieveUpdateAPIView):
     """
-    View for retrieving contact information.
+    API view for retrieving and updating contact information.
     """
 
-    def get(self, request):
-        return JsonResponse(CONTACTS_INFO)
+    permission_classes = [IsStaffUserOrReadOnly]
+    serializer_class = ContactInformationSerializer
+
+    def get_object(self):
+        """
+        Retrieve or create the single contact information record.
+        """
+        contact, _ = ContactInformation.objects.get_or_create(pk=1)
+        return contact
 
 
 class CreateAdminUserView(CreateAPIView):
