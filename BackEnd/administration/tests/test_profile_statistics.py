@@ -1,6 +1,7 @@
 from rest_framework.test import APITestCase
 from rest_framework import status
 from administration.factories import AdminUserFactory
+from authentication.factories import UserFactory
 from profiles.factories import (
     ProfileFactory,
     ActivityFactory,
@@ -12,7 +13,7 @@ from utils.unittest_helper import utc_datetime
 
 class TestProfileStatisticsStaff(APITestCase):
     def setUp(self):
-        self.user = AdminUserFactory()
+        self.user = UserFactory(is_staff=True)
         self.client.force_authenticate(self.user)
 
         self.activities = {
@@ -23,9 +24,9 @@ class TestProfileStatisticsStaff(APITestCase):
             "Інші послуги": ActivityFactory(name="Інші послуги"),
         }
 
-        self.test_startup_user = AdminUserFactory(is_staff=False)
-        self.test_investor_user = AdminUserFactory(is_staff=False)
-        self.test_blocked_company_user = AdminUserFactory(is_staff=False)
+        self.test_startup_user = UserFactory(is_staff=False)
+        self.test_investor_user = UserFactory(is_staff=False)
+        self.test_blocked_company_user = UserFactory(is_staff=False)
         self.startup_company = ProfileStartupFactory(
             person_id=self.test_startup_user.id,
             activities=[
