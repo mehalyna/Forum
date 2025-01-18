@@ -60,7 +60,7 @@ function ProfileDetail() {
         ...(profile.edrpou
             ? [{
                 key: '8',
-                label: 'ЕРДПО',
+                label: 'ЄДРПОУ',
                 children: profile.edrpou
             }]
             : [
