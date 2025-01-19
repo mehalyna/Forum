@@ -6,6 +6,7 @@ import css from './NotificationBanner.module.css';
 const NotificationBanner = ({ missingFields, setOpenSection }) => {
   const navigate = useNavigate();
   const [isVisible, setIsVisible] = useState(missingFields.length > 0);
+  const [shouldFocusField, setShouldFocusField] = useState(false);
 
   const focusFirstUnfilledField = () => {
     if (missingFields.length === 0) return;
@@ -23,11 +24,18 @@ const NotificationBanner = ({ missingFields, setOpenSection }) => {
     setIsVisible(missingFields.length > 0);
   }, [missingFields]);
 
+  useEffect(() => {
+    if (shouldFocusField) {
+      focusFirstUnfilledField();
+      setShouldFocusField(false);
+    }
+  }, [shouldFocusField]);
+
   const handleClick = () => {
     if (typeof setOpenSection === 'function') {
+      setShouldFocusField(true);
       setOpenSection('Загальна інформація');
       navigate('/profile/general-info');
-      focusFirstUnfilledField();
     } else {
       console.error('setOpenSection is not a function');
     }
