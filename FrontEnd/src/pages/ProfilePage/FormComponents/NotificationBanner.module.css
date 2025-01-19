@@ -22,15 +22,6 @@
     display: inline;
 }
 
-@media (max-width: 768px) {
-    .notification {
-        font-size: 13px;
-        width: calc(100% - 50px);
-        height: auto;
-        min-height: 48px;
-        flex-wrap: wrap;
-    }
-}
 @media (max-width: 426px) {
     .notification {
         font-size: 13px;
@@ -42,4 +33,14 @@
         text-align: center;
         display: block;
     } 
+}
+
+@media (max-width: 768px) {
+    .notification {
+        font-size: 13px;
+        width: calc(100% - 50px);
+        height: auto;
+        min-height: 48px;
+        flex-wrap: wrap;
+    }
 }
