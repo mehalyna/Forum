@@ -12,11 +12,11 @@ const Accordion = ({ sections, openSection, setOpenSection }) => {
 
   const focusFirstUnfilledField = (sectionTitle) => {
     setTimeout(() => {
-      const sectionElement = document.querySelector(`#${sectionTitle.replace(/\s+/g, '-')}`);
-      const firstUnfilledField = sectionElement?.querySelector(
-        'input:not([value]):not([disabled]), textarea:not([value]):not([disabled])'
+      const escapedTitle = CSS.escape(sectionTitle);
+      const firstUnfilledField = document.querySelector(
+        `#${escapedTitle} input:not([value]):not([disabled]), 
+         #${escapedTitle} textarea:not([value]):not([disabled])`
       );
-
       if (firstUnfilledField) {
         firstUnfilledField.scrollIntoView({ behavior: 'smooth', block: 'center' });
         firstUnfilledField.focus();
