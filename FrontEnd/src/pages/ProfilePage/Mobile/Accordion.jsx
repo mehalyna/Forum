@@ -12,15 +12,15 @@ const Accordion = ({ sections, openSection, setOpenSection }) => {
 
   const focusFirstUnfilledField = (sectionTitle) => {
     setTimeout(() => {
-        const firstUnfilledField = document.querySelector(
-            `#${sectionTitle} input:not([value]):not([disabled]), 
-             #${sectionTitle} textarea:not([value]):not([disabled])`
-        );
+      const sectionElement = document.querySelector(`#${sectionTitle.replace(/\s+/g, '-')}`);
+      const firstUnfilledField = sectionElement?.querySelector(
+        'input:not([value]):not([disabled]), textarea:not([value]):not([disabled])'
+      );
 
-        if (firstUnfilledField) {
-            firstUnfilledField.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            firstUnfilledField.focus();
-        }
+      if (firstUnfilledField) {
+        firstUnfilledField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        firstUnfilledField.focus();
+      }
     }, 300);
   };
 
@@ -57,7 +57,6 @@ const Accordion = ({ sections, openSection, setOpenSection }) => {
             disabled={section.disabled}
             isOpen={openSection === section.title}
             onClick={() => handleSectionClick(section.title)}
-            warningHandler={() => setShowWarningModal(true)}
           />
         ))}
       </div>
