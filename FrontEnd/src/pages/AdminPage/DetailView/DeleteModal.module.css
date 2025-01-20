@@ -13,6 +13,7 @@
 
 .modal-cover.active {
     transform: scale(1);
+    z-index: 1050;
 }
 
 .modal-content {
@@ -21,7 +22,6 @@
     background-color: white;
     font-family: var(--font__admin-panel);
     height: 90px;
-    width: 315px;
 }
 
 .green-button {
