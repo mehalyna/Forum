@@ -29,14 +29,14 @@ class TestCompanyFilter(APITestCase):
         self.company_charkiv = ProfileStartupFactory(
             name="Charkiv",
             official_name="Charkivgreen",
-            common_info="",
+            common_info="info",
             service_info="",
             product_info="official",
         )
         self.company_chernigiv = ProfileStartupFactory(
             name="Chernigiv",
             official_name="Chernigiveducation",
-            common_info="",
+            common_info="info",
             service_info="official",
             product_info="testing",
         )
@@ -50,7 +50,7 @@ class TestCompanyFilter(APITestCase):
         self.company_testing = ProfileStartupFactory(
             name="testing",
             official_name="official",
-            common_info="",
+            common_info="info",
             service_info="",
             product_info="",
         )
@@ -138,8 +138,12 @@ class TestCompanyFilter(APITestCase):
                 "id": self.company_kyiv.id,
                 "name": "Kyiv",
                 "official_name": "Kyivbud",
-                "categories": [],
-                "activities": [],
+                "categories": list(
+                    self.company_kyiv.categories.values("id", "name")
+                ),
+                "activities": list(
+                    self.company_kyiv.activities.values("id", "name")
+                ),
                 "regions": [],
                 "regions_ukr_display": "",
                 "common_info": "testing",
