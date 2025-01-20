@@ -70,7 +70,6 @@ class TestProfileStatisticsStaff(APITestCase):
             "horeca_count": 2,
             "others_count": 0,
         }
-        print(response.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data, data)
 
