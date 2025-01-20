@@ -24,9 +24,9 @@ class TestProfileStatisticsStaff(APITestCase):
             "Інші послуги": ActivityFactory(name="Інші послуги"),
         }
 
-        self.test_startup_user = UserFactory(is_staff=False)
-        self.test_investor_user = UserFactory(is_staff=False)
-        self.test_blocked_company_user = UserFactory(is_staff=False)
+        self.test_startup_user = UserFactory()
+        self.test_investor_user = UserFactory()
+        self.test_blocked_company_user = UserFactory()
         self.startup_company = ProfileStartupFactory(
             person_id=self.test_startup_user.id,
             activities=[
