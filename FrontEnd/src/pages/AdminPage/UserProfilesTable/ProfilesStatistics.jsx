@@ -2,7 +2,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import useSWR from 'swr';
 import { Descriptions, Segmented, Select, DatePicker } from 'antd';
-import ProfilesBarChart from './ProfilesChart';
+import ProfilesBarChart from '../../Charts/ProfilesChart';
 import Loader from '../../../components/Loader/Loader';
 import css from './ProfilesStatistics.module.css';
 
