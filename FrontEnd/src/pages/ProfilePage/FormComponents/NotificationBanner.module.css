@@ -1,48 +1,51 @@
 .notification {
-    font-size: 13px;
-    padding: 12px;
-    width: calc(100% - 32px);
-    margin: 10px auto;
-    min-height: auto;
-    line-height: 1.6;
-    text-align: center;
-    display: block;
+    box-sizing: border-box;
+    padding: 16px;
+    width: 343px;
     border: 1px solid var(--notification-banner-border);
-    color: var(--main-text-color);
-    font-family: var(--font-main);
-    font-weight: 400;
     border-radius: 6px;
     cursor: pointer;
 }
 
-@media (min-width: 427px) and (max-width: 768px) {
-    .notification {
-        width: calc(100% - 80px);
-        margin: -10px 0px 10px 25px;
-        height: auto;
-        min-height: 35px;
-        flex-wrap: wrap;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-}
-
-@media (min-width: 769px) {
-    .notification {
-        font-size: 14px;
-        width: calc(100% - 160px);
-        margin: -10px 0px 10px 25px;
-        line-height: 22px;
-        height: 40px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
+.notification-text {
+    font-family: var(--font-main);
+    color: var(--main-text-color);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 22px;
+    letter-spacing: -0.14px;
+    text-align: center;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
 }
 
 .required {
     color: red;
     margin-right: -3px;
     display: inline;
+}
+
+@media (min-width: 768px) {
+    .notification {
+        width: 720px;
+        padding: 16px 24px;
+        display: flex;
+        flex-direction: column;
+        align-self: center;
+        margin-bottom: 26px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .notification {
+        width: 1055px;
+        flex-direction: row;
+        justify-content: center;
+    }
+}
+
+@media (min-width: 1512px) {
+    .notification {
+        width: 1304px;
+    }
 }
