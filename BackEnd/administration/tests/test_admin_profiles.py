@@ -105,6 +105,8 @@ class TestAdminProfilesAPITests(APITestCase):
             "common_info": "test common info",
             "phone": "380112909099",
             "edrpou": "10000000",
+            "rnokpp": None,
+            "status": AnyStr(),
             "founded": 2022,
             "service_info": "test service info",
             "product_info": "test product info",

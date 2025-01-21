@@ -196,6 +196,8 @@ class AdminCompanyDetailSerializer(serializers.ModelSerializer):
             "common_info",
             "phone",
             "edrpou",
+            "rnokpp",
+            "status",
             "founded",
             "service_info",
             "product_info",

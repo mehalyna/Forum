@@ -5,8 +5,6 @@ from django.db.models.functions import (
     ExtractYear,
 )
 from django.db.models import F, Value, CharField, Count, Q
-from django.http import JsonResponse
-from django.views import View
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.types import OpenApiTypes
 
@@ -25,9 +23,7 @@ from rest_framework.generics import (
     CreateAPIView,
 )
 
-from administration.serializers import (
-    AdminRegistrationSerializer,
-)
+
 from administration.serializers import (
     AdminCompanyListSerializer,
     AdminCompanyDetailSerializer,
@@ -40,6 +36,7 @@ from administration.serializers import (
     StatisticsSerializer,
     ContactInformationSerializer,
     MonthlyProfileStatisticsSerializer,
+    AdminRegistrationSerializer,
 )
 from administration.pagination import ListPagination
 from administration.models import (

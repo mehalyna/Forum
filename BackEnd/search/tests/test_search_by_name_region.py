@@ -12,6 +12,8 @@ from utils.dump_response import dump  # noqa
 
 
 class TestCompanyFilter(APITestCase):
+    maxDiff = None
+
     def setUp(self) -> None:
         self.user = UserFactory()
         self.kyiv_region = RegionFactory(name_eng="Kyiv", name_ukr="Київ")
@@ -51,8 +53,12 @@ class TestCompanyFilter(APITestCase):
                 {
                     "id": self.company_dnipro.id,
                     "name": "Dniprotrans",
-                    "categories": [],
-                    "activities": [],
+                    "categories": list(
+                        self.company_dnipro.categories.values("id", "name")
+                    ),
+                    "activities": list(
+                        self.company_dnipro.activities.values("id", "name")
+                    ),
                     "regions": [
                         {
                             "id": self.dnipro_region.id,
@@ -82,8 +88,12 @@ class TestCompanyFilter(APITestCase):
                 {
                     "id": self.company_dnipro.id,
                     "name": "Dniprotrans",
-                    "categories": [],
-                    "activities": [],
+                    "categories": list(
+                        self.company_dnipro.categories.values("id", "name")
+                    ),
+                    "activities": list(
+                        self.company_dnipro.activities.values("id", "name")
+                    ),
                     "regions": [
                         {
                             "id": self.dnipro_region.id,
@@ -113,8 +123,12 @@ class TestCompanyFilter(APITestCase):
                 {
                     "id": self.company_dnipro.id,
                     "name": "Dniprotrans",
-                    "categories": [],
-                    "activities": [],
+                    "categories": list(
+                        self.company_dnipro.categories.values("id", "name")
+                    ),
+                    "activities": list(
+                        self.company_dnipro.activities.values("id", "name")
+                    ),
                     "regions": [
                         {
                             "id": self.dnipro_region.id,
@@ -143,8 +157,12 @@ class TestCompanyFilter(APITestCase):
                 {
                     "id": self.company_dnipro.id,
                     "name": "Dniprotrans",
-                    "categories": [],
-                    "activities": [],
+                    "categories": list(
+                        self.company_dnipro.categories.values("id", "name")
+                    ),
+                    "activities": list(
+                        self.company_dnipro.activities.values("id", "name")
+                    ),
                     "regions": [
                         {
                             "id": self.dnipro_region.id,
@@ -174,8 +192,12 @@ class TestCompanyFilter(APITestCase):
                 {
                     "id": self.company_dnipro.id,
                     "name": "Dniprotrans",
-                    "categories": [],
-                    "activities": [],
+                    "categories": list(
+                        self.company_dnipro.categories.values("id", "name")
+                    ),
+                    "activities": list(
+                        self.company_dnipro.activities.values("id", "name")
+                    ),
                     "regions": [
                         {
                             "id": self.dnipro_region.id,
@@ -204,8 +226,12 @@ class TestCompanyFilter(APITestCase):
                 {
                     "id": self.company_dnipro.id,
                     "name": "Dniprotrans",
-                    "categories": [],
-                    "activities": [],
+                    "categories": list(
+                        self.company_dnipro.categories.values("id", "name")
+                    ),
+                    "activities": list(
+                        self.company_dnipro.activities.values("id", "name")
+                    ),
                     "regions": [
                         {
                             "id": self.dnipro_region.id,
@@ -235,8 +261,12 @@ class TestCompanyFilter(APITestCase):
                 {
                     "id": self.company_dnipro.id,
                     "name": "Dniprotrans",
-                    "categories": [],
-                    "activities": [],
+                    "categories": list(
+                        self.company_dnipro.categories.values("id", "name")
+                    ),
+                    "activities": list(
+                        self.company_dnipro.activities.values("id", "name")
+                    ),
                     "regions": [
                         {
                             "id": self.dnipro_region.id,
@@ -292,8 +322,12 @@ class TestCompanyFilter(APITestCase):
                 {
                     "id": self.company_kiev.id,
                     "name": "Kyivbud",
-                    "categories": [],
-                    "activities": [],
+                    "categories": list(
+                        self.company_kiev.categories.values("id", "name")
+                    ),
+                    "activities": list(
+                        self.company_kiev.activities.values("id", "name")
+                    ),
                     "regions": [
                         {
                             "id": self.kyiv_region.id,
@@ -348,8 +382,12 @@ class TestCompanyFilter(APITestCase):
                 {
                     "id": self.company_kiev.id,
                     "name": "Kyivbud",
-                    "categories": [],
-                    "activities": [],
+                    "categories": list(
+                        self.company_kiev.categories.values("id", "name")
+                    ),
+                    "activities": list(
+                        self.company_kiev.activities.values("id", "name")
+                    ),
                     "regions": [
                         {
                             "id": self.kyiv_region.id,
@@ -381,8 +419,12 @@ class TestCompanyFilter(APITestCase):
                 {
                     "id": self.company_kiev.id,
                     "name": "Kyivbud",
-                    "categories": [],
-                    "activities": [],
+                    "categories": list(
+                        self.company_kiev.categories.values("id", "name")
+                    ),
+                    "activities": list(
+                        self.company_kiev.activities.values("id", "name")
+                    ),
                     "regions": [
                         {
                             "id": self.kyiv_region.id,
@@ -482,8 +524,12 @@ class TestCompanyFilter(APITestCase):
                 {
                     "id": self.company_kiev.id,
                     "name": "Kyivbud",
-                    "categories": [],
-                    "activities": [],
+                    "categories": list(
+                        self.company_kiev.categories.values("id", "name")
+                    ),
+                    "activities": list(
+                        self.company_kiev.activities.values("id", "name")
+                    ),
                     "regions": [
                         {
                             "id": self.kyiv_region.id,
@@ -512,8 +558,12 @@ class TestCompanyFilter(APITestCase):
                 {
                     "id": self.company_kiev.id,
                     "name": "Kyivbud",
-                    "categories": [],
-                    "activities": [],
+                    "categories": list(
+                        self.company_kiev.categories.values("id", "name")
+                    ),
+                    "activities": list(
+                        self.company_kiev.activities.values("id", "name")
+                    ),
                     "regions": [
                         {
                             "id": self.kyiv_region.id,
@@ -547,8 +597,12 @@ class TestCompanyFilter(APITestCase):
                 {
                     "id": self.company_kiev.id,
                     "name": "Kyivbud",
-                    "categories": [],
-                    "activities": [],
+                    "categories": list(
+                        self.company_kiev.categories.values("id", "name")
+                    ),
+                    "activities": list(
+                        self.company_kiev.activities.values("id", "name")
+                    ),
                     "regions": [
                         {
                             "id": self.kyiv_region.id,
@@ -586,8 +640,12 @@ class TestCompanyFilter(APITestCase):
             {
                 "id": self.company_charkiv.id,
                 "name": "Charkivmarket",
-                "categories": [],
-                "activities": [],
+                "categories": list(
+                    self.company_charkiv.categories.values("id", "name")
+                ),
+                "activities": list(
+                    self.company_charkiv.activities.values("id", "name")
+                ),
                 "regions": [
                     {
                         "id": self.kharkiv_region.id,
@@ -606,8 +664,12 @@ class TestCompanyFilter(APITestCase):
             {
                 "id": self.company_chernigiv.id,
                 "name": "Chernigivtravel",
-                "categories": [],
-                "activities": [],
+                "categories": list(
+                    self.company_chernigiv.categories.values("id", "name")
+                ),
+                "activities": list(
+                    self.company_chernigiv.activities.values("id", "name")
+                ),
                 "regions": [
                     {
                         "id": self.chernihiv_region.id,
@@ -626,8 +688,12 @@ class TestCompanyFilter(APITestCase):
             {
                 "id": self.company_dnipro.id,
                 "name": "Dniprotrans",
-                "categories": [],
-                "activities": [],
+                "categories": list(
+                    self.company_dnipro.categories.values("id", "name")
+                ),
+                "activities": list(
+                    self.company_dnipro.activities.values("id", "name")
+                ),
                 "regions": [
                     {
                         "id": self.dnipro_region.id,
@@ -646,8 +712,12 @@ class TestCompanyFilter(APITestCase):
             {
                 "id": self.company_kiev.id,
                 "name": "Kyivbud",
-                "categories": [],
-                "activities": [],
+                "categories": list(
+                    self.company_kiev.categories.values("id", "name")
+                ),
+                "activities": list(
+                    self.company_kiev.activities.values("id", "name")
+                ),
                 "regions": [
                     {
                         "id": self.kyiv_region.id,
@@ -678,8 +748,12 @@ class TestCompanyFilter(APITestCase):
             {
                 "id": self.company_charkiv.id,
                 "name": "Charkivmarket",
-                "categories": [],
-                "activities": [],
+                "categories": list(
+                    self.company_charkiv.categories.values("id", "name")
+                ),
+                "activities": list(
+                    self.company_charkiv.activities.values("id", "name")
+                ),
                 "regions": [
                     {
                         "id": self.kharkiv_region.id,
@@ -698,8 +772,12 @@ class TestCompanyFilter(APITestCase):
             {
                 "id": self.company_chernigiv.id,
                 "name": "Chernigivtravel",
-                "categories": [],
-                "activities": [],
+                "categories": list(
+                    self.company_chernigiv.categories.values("id", "name")
+                ),
+                "activities": list(
+                    self.company_chernigiv.activities.values("id", "name")
+                ),
                 "regions": [
                     {
                         "id": self.chernihiv_region.id,
@@ -718,8 +796,12 @@ class TestCompanyFilter(APITestCase):
             {
                 "id": self.company_dnipro.id,
                 "name": "Dniprotrans",
-                "categories": [],
-                "activities": [],
+                "categories": list(
+                    self.company_dnipro.categories.values("id", "name")
+                ),
+                "activities": list(
+                    self.company_dnipro.activities.values("id", "name")
+                ),
                 "regions": [
                     {
                         "id": self.dnipro_region.id,
@@ -738,8 +820,12 @@ class TestCompanyFilter(APITestCase):
             {
                 "id": self.company_kiev.id,
                 "name": "Kyivbud",
-                "categories": [],
-                "activities": [],
+                "categories": list(
+                    self.company_kiev.categories.values("id", "name")
+                ),
+                "activities": list(
+                    self.company_kiev.activities.values("id", "name")
+                ),
                 "regions": [
                     {
                         "id": self.kyiv_region.id,
@@ -769,8 +855,12 @@ class TestCompanyFilter(APITestCase):
             {
                 "id": self.company_kiev.id,
                 "name": "Kyivbud",
-                "categories": [],
-                "activities": [],
+                "categories": list(
+                    self.company_kiev.categories.values("id", "name")
+                ),
+                "activities": list(
+                    self.company_kiev.activities.values("id", "name")
+                ),
                 "regions": [
                     {
                         "id": self.kyiv_region.id,
@@ -789,8 +879,12 @@ class TestCompanyFilter(APITestCase):
             {
                 "id": self.company_dnipro.id,
                 "name": "Dniprotrans",
-                "categories": [],
-                "activities": [],
+                "categories": list(
+                    self.company_dnipro.categories.values("id", "name")
+                ),
+                "activities": list(
+                    self.company_dnipro.activities.values("id", "name")
+                ),
                 "regions": [
                     {
                         "id": self.dnipro_region.id,
@@ -809,8 +903,12 @@ class TestCompanyFilter(APITestCase):
             {
                 "id": self.company_chernigiv.id,
                 "name": "Chernigivtravel",
-                "categories": [],
-                "activities": [],
+                "categories": list(
+                    self.company_chernigiv.categories.values("id", "name")
+                ),
+                "activities": list(
+                    self.company_chernigiv.activities.values("id", "name")
+                ),
                 "regions": [
                     {
                         "id": self.chernihiv_region.id,
@@ -829,8 +927,12 @@ class TestCompanyFilter(APITestCase):
             {
                 "id": self.company_charkiv.id,
                 "name": "Charkivmarket",
-                "categories": [],
-                "activities": [],
+                "categories": list(
+                    self.company_charkiv.categories.values("id", "name")
+                ),
+                "activities": list(
+                    self.company_charkiv.activities.values("id", "name")
+                ),
                 "regions": [
                     {
                         "id": self.kharkiv_region.id,
@@ -861,8 +963,12 @@ class TestCompanyFilter(APITestCase):
             {
                 "id": self.company_kiev.id,
                 "name": "Kyivbud",
-                "categories": [],
-                "activities": [],
+                "categories": list(
+                    self.company_kiev.categories.values("id", "name")
+                ),
+                "activities": list(
+                    self.company_kiev.activities.values("id", "name")
+                ),
                 "regions": [
                     {
                         "id": self.kyiv_region.id,
@@ -881,8 +987,12 @@ class TestCompanyFilter(APITestCase):
             {
                 "id": self.company_dnipro.id,
                 "name": "Dniprotrans",
-                "categories": [],
-                "activities": [],
+                "categories": list(
+                    self.company_dnipro.categories.values("id", "name")
+                ),
+                "activities": list(
+                    self.company_dnipro.activities.values("id", "name")
+                ),
                 "regions": [
                     {
                         "id": self.dnipro_region.id,
@@ -901,8 +1011,12 @@ class TestCompanyFilter(APITestCase):
             {
                 "id": self.company_chernigiv.id,
                 "name": "Chernigivtravel",
-                "categories": [],
-                "activities": [],
+                "categories": list(
+                    self.company_chernigiv.categories.values("id", "name")
+                ),
+                "activities": list(
+                    self.company_chernigiv.activities.values("id", "name")
+                ),
                 "regions": [
                     {
                         "id": self.chernihiv_region.id,
@@ -921,8 +1035,12 @@ class TestCompanyFilter(APITestCase):
             {
                 "id": self.company_charkiv.id,
                 "name": "Charkivmarket",
-                "categories": [],
-                "activities": [],
+                "categories": list(
+                    self.company_charkiv.categories.values("id", "name")
+                ),
+                "activities": list(
+                    self.company_charkiv.activities.values("id", "name")
+                ),
                 "regions": [
                     {
                         "id": self.kharkiv_region.id,

@@ -1,16 +1,13 @@
-.profile-detail-page {
-    display: flex;
-    gap: 50px;
-    margin-bottom: 150px;
+.tag {
+    margin: 0 8px 8px 0;
 }
 
-.profile-details-section {
-    margin-left: 10px;
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+.banner-image {
+    object-fit: cover;
+}
 
+.logo-image {
+    object-fit: contain;
 }
 
 .log-section {
@@ -24,115 +21,3 @@
  .log {
     margin-bottom: 10px;
  }
-
-.profile-details-section_info {
-    font-family: var(--font__admin-panel);    
-    font-size: 16px;
-}
-
-.data-section {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    gap: 16px;
-}
-
-.form-section {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 3px;
-}
-
-.form-info__text {
-    color: var(--font-color__admin-panel);
-    font-feature-settings: 'calt' off;
-    font-family: var(--font__admin-panel);
-    font-size: 17px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 22px;
-    letter-spacing: -0.14px;
-}
-
-.form-input {
-    display: flex;
-    align-items: center;
-    flex-shrink: 0;
-    align-self: stretch;
-    padding: 7px 12px;
-    align-items: center;
-    gap: 4px;
-    flex: 1 0 0;
-    border-radius: 2px;
-    border: 1px solid var(--neutral-5, #D9D9D9);
-    background: var(--main-white, #FFF);
-}
-
-.form-info__text_checkbox {
-    color: var(--font-color__admin-panel);
-    font-family: var(--font-admin-panel);
-}
-
-.form-input_checkbox{
-    font-family: var(--font__admin-panel);
-    font-size: 17px;
-}
-.form-input:focus {
-    outline: none;
-}
-
-.delete-section {
-    margin-top: 120px;
-}
-
-.button__delete {
-    color: #F15831;
-    cursor: pointer;
-    width: 109px;
-    height: 32px;
-    padding: 5px 15px 5px 15px;
-    margin-top: 8px;
-    border-radius: 4px;
-    gap: 10px;
-    background: linear-gradient(0deg, #FFFFFF, #FFFFFF),
-        linear-gradient(0deg, #F15831, #F15831);
-    border: 1px solid #F15831;
-    font-family: var(--font-main);
-    font-size: 16px;
-    font-weight: 600;
-    line-height: 20px;
-    letter-spacing: -0.01em;
-    text-align: center;
-}
-
-.save-button {
-    display: flex;
-    padding: 5px 15px;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-
-    border-radius: 4px;
-    border: 1px solid #1F9A7C;
-    background: #1F9A7C;
-
-    box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.04);
-
-    /* Button Text */
-    color: #FFF;
-    text-align: center;
-    font-feature-settings: 'calt' off;
-    text-decoration: none;
-    font-family: var(--font-main);
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: 20px;
-    letter-spacing: -0.16px;
-}
-
-.save-button:hover {
-    background: #FFF;
-    color: #1F9A7C;
-}
