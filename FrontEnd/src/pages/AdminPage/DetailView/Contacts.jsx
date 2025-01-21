@@ -5,12 +5,11 @@ import css from'./Contacts.module.css';
 const LoadingMessage = () => <div className="loading">Завантаження...</div>;
 
 const Contacts = () => {
-    const [contacts, setContacts] = useState({}); // Поточні дані
+    const [contacts, setContacts] = useState({});
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(false);
 
-    // Завантаження контактної інформації
     useEffect(() => {
         const fetchContacts = async () => {
             try {
@@ -27,7 +26,6 @@ const Contacts = () => {
         fetchContacts();
     }, []);
 
-    // Обробка зміни полів
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setContacts((prevContacts) => ({
@@ -36,7 +34,7 @@ const Contacts = () => {
         }));
     };
 
-    // Збереження змін
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setSuccess(false);
