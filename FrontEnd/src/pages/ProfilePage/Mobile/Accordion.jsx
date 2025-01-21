@@ -5,10 +5,9 @@ import MyModal from '../UI/MyModal/MyModal';
 import WarnUnsavedDataModal from '../FormComponents/WarnUnsavedDataModal';
 import { DirtyFormContext } from '../../../context/DirtyFormContext';
 
-const Accordion = ({ sections }) => {
-  const [activeIndex, setActiveIndex] = useState(null);
-  const [previousIndex, setPreviousIndex] = useState(null);
-  const [targetIndex, setTargetIndex] = useState(null);
+const Accordion = ({ sections, openSectionIndex, setOpenSectionIndex }) => {
+  const [previousSectionIndex, setPreviousSectionIndex] = useState(null);
+  const [targetSectionIndex, setTargetSectionIndex] = useState(null);
   const [triggerKey, setTriggerKey] = useState(0);
   const [showWarningModal, setShowWarningModal] = useState(false);
   const {  formIsDirty, setFormIsDirty } = useContext(DirtyFormContext);
@@ -17,11 +16,11 @@ const Accordion = ({ sections }) => {
     if (disabled) return;
 
     if (!formIsDirty) {
-        setActiveIndex((prevIndex) => (prevIndex === index ? null : index));
+        setOpenSectionIndex((prevOpenSectionIndex) => (prevOpenSectionIndex === index ? null : index));
         focusFirstUnfilledField(index);
         } else {
           setShowWarningModal(true);
-          setTargetIndex(index);
+          setTargetSectionIndex(index);
         }
     };
 
@@ -42,10 +41,10 @@ const Accordion = ({ sections }) => {
   const onConfirmModal = () => {
     setShowWarningModal(false);
     setFormIsDirty(false);
-    setPreviousIndex(activeIndex);
-    setActiveIndex(targetIndex);
+    setPreviousSectionIndex(openSectionIndex);
+    setOpenSectionIndex(targetSectionIndex);
     setTriggerKey((prev) => prev + 1);
-    focusFirstUnfilledField(activeIndex);
+    focusFirstUnfilledField(openSectionIndex);
   };
 
   const onCancelModal = () => {
@@ -61,8 +60,8 @@ const Accordion = ({ sections }) => {
             title={section.title}
             content={section.content}
             disabled={section.disabled}
-            isOpen={activeIndex === index}
-            triggerKey={previousIndex === index ? triggerKey : null}
+            isOpen={openSectionIndex === index}
+            triggerKey={previousSectionIndex === index ? triggerKey : null}
             onClick={() => handleItemClick(index, section.disabled)}
           />
         ))}

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { useEffect, useState, useCallback } from 'react';
 import css from './NotificationBanner.module.css';
 
-const NotificationBanner = ({ missingFields, setOpenSection }) => {
+const NotificationBanner = ({ missingFields, sections, setOpenSectionIndex }) => {
   const navigate = useNavigate();
   const [isVisible, setIsVisible] = useState(missingFields.length > 0);
   const [shouldFocusField, setShouldFocusField] = useState(false);
@@ -31,10 +31,12 @@ const NotificationBanner = ({ missingFields, setOpenSection }) => {
     }
   }, [shouldFocusField, focusFirstUnfilledField]);
 
+  const targetSectionIndex = sections?.findIndex(section => section.title === 'Загальна інформація');
+
   const handleClick = () => {
-    if (typeof setOpenSection === 'function') {
+    if (typeof setOpenSectionIndex === 'function') {
       setShouldFocusField(true);
-      setOpenSection('Загальна інформація');
+      setOpenSectionIndex(targetSectionIndex);
       navigate('/profile/general-info');
     } else {
       console.error('setOpenSection is not a function');
@@ -59,6 +61,7 @@ const NotificationBanner = ({ missingFields, setOpenSection }) => {
 NotificationBanner.propTypes = {
   missingFields: PropTypes.array.isRequired,
   setOpenSection: PropTypes.func.isRequired,
+  sections: PropTypes.array.isRequired,
 };
 
 export default NotificationBanner;

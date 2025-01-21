@@ -15,7 +15,7 @@ import ChangePassword from '../FormComponents/ChangePassword';
 import Loader from '../../../components/Loader/Loader';
 import css from './EditProfileMobile.module.css';
 
-const EditProfileMobile = ({ openSection, setOpenSection }) => {
+const EditProfileMobile = ({ openSectionIndex, setOpenSectionIndex }) => {
   const { user } = useAuth();
   const { profile } = useProfile();
   const [missingFields, setMissingFields] = useState([]);
@@ -71,10 +71,10 @@ const EditProfileMobile = ({ openSection, setOpenSection }) => {
     return (
       <div className={css['container']}>
         {missingFields.length > 0 && (
-          <NotificationBanner missingFields={missingFields} setOpenSection={setOpenSection} />
+          <NotificationBanner missingFields={missingFields} sections={sections} setOpenSectionIndex={setOpenSectionIndex} />
         )}
         <h2 className={css['head']}>Профіль користувача</h2>
-        <Accordion sections={sections} openSection={openSection} setOpenSection={setOpenSection} />
+        <Accordion sections={sections} openSectionIndex={openSectionIndex} setOpenSectionIndex={setOpenSectionIndex} />
       </div>
     );
   } else {
