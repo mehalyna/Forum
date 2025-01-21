@@ -25,7 +25,7 @@
     display: inline;
 }
 
-@media (min-width: 768px) {
+@media only screen and (min-width: 768px) {
     .notification {
         width: 720px;
         padding: 16px 24px;
@@ -36,7 +36,7 @@
     }
 }
 
-@media (min-width: 1200px) {
+@media only screen and (min-width: 1200px) {
     .notification {
         width: 1055px;
         flex-direction: row;
@@ -44,7 +44,7 @@
     }
 }
 
-@media (min-width: 1512px) {
+@media only screen and (min-width: 1512px) {
     .notification {
         width: 1304px;
     }

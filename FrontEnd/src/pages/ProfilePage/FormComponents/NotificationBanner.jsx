@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import css from './NotificationBanner.module.css';
 
 const NotificationBanner = ({ missingFields, setOpenSection }) => {
@@ -8,7 +8,7 @@ const NotificationBanner = ({ missingFields, setOpenSection }) => {
   const [isVisible, setIsVisible] = useState(missingFields.length > 0);
   const [shouldFocusField, setShouldFocusField] = useState(false);
 
-  const focusFirstUnfilledField = () => {
+  const focusFirstUnfilledField = useCallback(() => {
     if (missingFields.length === 0) return;
 
     setTimeout(() => {
@@ -18,7 +18,7 @@ const NotificationBanner = ({ missingFields, setOpenSection }) => {
         firstUnfilledField.focus();
       }
     }, 300);
-  };
+  }, [missingFields]);
 
   useEffect(() => {
     setIsVisible(missingFields.length > 0);
@@ -29,7 +29,7 @@ const NotificationBanner = ({ missingFields, setOpenSection }) => {
       focusFirstUnfilledField();
       setShouldFocusField(false);
     }
-  }, [shouldFocusField]);
+  }, [shouldFocusField, focusFirstUnfilledField]);
 
   const handleClick = () => {
     if (typeof setOpenSection === 'function') {
@@ -44,8 +44,11 @@ const NotificationBanner = ({ missingFields, setOpenSection }) => {
   return (
     isVisible && (
       <div className={css.notification} onClick={handleClick}>
-        <p>
-          Ваш профіль не відображається на сайті. Заповніть усі{' '}
+        <p className={css['notification-text']}>
+          Ваш профіль не відображається на сайті.
+        </p>
+        <p className={css['notification-text']}>
+          &nbsp;Заповніть усі{' '}
           <span className={css.required}>*</span> обов’язкові поля, щоб зробити його видимим.
         </p>
       </div>
