@@ -19,4 +19,13 @@ const AccordionItem = (props) => {
     );
 };
 
+AccordionItem.propTypes = {
+    title: PropTypes.string.isRequired,
+    content: PropTypes.node.isRequired,
+    disabled: PropTypes.bool,
+    isOpen: PropTypes.bool.isRequired,
+    onClick: PropTypes.func.isRequired,
+    warningHandler: PropTypes.func.isRequired,
+};
+
 export default AccordionItem;
