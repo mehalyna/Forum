@@ -23,8 +23,8 @@ from rest_framework.generics import (
     CreateAPIView,
 )
 
+
 from administration.serializers import (
-    AdminRegistrationSerializer,
     AdminCompanyListSerializer,
     AdminCompanyDetailSerializer,
     AdminUserListSerializer,
@@ -36,6 +36,7 @@ from administration.serializers import (
     StatisticsSerializer,
     ContactInformationSerializer,
     MonthlyProfileStatisticsSerializer,
+    AdminRegistrationSerializer,
 )
 from administration.pagination import ListPagination
 from administration.models import (
@@ -166,10 +167,33 @@ class ProfileStatisticsView(RetrieveAPIView):
     def get_object(self):
         queryset = self.filter_queryset(Profile.objects.all())
         return queryset.aggregate(
-            companies_count=Count("pk"),
-            investors_count=Count("pk", filter=Q(is_registered=True)),
-            startups_count=Count("pk", filter=Q(is_startup=True)),
-            blocked_companies_count=Count("pk", filter=Q(status="blocked")),
+            companies_count=Count("pk", distinct=True),
+            investors_count=Count(
+                "pk", filter=Q(is_registered=True), distinct=True
+            ),
+            startups_count=Count(
+                "pk", filter=Q(is_startup=True), distinct=True
+            ),
+            blocked_companies_count=Count(
+                "pk", filter=Q(status="blocked"), distinct=True
+            ),
+            manufacturers_count=Count(
+                "pk", filter=Q(activities__name="Виробник"), distinct=True
+            ),
+            importers_count=Count(
+                "pk", filter=Q(activities__name="Імпортер"), distinct=True
+            ),
+            retail_networks_count=Count(
+                "pk",
+                filter=Q(activities__name="Роздрібна мережа"),
+                distinct=True,
+            ),
+            horeca_count=Count(
+                "pk", filter=Q(activities__name="HORECA"), distinct=True
+            ),
+            others_count=Count(
+                "pk", filter=Q(activities__name="Інші послуги"), distinct=True
+            ),
         )
 
 
