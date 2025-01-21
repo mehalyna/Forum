@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import css from './AccordionItem.module.css';
 
 const AccordionItem = (props) => {
@@ -25,7 +26,7 @@ AccordionItem.propTypes = {
     disabled: PropTypes.bool,
     isOpen: PropTypes.bool.isRequired,
     onClick: PropTypes.func.isRequired,
-    warningHandler: PropTypes.func.isRequired,
+    triggerKey: PropTypes.number,
 };
 
 export default AccordionItem;

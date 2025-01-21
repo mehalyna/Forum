@@ -50,7 +50,6 @@ const Accordion = ({ sections }) => {
 
   const onCancelModal = () => {
     setShowWarningModal(false);
-    setPendingSection(null);
   };
 
   return (
