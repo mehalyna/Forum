@@ -39,9 +39,9 @@ function Profile() {
           {isStaff && (
             <Link to="/customadmin">Адмінпанель</Link>
           )}
-          <Link to={isStaff ? '/customadmin/admin-profile/admin-info' : '/profile/user-info'}>Мій профіль</Link>
+            <Link to={isStaff ? '/customadmin/admin-profile/admin-info' : '/profile/user-info'}>Мій профіль</Link>
           {!isStaff && <Link to="/profiles/saved">Мої збережені</Link>}
-          <button onClick={performLogout}>Вихід</button>
+            <button onClick={performLogout}>Вихід</button>
         </DropdownMenu>
       </div>
     </div>
