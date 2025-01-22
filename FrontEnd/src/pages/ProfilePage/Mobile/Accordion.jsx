@@ -15,13 +15,13 @@ const Accordion = ({ sections, openSectionIndex, setOpenSectionIndex }) => {
   const handleItemClick = (index, disabled) => {
     if (disabled) return;
 
-    if (!formIsDirty) {
-        setOpenSectionIndex((prevOpenSectionIndex) => (prevOpenSectionIndex === index ? null : index));
+    if (formIsDirty) {
+        setShowWarningModal(true);
+        setTargetSectionIndex(index);
+      } else {
+        setOpenSectionIndex((prev) => (prev === index ? null : index));
         focusFirstUnfilledField(index);
-        } else {
-          setShowWarningModal(true);
-          setTargetSectionIndex(index);
-        }
+      }
     };
 
   const focusFirstUnfilledField = (index) => {
@@ -74,9 +74,15 @@ const Accordion = ({ sections, openSectionIndex, setOpenSectionIndex }) => {
 };
 
 Accordion.propTypes = {
-  sections: PropTypes.array.isRequired,
-  openSection: PropTypes.string,
-  setOpenSection: PropTypes.func.isRequired,
+  sections: PropTypes.arrayOf(
+    PropTypes.shape({
+      title: PropTypes.string.isRequired,
+      content: PropTypes.node.isRequired,
+      disabled: PropTypes.bool,
+    })
+  ).isRequired,
+  openSectionIndex: PropTypes.number,
+  setOpenSectionIndex: PropTypes.func.isRequired,
 };
 
 export default Accordion;

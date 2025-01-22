@@ -83,8 +83,8 @@ const EditProfileMobile = ({ openSectionIndex, setOpenSectionIndex }) => {
 };
 
 EditProfileMobile.propTypes = {
-  openSection: PropTypes.any,
-  setOpenSection: PropTypes.func.isRequired,
+  openSectionIndex: PropTypes.number,
+  setOpenSectionIndex: PropTypes.func.isRequired,
 };
 
 export default EditProfileMobile;

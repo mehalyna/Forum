@@ -60,7 +60,7 @@ const NotificationBanner = ({ missingFields, sections, setOpenSectionIndex }) =>
 
 NotificationBanner.propTypes = {
   missingFields: PropTypes.array.isRequired,
-  setOpenSection: PropTypes.func.isRequired,
+  setOpenSectionIndex: PropTypes.func.isRequired,
   sections: PropTypes.array.isRequired,
 };
 
