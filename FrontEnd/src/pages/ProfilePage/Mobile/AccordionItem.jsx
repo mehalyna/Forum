@@ -1,4 +1,5 @@
-import { useState, useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import PropTypes from 'prop-types';
 import css from './AccordionItem.module.css';
 import { DirtyFormContext } from '../../../context/DirtyFormContext';
 
@@ -6,9 +7,13 @@ const AccordionItem = (props) => {
     const [isOpen, setIsOpen] = useState(false);
     const { formIsDirty } = useContext(DirtyFormContext);
 
+    useEffect(() => {
+        setIsOpen(props.isOpen);
+    }, [props.isOpen]);
+
     const toggle = () => {
         if (!props.disabled) {
-            formIsDirty ? props.warningHandler() : setIsOpen(!isOpen);
+            formIsDirty ? props.warningHandler() : props.onClick();
         }
     };
 
@@ -19,7 +24,9 @@ const AccordionItem = (props) => {
                 <p className={props.title === 'Видалити профіль' ? css['danger'] : ''}>
                     {props.title}
                 </p>
-               {!props.disabled && <img src={`${process.env.REACT_APP_PUBLIC_URL}/svg/arrow-${isOpen ? 'up' : 'down'}.svg`}></img>}
+               {!props.disabled && (
+                   <img src={`${process.env.REACT_APP_PUBLIC_URL}/svg/arrow-${isOpen ? 'up' : 'down'}.svg`} alt="Toggle" />
+               )}
             </button>
             <div className={css['divider']}></div>
             <div className={`${css['accordion-content']} ${isOpen ? '' : css['close']}`}>
@@ -27,6 +34,15 @@ const AccordionItem = (props) => {
             </div>
         </div>
     );
+};
+
+AccordionItem.propTypes = {
+    title: PropTypes.string.isRequired,
+    content: PropTypes.node.isRequired,
+    disabled: PropTypes.bool,
+    isOpen: PropTypes.bool.isRequired,
+    onClick: PropTypes.func.isRequired,
+    warningHandler: PropTypes.func.isRequired,
 };
 
 export default AccordionItem;

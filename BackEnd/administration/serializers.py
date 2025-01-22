@@ -196,6 +196,8 @@ class AdminCompanyDetailSerializer(serializers.ModelSerializer):
             "common_info",
             "phone",
             "edrpou",
+            "rnokpp",
+            "status",
             "founded",
             "service_info",
             "product_info",
@@ -275,6 +277,11 @@ class StatisticsSerializer(serializers.Serializer):
     investors_count = serializers.IntegerField()
     startups_count = serializers.IntegerField()
     blocked_companies_count = serializers.IntegerField()
+    manufacturers_count = serializers.IntegerField()
+    importers_count = serializers.IntegerField()
+    retail_networks_count = serializers.IntegerField()
+    horeca_count = serializers.IntegerField()
+    others_count = serializers.IntegerField()
 
 
 class ContactInformationSerializer(serializers.ModelSerializer):
