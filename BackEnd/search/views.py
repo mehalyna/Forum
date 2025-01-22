@@ -10,7 +10,7 @@ from search.filters import CompanyFilter
 
 class SearchCompanyView(ListAPIView):
     queryset = (
-        Profile.objects.active_only()
+        Profile.objects.visible_only()
         .prefetch_related("regions", "categories", "activities")
         .order_by("id")
     )
@@ -37,7 +37,7 @@ class SearchCompanyView(ListAPIView):
 
 class AdvancedSearchView(ListAPIView):
     queryset = (
-        Profile.objects.active_only()
+        Profile.objects.visible_only()
         .prefetch_related("regions", "categories", "activities")
         .order_by("id")
     )

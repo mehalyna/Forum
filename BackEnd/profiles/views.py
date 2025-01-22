@@ -118,8 +118,14 @@ class ProfileList(ListCreateAPIView):
     def get_queryset(self):
         user_id = self.request.query_params.get("userid")
         queryset = (
-            Profile.objects.active_only()
-            .prefetch_related("regions", "categories", "activities")
+            Profile.objects.visible_only()
+            .prefetch_related(
+                "regions",
+                "categories",
+                "activities",
+                "banner_approved",
+                "logo_approved",
+            )
             .order_by("id")
         )
         if user_id:

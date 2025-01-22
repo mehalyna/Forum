@@ -53,18 +53,25 @@ class ProfileFactory(factory.django.DjangoModelFactory):
     is_deleted = False
 
     @factory.post_generation
-    def activities(self, create, extracted):
-        if not create or not extracted:
-            return
-        self.activities.add(*extracted)
-
-    @factory.post_generation
-    def categories(self, create, extracted):
+    def activities(self, create, extracted=None):
         if not create:
             return
-        if extracted:
+        if extracted is not None:
+            self.activities.add(*extracted)
+        else:
+            activity = ActivityFactory()
+            self.activities.add(activity)
+
+    @factory.post_generation
+    def categories(self, create, extracted=None):
+        if not create:
+            return
+        if extracted is not None:
             for category in extracted:
                 self.categories.add(category)
+        else:
+            category = CategoryFactory()
+            self.categories.add(category)
 
     @factory.post_generation
     def regions(self, create, extracted):
