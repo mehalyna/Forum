@@ -5,6 +5,10 @@ import { Descriptions, Segmented, Select, DatePicker } from 'antd';
 import ProfilesBarChart from '../../Charts/ProfilesChart';
 import Loader from '../../../components/Loader/Loader';
 import css from './ProfilesStatistics.module.css';
+import React from 'react';
+
+import ActivitiesBarChart from '../Charts/ActivitiesBarChart';
+
 
 const { Option } = Select;
 
@@ -19,7 +23,6 @@ function ProfilesStatistics() {
   const [periodType, setPeriodType] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
   const [tab, setTab] = useState('overall');
-
   const queryParams = [];
   if (tab === 'period' && periodType !== 'range' && selectedDate) {
     queryParams.push(`${periodType}=${selectedDate}`);
@@ -31,9 +34,7 @@ function ProfilesStatistics() {
   const url = `${baseUrl}/api/admin/profiles/statistics/${
     queryParams.length ? `?${queryParams.join('&')}` : ''
   }`;
-
   const { data: statistics, error, isLoading } = useSWR(url, fetcher);
-
   const items = statistics
     ? [
         {
@@ -48,7 +49,7 @@ function ProfilesStatistics() {
         },
         {
           key: '3',
-          label: 'Кількість Cтратапів',
+          label: 'Кількість Cтартапів',
           children: statistics.startups_count,
         },
         {
@@ -66,7 +67,6 @@ function ProfilesStatistics() {
   const handleRangeChange = (value, dateString) => {
     setPeriodRange({ start_date: dateString[0], end_date: dateString[1] });
   };
-
   return (
     <div>
       <div className={css['statistics-container']}>
@@ -133,6 +133,7 @@ function ProfilesStatistics() {
             items={items}
           />
         )}
+        <ActivitiesBarChart statistics={statistics} isLoading={isLoading} error={error}/>
       </div>
       <ProfilesBarChart />
     </div>
