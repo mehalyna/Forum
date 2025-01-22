@@ -17,7 +17,6 @@ const ProfilePage = () => {
   const { profile } = useProfile();
   const windowWidth = useWindowWidth();
   const [missingFields, setMissingFields] = useState([]);
-  const [openSectionIndex, setOpenSectionIndex] = useState(null);
 
   useEffect(() => {
     if (profile && user) {
@@ -43,7 +42,7 @@ const ProfilePage = () => {
   if (windowWidth < SCREEN_WIDTH.tablet) {
     return (
       <DirtyFormContext.Provider value={{ formIsDirty, setFormIsDirty }}>
-        <EditProfileMobile openSectionIndex={openSectionIndex} setOpenSectionIndex={setOpenSectionIndex} />
+        <EditProfileMobile />
       </DirtyFormContext.Provider>
     );
   }
@@ -51,7 +50,7 @@ const ProfilePage = () => {
   return (
     <div className={css['container']}>
       <DirtyFormContext.Provider value={{ formIsDirty, setFormIsDirty }}>
-        <NotificationBanner missingFields={missingFields} setOpenSectionIndex={setOpenSectionIndex} />
+        <NotificationBanner missingFields={missingFields} />
         {!profile ? (
           <Loader />
         ) : (

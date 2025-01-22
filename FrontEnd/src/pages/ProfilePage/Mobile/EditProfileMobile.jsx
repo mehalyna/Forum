@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { useAuth, useProfile } from '../../../hooks';
-import PropTypes from 'prop-types';
 import { validateRequiredFields, REQUIRED_FIELDS_GENERAL_INFO } from '../../../utils/validateRequiredFields';
 import NotificationBanner from '../FormComponents/NotificationBanner';
 import Accordion from './Accordion';
@@ -15,10 +14,11 @@ import ChangePassword from '../FormComponents/ChangePassword';
 import Loader from '../../../components/Loader/Loader';
 import css from './EditProfileMobile.module.css';
 
-const EditProfileMobile = ({ openSectionIndex, setOpenSectionIndex }) => {
+const EditProfileMobile = () => {
   const { user } = useAuth();
   const { profile } = useProfile();
   const [missingFields, setMissingFields] = useState([]);
+  const [openSectionIndex, setOpenSectionIndex] = useState(null);
 
   useEffect(() => {
     if (profile && user) {
@@ -80,11 +80,6 @@ const EditProfileMobile = ({ openSectionIndex, setOpenSectionIndex }) => {
   } else {
     return <Loader />;
   }
-};
-
-EditProfileMobile.propTypes = {
-  openSectionIndex: PropTypes.number,
-  setOpenSectionIndex: PropTypes.func.isRequired,
 };
 
 export default EditProfileMobile;

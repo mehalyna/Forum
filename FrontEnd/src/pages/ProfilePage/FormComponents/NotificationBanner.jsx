@@ -34,12 +34,11 @@ const NotificationBanner = ({ missingFields, sections, setOpenSectionIndex }) =>
   const targetSectionIndex = sections?.findIndex(section => section.title === 'Загальна інформація');
 
   const handleClick = () => {
+    setShouldFocusField(true);
     if (typeof setOpenSectionIndex === 'function') {
-      setShouldFocusField(true);
       setOpenSectionIndex(targetSectionIndex);
-      navigate('/profile/general-info');
     } else {
-      console.error('setOpenSection is not a function');
+      navigate('/profile/general-info');
     }
   };
 
@@ -60,8 +59,12 @@ const NotificationBanner = ({ missingFields, sections, setOpenSectionIndex }) =>
 
 NotificationBanner.propTypes = {
   missingFields: PropTypes.array.isRequired,
-  setOpenSectionIndex: PropTypes.func.isRequired,
-  sections: PropTypes.array.isRequired,
+  setOpenSectionIndex: PropTypes.func,
+  sections: PropTypes.arrayOf(
+    PropTypes.shape({
+      title: PropTypes.string.isRequired,
+    })
+  ),
 };
 
 export default NotificationBanner;
