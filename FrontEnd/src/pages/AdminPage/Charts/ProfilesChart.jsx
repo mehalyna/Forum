@@ -13,7 +13,7 @@ import axios from 'axios';
 import useSWR from 'swr';
 import { DatePicker } from 'antd';
 import dayjs from 'dayjs';
-import Loader from '../../components/Loader/Loader';
+import Loader from '../../../components/Loader/Loader';
 import css from './ProfileChart.module.css';
 
 
