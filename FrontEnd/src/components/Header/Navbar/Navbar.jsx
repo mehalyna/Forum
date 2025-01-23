@@ -11,6 +11,8 @@ import {PropTypes} from 'prop-types';
 function Navbar(props) {
   const { isStaff } = useAuth();
 
+  const isAdminPage = props.page.includes('/customadmin');
+
   return (
     <div className={css['navbar-wrapper']}>
       <div className={css['navbar-content']}>
@@ -27,12 +29,18 @@ function Navbar(props) {
         </div>
         <div className={css['navbar-utility-bar']}>
           <div className={css['menu-search-wrapper']}>
-              <Menu />
-              <SearchBox />
+          {!isAdminPage && (
+              <>
+                <Menu />
+                <SearchBox />
+              </>
+            )}
           </div>
           {props.isAuthorized ? <Profile /> : <Buttons adminPage={props.page.includes('/customadmin')} />}
           <div className={css['burger-menu-wrapper']}>
-            <BurgerMenu/>
+          {!isAdminPage && (
+              <BurgerMenu/>
+            )}
           </div>
         </div>
       </div>

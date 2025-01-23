@@ -1,16 +1,19 @@
 .admin_registration-section {
     display: flex;
     flex-direction: column;
-    padding-left: 25px;
-    padding-top: 30px;
 }
 
 .admin_registration-outer-wrapper {
     display: flex;
     flex-direction: column;
-    gap: 2px;
-    margin-top: 40px;
+    gap: 20px;
 }
+
+.admin_registration-section__head {
+    font-size: 14px;
+    font-weight: normal;
+}
+
 .admin_registration-asterisk {
     font-family: var(--font-main);
     font-size: 14px;
@@ -29,38 +32,61 @@
 .admin_registration-input-wrapper {
     display: flex;
     flex-direction: column;
-    gap: 18px;
+    gap: 20px;
+    width: 320px;
 }
 
 .admin_registration-input {
-    width: 320px;
-    height: 25px;
-    margin: auto;
-    padding: 3px 12px;
+    width: 100%;
+    height: 40px;
+    box-sizing: border-box;
+    padding: 9px 12px;
+    font-size: 14px;
     border: 1px solid var(--border-input__admin-panel);
     border-radius: 2px;
-    font-family: var(--font-messages);
-    font-size: 14px;
 }
 
-.admin_registration-input:focus {
-    outline: none;
+.buttons-group {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+    width: 100%;
 }
 
 .admin_registration-button {
-    padding: 5px 15px;
-    width: auto;
+    display: flex;
+    width: 124px;
+    padding: 7px 15px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
     border-radius: 4px;
-    border: 1px solid var(--button-color__admin-panel);
-    background: var(--button-color__admin-panel);
-    box-shadow: 0px 2px 0px 0px var(--box-shadow-color__admin-panel);
-    color: var(--button-text-color__admin-panel);
+    background: var(--main-button-color);
+    color: var(--main-button-text-color);
+    text-align: center;
+    font-feature-settings: 'calt' off;
+    text-decoration: none;
     font-family: var(--font-main);
     font-size: 16px;
+    font-style: normal;
     font-weight: 600;
     line-height: 20px;
     letter-spacing: -0.16px;
     cursor: pointer;
+}
+
+.cancel-button {
+    background-color: var(--light-button-color);
+    border: 1px solid var(--light-button-border-color);
+    color: var(--light-button-text-color);
+}
+
+.admin_registration-button:hover {
+    background: var(--main-button-hover-color);
+}
+
+.cancel-button:hover {
+    background: var(--light-button-hover-color);
 }
 
 .admin_registration-error {

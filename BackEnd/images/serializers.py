@@ -11,6 +11,10 @@ from validation.validate_image import (
 
 
 class ImageSerializer(serializers.ModelSerializer):
+    crop_x = serializers.IntegerField()
+    crop_y = serializers.IntegerField()
+    width = serializers.IntegerField()
+    height = serializers.IntegerField()
     class Meta:
         model = ProfileImage
         fields = (
@@ -24,6 +28,10 @@ class ImageSerializer(serializers.ModelSerializer):
             "is_approved",
             "is_deleted",
             "created_at",
+            "crop_x",
+            "crop_y",
+            "width",
+            "height",
         )
         read_only_fields = (
             "uuid",
@@ -48,8 +56,8 @@ class ImageSerializer(serializers.ModelSerializer):
         return value
 
     def create(self, validated_data):
-        cropped_image_x_point = validated_data.pop("x", 0)
-        cropped_image_y_point = validated_data.pop("y", 0)
+        cropped_image_x_point = validated_data.pop("crop_x", 0)
+        cropped_image_y_point = validated_data.pop("crop_y", 0)
         width = validated_data.pop("width", 0)
         height = validated_data.pop("height", 0)
 
