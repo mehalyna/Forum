@@ -109,6 +109,7 @@ function ProfilesBarChart() {
     return (
         <div className={css['profiles-chart']}>
             <DatePicker
+                className={css['profiles-chart__datepicker']}
                 onChange={handleYearChange}
                 picker="year"
                 defaultValue={dayjs().year(new Date().getFullYear())}
