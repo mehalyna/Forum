@@ -224,8 +224,8 @@ class AdminCompanyDetailSerializer(serializers.ModelSerializer):
         )
 
 
-def get_regions_ukr_display(self, obj) -> str:
-    return get_regions_ukr_names_as_string(obj)
+    def get_regions_ukr_display(self, obj) -> str:
+        return get_regions_ukr_names_as_string(obj)
 
 
 class AutoModerationHoursSerializer(serializers.ModelSerializer):

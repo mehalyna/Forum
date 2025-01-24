@@ -88,6 +88,7 @@ class TestAdminProfilesAPITests(APITestCase):
             "name": "Test person",
             "is_registered": True,
             "is_startup": True,
+            "is_fop": False,
             "categories": [],
             "activities": [],
             "person": {
@@ -102,6 +103,7 @@ class TestAdminProfilesAPITests(APITestCase):
             "person_position": "Test person position",
             "official_name": "Test official name",
             "regions": [],
+            'regions_ukr_display': "",
             "common_info": "test common info",
             "phone": "380112909099",
             "edrpou": "10000000",
@@ -114,8 +116,6 @@ class TestAdminProfilesAPITests(APITestCase):
             "startup_idea": "Test startup idea",
             "banner": None,
             "logo": None,
-            "banner_approved": None,
-            "logo_approved": None,
             "is_deleted": False,
         }
         self.assertEqual(data, response.json())
