@@ -15,6 +15,7 @@ import MainPage from '../pages/AdminPage/MainPage/MainPage';
 import Loader from '../components/Loader/Loader';
 import AutoApproveDelay from '../pages/AdminPage/AutoApproveDelay/AutoApproveDelay';
 import ModerationEmail from '../pages/AdminPage/DetailView/ModerationEmail';
+import { ModerationModal } from '../components/Moderation/ModerationModal';
 import Contacts from '../pages/AdminPage/DetailView/Contacts';
 import AdminProfilePage from '../pages/AdminPage/AdminProfile/AdminProfilePage';
 import AdminRegistration from '../pages/AdminPage/AdminRegistration/AdminRegistration';
@@ -46,6 +47,7 @@ function AdminRouter() {
             <Route path="/admin-profile/*" element={<AdminProfilePage />} />
             <Route path="/categories/" element={<FormatCategories />} />
             <Route path="/statistics" element={<ProfilesStatistics />} />
+            <Route path="/moderation/:id/:action" element={<ModerationModal />}/>
         </>
     ) : (
         <Route path="/customadmin/" element={<MainPage />}/>
