@@ -1,14 +1,72 @@
-import {useState} from 'react';
+import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import useSWR from 'swr';
-import {Descriptions, Tag, Badge} from 'antd';
+import { Descriptions, Tag, Badge } from 'antd';
+import Loader from '../../../components/Loader/Loader'
 import css from './ProfileDetail.module.css';
 
 function ProfileDetail() {
-    const [profile, setProfile] = useState({});
-    const profileId = usePathCompanyId();
-    const url = `${process.env.REACT_APP_BASE_API_URL}/api/admin/profiles/${profileId}/`;
-    const items = [
+    const { id } = useParams();
+    const url = `${process.env.REACT_APP_BASE_API_URL}/api/admin/profiles/${id}/`;
+    const fetcher = url => axios.get(url).then(res => res.data);
+    const {data: profile, error, isLoading } = useSWR(url, fetcher, {revalidateOnFocus: false});
+
+    const getStartupOrRegisteredFields = () => {
+        let fields = [];
+        if(profile.is_registered && profile.is_startup) {
+            fields.push(
+                {
+                    key: '10',
+                    label: 'Інформація про послуги',
+                    children: profile.service_info
+                },
+                {
+                    key: '11',
+                    label: 'Інформація про товари',
+                    children: profile.product_info
+                },
+                {
+                    key: '12',
+                    label: 'Ідея стартапу',
+                    children: profile.startup_idea
+                },
+                {
+                    key: '13',
+                    label: 'Рік заснування',
+                    children: profile.founded
+                }
+            );
+        } else if (profile.is_registered) {
+            fields.push(
+                {
+                    key: '14',
+                    label: 'Інформація про послуги',
+                    children: profile.service_info
+                },
+                {
+                    key: '15',
+                    label: 'Інформація про товари',
+                    children: profile.product_info
+                },
+                {
+                    key: '16',
+                    label: 'Рік заснування',
+                    children: profile.founded
+                }
+            );
+        } else if (profile.is_startup) {
+            fields.push(
+                {
+                    key: '17',
+                    label: 'Ідея стартапу',
+                    children: profile.startup_idea
+                }
+            );
+        }
+        return fields;
+    };
+
+    const items = profile ? [
         {
             key: '1',
             label: 'Ім\'я',
@@ -16,7 +74,7 @@ function ProfileDetail() {
         },
         {
             key: '2',
-            label: 'Позиція',
+            label: 'Посада представника',
             children: profile.person_position
         },
         {
@@ -27,8 +85,7 @@ function ProfileDetail() {
         {
             key: '4',
             label: 'Регіон',
-            children: (Array.isArray(profile.regions)
-                ? profile.regions.map(region => region.name_ukr).join(', ') : null)
+            children: profile.regions_ukr_display
         },
         {
             key: '5',
@@ -57,67 +114,12 @@ function ProfileDetail() {
             label: 'Телефон',
             children: profile.phone
         },
-        ...(profile.edrpou
-            ? [{
-                key: '8',
-                label: 'ЄДРПОУ',
-                children: profile.edrpou
-            }]
-            : [
-                {
-                    key: '9',
-                    label: 'РНОКПП',
-                    children: profile.rnokpp
-                }
-            ]),
-        ...(profile.is_startup && profile.is_registered
-            ? [
-                {
-                    key: '10',
-                    label: 'Інформація про послуги',
-                    children: profile.service_info
-                },
-                {
-                    key: '11',
-                    label: 'Інформація про товари',
-                    children: profile.product_info
-                },
-                {
-                    key: '12',
-                    label: 'Ідея стартапу',
-                    children: profile.startup_idea
-                },
-                {
-                    key: '13',
-                    label: 'Рік заснування',
-                    children: profile.founded
-                }
-            ]
-            : profile.is_registered
-                ? [
-                    {
-                        key: '14',
-                        label: 'Інформація про послуги',
-                        children: profile.service_info
-                    },
-                    {
-                        key: '15',
-                        label: 'Інформація про товари',
-                        children: profile.product_info
-                    },
-                    {
-                        key: '16',
-                        label: 'Рік заснування',
-                        children: profile.founded
-                    }
-                ]
-                : profile.is_startup
-                    ? [{
-                        key: '17',
-                        label: 'Ідея стартапу',
-                        children: profile.startup_idea
-                    }]
-                    : []),
+        {
+            key: '8',
+            label: profile.is_fop ? 'РНОКПП' : 'ЄДРПОУ',
+            children: profile.is_fop ? profile.rnokpp : profile.edrpou
+        },
+        ...getStartupOrRegisteredFields(),
         {
             key: '18',
             label: 'Адреса',
@@ -162,29 +164,21 @@ function ProfileDetail() {
             ),
             span: 2
         },
-    ];
-    const fetcher = url => axios.get(url).then(res => res.data);
-    const {data, error, isValidating: loading} = useSWR(url, fetcher);
-    if (data && !Object.keys(profile).length) {
-        setProfile(data);
-    }
+    ] : [];
+
     return (
-        <div className={css['profile-detail-page']}>
-            <div className={css['profile-details-section']}>
-                <ul className={css['log-section']}>
-                    {loading && <li className={css['log']}>Завантаження ...</li>}
-                    {error && <li className={css['log']}>Виникла помилка: {error}</li>}
-                </ul>
-                <Descriptions title="Детальна інформація профілю" bordered items={items} column={2}/>
+        (error && error.status !== 401
+        ) ? (
+            <div className={css['log']}>Виникла помилка: {error.message}</div>
+        ) : (
+            isLoading ? <Loader /> :
+            <div className={css['profile-detail-page']}>
+                <div className={css['profile-details-section']}>
+                    <Descriptions title="Детальна інформація профілю" bordered items={items} column={2}/>
+                </div>
             </div>
-        </div>
+        )
     );
-
-}
-
-function usePathCompanyId() {
-    const pathname = window.location.pathname;
-    return pathname.substring(pathname.lastIndexOf('/') + 1);
 }
 
 export default ProfileDetail;
