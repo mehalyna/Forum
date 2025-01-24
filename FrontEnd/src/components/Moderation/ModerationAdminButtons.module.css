@@ -1,0 +1,41 @@
+.buttons-container {
+    display: flex;
+    gap: 16px;
+}
+
+.button {
+    display: flex;
+    padding: 7px 15px;
+    justify-content: center;
+    align-items: center;
+    width: 124px;
+    border-radius: 4px;
+    background: var(--main-button-color);
+    color: var(--main-button-text-color);
+    text-align: center;
+    font-feature-settings: 'calt' off;
+    text-decoration: none;
+    font-family: var(--font-main);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 20px;
+    letter-spacing: -0.16px;
+    cursor: pointer;
+}
+
+.button-reject {
+    background-color: var(--light-button-color);
+    border: 1px solid var(--light-button-border-color);
+    color: var(--light-button-text-color);
+}
+
+.button:hover {
+    background: var(--main-button-hover-color);
+    color: var(--main-button-text-color);
+}
+
+.button-reject:hover {
+    background: var(--light-button-hover-color);
+    color: var(--light-button-text-color);
+}
