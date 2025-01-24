@@ -10,6 +10,7 @@ from profiles.models import (
     Activity,
     Category,
 )
+from utils.regions_ukr_names import get_regions_ukr_names_as_string
 from utils.administration.profiles.profiles_functions import (
     format_company_type,
     format_business_entity,
@@ -168,6 +169,7 @@ class AdminCompanyDetailSerializer(serializers.ModelSerializer):
         many=True, slug_field="name", read_only=True
     )
     regions = AdminRegionSerializer(many=True, read_only=True)
+    regions_ukr_display = serializers.SerializerMethodField()
     banner_image = serializers.ImageField(
         source="banner.image_path", required=False
     )
@@ -187,12 +189,14 @@ class AdminCompanyDetailSerializer(serializers.ModelSerializer):
             "name",
             "is_registered",
             "is_startup",
+            "is_fop",
             "categories",
             "activities",
             "person",
             "person_position",
             "official_name",
             "regions",
+            "regions_ukr_display",
             "common_info",
             "phone",
             "edrpou",
@@ -213,6 +217,9 @@ class AdminCompanyDetailSerializer(serializers.ModelSerializer):
             "logo_approved_image",
             "is_deleted",
         )
+
+    def get_regions_ukr_display(self, obj) -> str:
+        return get_regions_ukr_names_as_string(obj)
 
 
 class AutoModerationHoursSerializer(serializers.ModelSerializer):
