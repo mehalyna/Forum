@@ -68,7 +68,9 @@ class ImageSerializer(serializers.ModelSerializer):
 
             image = validated_data.get("image_path")
             format = validated_data.get("content_type").upper()
-
+            if format == "JPG":
+                format = "JPEG"
+                
             dimensions = (
                 cropped_image_x_point,
                 cropped_image_y_point,
