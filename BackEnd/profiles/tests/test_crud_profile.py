@@ -123,11 +123,15 @@ class TestProfileDetailAPIView(APITestCase):
             response.data.get("logo"),
             msg="Logo images do not match.",
         )
-        self.assertFalse(
-            response.data.get("categories"), msg="Categories do not match."
+        self.assertEqual(
+            list(self.profile.categories.values("id", "name")),
+            response.data.get("categories"),
+            msg="Categories do not match.",
         )
-        self.assertFalse(
-            response.data.get("activities"), msg="Activities do not match."
+        self.assertEqual(
+            list(self.profile.activities.values("id", "name")),
+            response.data.get("activities"),
+            msg="Activities do not match.",
         )
 
     def test_get_profile_authorized_not_owner(self):
@@ -204,20 +208,24 @@ class TestProfileDetailAPIView(APITestCase):
             msg="Product info do not match.",
         )
         self.assertEqual(
-            self.profile.banner,
+            profile2.banner,
             response.data.get("banner"),
             msg="Banner images do not match.",
         )
         self.assertEqual(
-            self.profile.logo,
+            profile2.logo,
             response.data.get("logo"),
             msg="Logo images do not match.",
         )
-        self.assertFalse(
-            response.data.get("categories"), msg="Categories do not match."
+        self.assertEqual(
+            list(profile2.categories.values("id", "name")),
+            response.data.get("categories"),
+            msg="Categories do not match.",
         )
-        self.assertFalse(
-            response.data.get("activities"), msg="Activities do not match."
+        self.assertEqual(
+            list(profile2.activities.values("id", "name")),
+            response.data.get("activities"),
+            msg="Activities do not match.",
         )
 
     def test_get_profile_authorized_owner(self):
@@ -316,12 +324,12 @@ class TestProfileDetailAPIView(APITestCase):
             msg="Logo images do not match.",
         )
         self.assertEqual(
-            list(self.profile.categories.all()),
+            list(self.profile.categories.values("id", "name")),
             response.data.get("categories"),
             msg="Categories do not match.",
         )
         self.assertEqual(
-            list(self.profile.activities.all()),
+            list(self.profile.activities.values("id", "name")),
             response.data.get("activities"),
             msg="Activities do not match.",
         )

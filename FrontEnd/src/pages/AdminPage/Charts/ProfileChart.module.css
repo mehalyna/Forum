@@ -1,0 +1,9 @@
+.profiles-chart {
+    padding-top: 20px;
+    max-width: 100%;
+    width: 700px;
+}
+
+.profiles-chart__datepicker {
+  margin-bottom: -30px;
+}

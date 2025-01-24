@@ -1,28 +1,58 @@
 from rest_framework.test import APITestCase
 from rest_framework import status
-from administration.factories import AdminUserFactory, AdminProfileFactory
+from administration.factories import AdminUserFactory
+from authentication.factories import UserFactory
+from profiles.factories import (
+    ProfileFactory,
+    ActivityFactory,
+    ProfileCompanyFactory,
+    ProfileStartupFactory,
+)
 from utils.unittest_helper import utc_datetime
 
 
 class TestProfileStatisticsStaff(APITestCase):
     def setUp(self):
-        self.user = AdminUserFactory()
+        self.user = UserFactory(is_staff=True)
         self.client.force_authenticate(self.user)
-        self.test_startup_user = AdminUserFactory(is_staff=False)
-        self.test_investor_user = AdminUserFactory(is_staff=False)
-        self.test_blocked_company_user = AdminUserFactory(is_staff=False)
-        self.startup_company = AdminProfileFactory(
-            person_id=self.test_startup_user.id, is_registered=False
+
+        self.activities = {
+            "Виробник": ActivityFactory(name="Виробник"),
+            "Імпортер": ActivityFactory(name="Імпортер"),
+            "Роздрібна мережа": ActivityFactory(name="Роздрібна мережа"),
+            "HORECA": ActivityFactory(name="HORECA"),
+            "Інші послуги": ActivityFactory(name="Інші послуги"),
+        }
+
+        self.test_startup_user = UserFactory()
+        self.test_investor_user = UserFactory()
+        self.test_blocked_company_user = UserFactory()
+        self.startup_company = ProfileStartupFactory(
+            person_id=self.test_startup_user.id,
+            activities=[
+                self.activities["Виробник"],
+                self.activities["HORECA"],
+            ],
         )
         self.startup_company.created_at = utc_datetime(2023, 12, 7)
+
         self.startup_company.save()
-        self.investor_company = AdminProfileFactory(
-            person_id=self.test_investor_user.id, is_startup=False
+        self.investor_company = ProfileCompanyFactory(
+            person_id=self.test_investor_user.id,
+            activities=[
+                self.activities["Імпортер"],
+                self.activities["HORECA"],
+            ],
         )
         self.investor_company.created_at = utc_datetime(2024, 5, 10)
+
         self.investor_company.save()
-        self.blocked_company = AdminProfileFactory(
-            person_id=self.test_blocked_company_user.id, status="blocked"
+        self.blocked_company = ProfileFactory(
+            is_registered=True,
+            is_startup=True,
+            person_id=self.test_blocked_company_user.id,
+            status="blocked",
+            activities=[self.activities["Роздрібна мережа"]],
         )
         self.blocked_company.created_at = utc_datetime(2024, 12, 12)
         self.blocked_company.save()
@@ -34,6 +64,11 @@ class TestProfileStatisticsStaff(APITestCase):
             "investors_count": 2,
             "startups_count": 2,
             "blocked_companies_count": 1,
+            "manufacturers_count": 1,
+            "importers_count": 1,
+            "retail_networks_count": 1,
+            "horeca_count": 2,
+            "others_count": 0,
         }
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data, data)
@@ -45,6 +80,11 @@ class TestProfileStatisticsStaff(APITestCase):
             "investors_count": 2,
             "startups_count": 1,
             "blocked_companies_count": 1,
+            "manufacturers_count": 0,
+            "importers_count": 1,
+            "retail_networks_count": 1,
+            "horeca_count": 1,
+            "others_count": 0,
         }
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data, data)
@@ -58,6 +98,11 @@ class TestProfileStatisticsStaff(APITestCase):
             "investors_count": 2,
             "startups_count": 1,
             "blocked_companies_count": 1,
+            "manufacturers_count": 0,
+            "importers_count": 1,
+            "retail_networks_count": 1,
+            "horeca_count": 1,
+            "others_count": 0,
         }
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data, data)
@@ -71,6 +116,11 @@ class TestProfileStatisticsStaff(APITestCase):
             "investors_count": 0,
             "startups_count": 1,
             "blocked_companies_count": 0,
+            "manufacturers_count": 1,
+            "importers_count": 0,
+            "retail_networks_count": 0,
+            "horeca_count": 1,
+            "others_count": 0,
         }
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data, data)
@@ -84,6 +134,11 @@ class TestProfileStatisticsStaff(APITestCase):
             "investors_count": 0,
             "startups_count": 1,
             "blocked_companies_count": 0,
+            "manufacturers_count": 1,
+            "importers_count": 0,
+            "retail_networks_count": 0,
+            "horeca_count": 1,
+            "others_count": 0,
         }
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data, data)

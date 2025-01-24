@@ -40,6 +40,7 @@ const customAdminTheme = {
     },
     token: {
       fontFamily: 'Geologica',
+      colorPrimary: '#B4D27A',
       colorPrimaryActive: '#000000',
       colorPrimaryHover: '#292929',
       borderRadius: '4px',

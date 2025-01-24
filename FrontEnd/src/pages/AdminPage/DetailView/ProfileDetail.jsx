@@ -1,113 +1,190 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router';
-import DeleteModal from './DeleteModal';
-import css from './ProfileDetail.module.css';
+import {useState} from 'react';
 import axios from 'axios';
 import useSWR from 'swr';
+import {Descriptions, Tag, Badge} from 'antd';
+import css from './ProfileDetail.module.css';
 
 function ProfileDetail() {
-    const [deleteModalActive, setDeleteModalActive] = useState(false);
     const [profile, setProfile] = useState({});
-    const [updateSuccess, setUpdateSuccess] = useState(false);
     const profileId = usePathCompanyId();
     const url = `${process.env.REACT_APP_BASE_API_URL}/api/admin/profiles/${profileId}/`;
-    const navigateToProfiles = useNavigate();
-    const companyInfo = [
-        { label: 'Ім\'я', key: 'name' },
-        { label: 'person_position', key: 'person_position' },
-        { label: 'official_name', key: 'official_name' },
-        { label: 'region', key: 'regions' },
-        { label: 'phone', key: 'phone' },
-        { label: 'edrpou', key: 'edrpou' },
-        { label: 'address', key: 'address' },
+    const items = [
+        {
+            key: '1',
+            label: 'Ім\'я',
+            children: profile.name
+        },
+        {
+            key: '2',
+            label: 'Позиція',
+            children: profile.person_position
+        },
+        {
+            key: '3',
+            label: 'Офіційна назва',
+            children: profile.official_name
+        },
+        {
+            key: '4',
+            label: 'Регіон',
+            children: (Array.isArray(profile.regions)
+                ? profile.regions.map(region => region.name_ukr).join(', ') : null)
+        },
+        {
+            key: '5',
+            label: 'Активності',
+            children: (
+                Array.isArray(profile.activities)
+                    ? profile.activities.map(activity => (
+                        <Tag className={css['tag']} color="cyan" key={activity}>{activity}</Tag>
+                    ))
+                    : ''
+            )
+        },
+        {
+            key: '6',
+            label: 'Категорії',
+            children: (
+                Array.isArray(profile.categories)
+                    ? profile.categories.map(category => (
+                        <Tag className={css['tag']} color="blue" key={category}>{category}</Tag>
+                    ))
+                    : ''
+            )
+        },
+        {
+            key: '7',
+            label: 'Телефон',
+            children: profile.phone
+        },
+        ...(profile.edrpou
+            ? [{
+                key: '8',
+                label: 'ЄДРПОУ',
+                children: profile.edrpou
+            }]
+            : [
+                {
+                    key: '9',
+                    label: 'РНОКПП',
+                    children: profile.rnokpp
+                }
+            ]),
+        ...(profile.is_startup && profile.is_registered
+            ? [
+                {
+                    key: '10',
+                    label: 'Інформація про послуги',
+                    children: profile.service_info
+                },
+                {
+                    key: '11',
+                    label: 'Інформація про товари',
+                    children: profile.product_info
+                },
+                {
+                    key: '12',
+                    label: 'Ідея стартапу',
+                    children: profile.startup_idea
+                },
+                {
+                    key: '13',
+                    label: 'Рік заснування',
+                    children: profile.founded
+                }
+            ]
+            : profile.is_registered
+                ? [
+                    {
+                        key: '14',
+                        label: 'Інформація про послуги',
+                        children: profile.service_info
+                    },
+                    {
+                        key: '15',
+                        label: 'Інформація про товари',
+                        children: profile.product_info
+                    },
+                    {
+                        key: '16',
+                        label: 'Рік заснування',
+                        children: profile.founded
+                    }
+                ]
+                : profile.is_startup
+                    ? [{
+                        key: '17',
+                        label: 'Ідея стартапу',
+                        children: profile.startup_idea
+                    }]
+                    : []),
+        {
+            key: '18',
+            label: 'Адреса',
+            children: profile.address,
+        },
+        {
+            key: '19',
+            label: 'Чи заблокованний профіль?',
+            children: (
+                <Badge
+                    status={profile.status === 'blocked' ? 'error' : 'success'}
+                    text={profile.status === 'blocked' ? 'Заблокованний' : 'Активний'}
+                />
+            ),
+            span: 2
+        },
+        {
+            key: '20',
+            label: 'Логотип',
+            children: (
+                profile.logo_image ? (
+                    <img
+                        src={profile.logo_image}
+                        alt="logo" width={200}
+                        height={200}
+                        className={css['logo-image']}/>
+                ) : ''
+            ),
+            span: 2
+        },
+        {
+            key: '21',
+            label: 'Банер',
+            children: (
+                profile.banner_image ? (
+                    <img
+                        src={profile.banner_image}
+                        alt="banner" width={400}
+                        height={250}
+                        className={css['banner-image']}/>
+                ) : ''
+            ),
+            span: 2
+        },
     ];
-
     const fetcher = url => axios.get(url).then(res => res.data);
-    const { data, error, isValidating: loading } = useSWR(url, fetcher);
-
+    const {data, error, isValidating: loading} = useSWR(url, fetcher);
     if (data && !Object.keys(profile).length) {
         setProfile(data);
     }
-
-    const handleSaveChanges = async () => {
-        const response = await axios.put(
-            url,
-            {
-                name: profile.name,
-                is_deleted: profile.is_deleted,
-            },
-        );
-        if (response.status !== 200) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        setUpdateSuccess(true);
-        setTimeout(() => setUpdateSuccess(false), 3000);
-    };
-
-    const handleDeleteUser = async () => {
-        const response = await axios.delete(url);
-        if (response.status !== 204) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        setProfile({});
-        navigateToProfiles('/customadmin/profiles');
-    };
-
     return (
         <div className={css['profile-detail-page']}>
-            <DeleteModal
-                active={deleteModalActive}
-                setActive={setDeleteModalActive}
-                onDelete={handleDeleteUser}
-            />
             <div className={css['profile-details-section']}>
                 <ul className={css['log-section']}>
-                    {loading && <li className={css['log']} >Завантаження ...</li>}
+                    {loading && <li className={css['log']}>Завантаження ...</li>}
                     {error && <li className={css['log']}>Виникла помилка: {error}</li>}
-                    {updateSuccess && <li className={css['log']}>Профіль успішно оновлений!</li>}
                 </ul>
-                <ul className={css['profile-details-section_info']}>
-                    {companyInfo.map((info, index) => (
-                        <li key={index}>
-                            {info.label}: {
-                                Array.isArray(profile[info.key]) ?
-                                    profile[info.key].map(region => (
-                                        <p key={region.id}> {region.name_ukr} </p>
-                                    )) :
-                                    profile[info.key]
-                            }
-                        </li>
-                    ))}
-                    <li>Видалений: {profile.is_deleted ? 'Так' : 'Ні'}</li>
-                </ul>
-                <div className={css['form-section']}>
-                    <label className={css['form-info__text']}>Назва компанії</label>
-                    <input
-                        value={profile.name || ''}
-                        onChange={(e) => setProfile({ ...profile, name: e.target.value })}
-                        type="text"
-                        className={css['form-input']}
-                    />
-                    <label className={css['form-info__text_checkbox']}>Видалений</label>
-                    <input
-                        type="checkbox"
-                        checked={profile.is_deleted || false}
-                        onChange={(e) => setProfile({ ...profile, is_deleted: e.target.checked })}
-                        className={css['form-input_checkbox']}
-                    />
-                </div>
-                <button className={css['save-button']} onClick={handleSaveChanges}>Зберегти зміни</button>
-            </div>
-            <div className={css['delete-section']}>
-                <div className={css['form-info__text']}>Видалити Профіль</div>
-                <button className={css['button__delete']} onClick={() => setDeleteModalActive(true)}>Видалити</button>
+                <Descriptions title="Детальна інформація профілю" bordered items={items} column={2}/>
             </div>
         </div>
     );
+
 }
 
 function usePathCompanyId() {
     const pathname = window.location.pathname;
     return pathname.substring(pathname.lastIndexOf('/') + 1);
 }
+
 export default ProfileDetail;
