@@ -10,6 +10,8 @@ from profiles.models import (
     Activity,
     Category,
 )
+from images.models import ProfileImage
+from utils.regions_ukr_names import get_regions_ukr_names_as_string
 from utils.administration.profiles.profiles_functions import (
     format_company_type,
     format_business_entity,
@@ -159,6 +161,18 @@ class AdminCompanyListSerializer(serializers.ModelSerializer):
         return format_business_entity(obj)
 
 
+class ProfileImageField(serializers.Field):
+    def to_representation(self, value):
+        if value.is_deleted == False:
+            return {
+                "uuid": value.uuid,
+                "path": self.context["request"].build_absolute_uri(
+                    value.image_path.url
+                ),
+                "is_approved": value.is_approved,
+            }
+
+
 class AdminCompanyDetailSerializer(serializers.ModelSerializer):
     person = AdminUserDetailSerializer(read_only=True)
     categories = serializers.SlugRelatedField(
@@ -168,16 +182,13 @@ class AdminCompanyDetailSerializer(serializers.ModelSerializer):
         many=True, slug_field="name", read_only=True
     )
     regions = AdminRegionSerializer(many=True, read_only=True)
-    banner_image = serializers.ImageField(
-        source="banner.image_path", required=False
-    )
-    logo_image = serializers.ImageField(
-        source="logo.image_path", required=False
-    )
-    banner_approved_image = serializers.ImageField(
+    regions_ukr_display = serializers.SerializerMethodField()
+    banner = ProfileImageField(read_only=True)
+    logo = ProfileImageField(read_only=True)
+    banner_approved = serializers.ImageField(
         source="banner_approved.image_path", required=False
     )
-    logo_approved_image = serializers.ImageField(
+    logo_approved = serializers.ImageField(
         source="logo_approved.image_path", required=False
     )
 
@@ -187,12 +198,14 @@ class AdminCompanyDetailSerializer(serializers.ModelSerializer):
             "name",
             "is_registered",
             "is_startup",
+            "is_fop",
             "categories",
             "activities",
             "person",
             "person_position",
             "official_name",
             "regions",
+            "regions_ukr_display",
             "common_info",
             "phone",
             "edrpou",
@@ -204,15 +217,15 @@ class AdminCompanyDetailSerializer(serializers.ModelSerializer):
             "address",
             "startup_idea",
             "banner",
-            "logo",
             "banner_approved",
+            "logo",
             "logo_approved",
-            "banner_image",
-            "banner_approved_image",
-            "logo_image",
-            "logo_approved_image",
             "is_deleted",
         )
+
+
+def get_regions_ukr_display(self, obj) -> str:
+    return get_regions_ukr_names_as_string(obj)
 
 
 class AutoModerationHoursSerializer(serializers.ModelSerializer):
