@@ -223,7 +223,6 @@ class AdminCompanyDetailSerializer(serializers.ModelSerializer):
             "is_deleted",
         )
 
-
     def get_regions_ukr_display(self, obj) -> str:
         return get_regions_ukr_names_as_string(obj)
 

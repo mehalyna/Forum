@@ -103,7 +103,7 @@ class TestAdminProfilesAPITests(APITestCase):
             "person_position": "Test person position",
             "official_name": "Test official name",
             "regions": [],
-            'regions_ukr_display': "",
+            "regions_ukr_display": "",
             "common_info": "test common info",
             "phone": "380112909099",
             "edrpou": "10000000",
