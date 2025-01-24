@@ -2,7 +2,8 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import useSWR from 'swr';
 import { Descriptions, Tag, Badge } from 'antd';
-import Loader from '../../../components/Loader/Loader'
+import Loader from '../../../components/Loader/Loader';
+import ModerationAdminButtons from '../../../components/Moderation/ModerationAdminButtons';
 import css from './ProfileDetail.module.css';
 
 function ProfileDetail() {
@@ -140,30 +141,66 @@ function ProfileDetail() {
             key: '20',
             label: 'Логотип',
             children: (
-                profile.logo_image ? (
-                    <img
-                        src={profile.logo_image}
-                        alt="logo" width={200}
-                        height={200}
-                        className={css['logo-image']}/>
-                ) : ''
+                <>
+                    {profile.logo && (
+                        <>
+                            {profile.status === 'pending' && !profile.logo.is_approved && (
+                                <img
+                                    className={css['moderation-icon']}
+                                    src={`${process.env.REACT_APP_PUBLIC_URL}/img/moderation-icon.png`}
+                                    alt="Pending status icon"
+                                />
+                            )}
+                            <img
+                                src={profile.logo.path}
+                                alt="logo"
+                                width={200}
+                                height={200}
+                                className={css['logo-image']}
+                            />
+                        </>
+                    )}
+                </>
             ),
+
             span: 2
         },
         {
             key: '21',
             label: 'Банер',
             children: (
-                profile.banner_image ? (
-                    <img
-                        src={profile.banner_image}
-                        alt="banner" width={400}
-                        height={250}
-                        className={css['banner-image']}/>
-                ) : ''
+                <>
+                    {profile.banner && (
+                        <>
+                            {profile.status === 'pending' && !profile.banner.is_approved && (
+                                <img
+                                    className={css['moderation-icon']}
+                                    src={`${process.env.REACT_APP_PUBLIC_URL}/img/moderation-icon.png`}
+                                    alt="Pending status icon"
+                                />
+                            )}
+                            <img
+                                src={profile.banner.path}
+                                alt="banner" width={400}
+                                height={250}
+                                className={css['banner-image']}
+                            />
+
+                        </>
+                    )}
+                </>
             ),
             span: 2
         },
+        {
+            key: '22',
+            label: 'Завердити або скасувати зміну зображень в профілі',
+            children: (
+                profile.status === 'pending' && (
+                    <ModerationAdminButtons banner={profile.banner} logo={profile.logo} id={id}/>
+                )
+            )
+        }
     ] : [];
 
     return (

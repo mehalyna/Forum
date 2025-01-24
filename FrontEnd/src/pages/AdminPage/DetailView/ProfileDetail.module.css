@@ -16,8 +16,12 @@
     margin: 0;
     height: 30px;
     overflow-y: auto;
- }
-    
- .log {
+}
+
+.log {
     margin-bottom: 10px;
- }
+}
+
+.moderation-icon {
+    position: absolute;
+}
