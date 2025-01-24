@@ -5,16 +5,30 @@ import MyModal from '../UI/MyModal/MyModal';
 import WarnUnsavedDataModal from '../FormComponents/WarnUnsavedDataModal';
 import { DirtyFormContext } from '../../../context/DirtyFormContext';
 
-const Accordion = ({ sections, openSection, setOpenSection }) => {
+const Accordion = ({ sections, openSectionIndex, setOpenSectionIndex }) => {
+  const [previousSectionIndex, setPreviousSectionIndex] = useState(null);
+  const [targetSectionIndex, setTargetSectionIndex] = useState(null);
+  const [triggerKey, setTriggerKey] = useState(0);
   const [showWarningModal, setShowWarningModal] = useState(false);
-  const { formIsDirty, setFormIsDirty } = useContext(DirtyFormContext);
-  const [pendingSection, setPendingSection] = useState(null);
+  const {  formIsDirty, setFormIsDirty } = useContext(DirtyFormContext);
 
-  const focusFirstUnfilledField = (sectionTitle) => {
+  const handleItemClick = (index, disabled) => {
+    if (disabled) return;
+
+    if (formIsDirty) {
+        setShowWarningModal(true);
+        setTargetSectionIndex(index);
+      } else {
+        setOpenSectionIndex((prev) => (prev === index ? null : index));
+        focusFirstUnfilledField(index);
+      }
+    };
+
+  const focusFirstUnfilledField = (index) => {
     setTimeout(() => {
-      const escapedTitle = CSS.escape(sectionTitle);
+      const escapedTitle = CSS.escape(index);
       const firstUnfilledField = document.querySelector(
-        `#${escapedTitle} input:not([value]):not([disabled]), 
+        `#${escapedTitle} input:not([value]):not([disabled]),
          #${escapedTitle} textarea:not([value]):not([disabled])`
       );
       if (firstUnfilledField) {
@@ -24,39 +38,31 @@ const Accordion = ({ sections, openSection, setOpenSection }) => {
     }, 300);
   };
 
-  const handleSectionClick = (sectionTitle) => {
-    if (formIsDirty) {
-      setPendingSection(sectionTitle);
-      setShowWarningModal(true);
-    } else {
-      setOpenSection(openSection === sectionTitle ? null : sectionTitle);
-      focusFirstUnfilledField(sectionTitle);
-    }
-  };
-
   const onConfirmModal = () => {
     setShowWarningModal(false);
     setFormIsDirty(false);
-    setOpenSection(pendingSection);
-    focusFirstUnfilledField(pendingSection);
+    setPreviousSectionIndex(openSectionIndex);
+    setOpenSectionIndex(targetSectionIndex);
+    setTriggerKey((prev) => prev + 1);
+    focusFirstUnfilledField(openSectionIndex);
   };
 
   const onCancelModal = () => {
     setShowWarningModal(false);
-    setPendingSection(null);
   };
 
   return (
     <>
       <div className="accordion">
-        {sections.map((section) => (
+        {sections.map((section, index) => (
           <AccordionItem
-            key={section.title}
+            key={index}
             title={section.title}
             content={section.content}
             disabled={section.disabled}
-            isOpen={openSection === section.title}
-            onClick={() => handleSectionClick(section.title)}
+            isOpen={openSectionIndex === index}
+            triggerKey={previousSectionIndex === index ? triggerKey : null}
+            onClick={() => handleItemClick(index, section.disabled)}
           />
         ))}
       </div>
@@ -68,9 +74,15 @@ const Accordion = ({ sections, openSection, setOpenSection }) => {
 };
 
 Accordion.propTypes = {
-  sections: PropTypes.array.isRequired,
-  openSection: PropTypes.string,
-  setOpenSection: PropTypes.func.isRequired,
+  sections: PropTypes.arrayOf(
+    PropTypes.shape({
+      title: PropTypes.string.isRequired,
+      content: PropTypes.node.isRequired,
+      disabled: PropTypes.bool,
+    })
+  ).isRequired,
+  openSectionIndex: PropTypes.number,
+  setOpenSectionIndex: PropTypes.func.isRequired,
 };
 
 export default Accordion;

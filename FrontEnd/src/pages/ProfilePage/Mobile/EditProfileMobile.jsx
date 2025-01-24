@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { useAuth, useProfile } from '../../../hooks';
-import PropTypes from 'prop-types';
 import { validateRequiredFields, REQUIRED_FIELDS_GENERAL_INFO } from '../../../utils/validateRequiredFields';
 import NotificationBanner from '../FormComponents/NotificationBanner';
 import Accordion from './Accordion';
@@ -15,10 +14,11 @@ import ChangePassword from '../FormComponents/ChangePassword';
 import Loader from '../../../components/Loader/Loader';
 import css from './EditProfileMobile.module.css';
 
-const EditProfileMobile = ({ openSection, setOpenSection }) => {
+const EditProfileMobile = () => {
   const { user } = useAuth();
   const { profile } = useProfile();
   const [missingFields, setMissingFields] = useState([]);
+  const [openSectionIndex, setOpenSectionIndex] = useState(null);
 
   useEffect(() => {
     if (profile && user) {
@@ -71,20 +71,15 @@ const EditProfileMobile = ({ openSection, setOpenSection }) => {
     return (
       <div className={css['container']}>
         {missingFields.length > 0 && (
-          <NotificationBanner missingFields={missingFields} setOpenSection={setOpenSection} />
+          <NotificationBanner missingFields={missingFields} sections={sections} setOpenSectionIndex={setOpenSectionIndex} />
         )}
         <h2 className={css['head']}>Профіль користувача</h2>
-        <Accordion sections={sections} openSection={openSection} setOpenSection={setOpenSection} />
+        <Accordion sections={sections} openSectionIndex={openSectionIndex} setOpenSectionIndex={setOpenSectionIndex} />
       </div>
     );
   } else {
     return <Loader />;
   }
-};
-
-EditProfileMobile.propTypes = {
-  openSection: PropTypes.any,
-  setOpenSection: PropTypes.func.isRequired,
 };
 
 export default EditProfileMobile;
