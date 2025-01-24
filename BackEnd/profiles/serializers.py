@@ -1,6 +1,7 @@
 from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
 from django.utils.timezone import now
+from django.db import transaction
 from .models import (
     Profile,
     Activity,
@@ -13,6 +14,7 @@ from images.models import ProfileImage
 from utils.regions_ukr_names import get_regions_ukr_names_as_string
 from utils.moderation.moderation_action import ModerationAction
 from utils.moderation.image_moderation import ModerationManager
+from utils.moderation.unblock_helper import delete_images
 
 
 class ActivitySerializer(serializers.ModelSerializer):
@@ -518,18 +520,13 @@ class ProfileModerationSerializer(serializers.Serializer):
             instance.person.save()
 
         elif action == ModerationAction.unblock:
-            instance.status = instance.UNDEFINED
-            instance.is_deleted = False
-            if banner:
-                instance.banner = None
-                instance.banner_approved = None
-                # instance.banner.save()
-            if logo:
-                instance.logo = None
-                instance.logo_approved = None
-                # instance.logo.save()
-            instance.person.is_active = True
-            instance.person.save()
+            with transaction.atomic():
+                instance.status = instance.UNDEFINED
+                instance.is_deleted = False
+                delete_images(instance, 'banner', 'banner_approved')
+                delete_images(instance, 'logo', 'logo_approved')
+                instance.person.is_active = True
+                instance.person.save()
 
         else:
             raise serializers.ValidationError("Invalid action provided.")
