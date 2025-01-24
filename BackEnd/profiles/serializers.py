@@ -465,6 +465,7 @@ class ProfileModerationSerializer(serializers.Serializer):
 
     def validate(self, attrs):
         profile = self.instance
+        action = attrs.get("action")
         banner = attrs.get("banner")
         logo = attrs.get("logo")
 
@@ -473,10 +474,18 @@ class ProfileModerationSerializer(serializers.Serializer):
                 "At least one image (logo or banner) must be provided for the moderation request."
             )
 
-        if profile.status != profile.PENDING:
+        if profile.status != profile.PENDING and action in [
+            ModerationAction.approve,
+            ModerationAction.reject,
+        ]:
             raise serializers.ValidationError(
                 "The change approval request has been processed. URL is outdated"
             )
+        elif (
+            profile.status != profile.BLOCKED
+            and action == ModerationAction.unblock
+        ):
+            raise serializers.ValidationError("The profile is not blocked")
         else:
             if (banner and profile.banner != banner) or (
                 logo and profile.logo != logo
@@ -506,6 +515,20 @@ class ProfileModerationSerializer(serializers.Serializer):
             instance.status = instance.BLOCKED
             instance.is_deleted = True
             instance.person.is_active = False
+            instance.person.save()
+
+        elif action == ModerationAction.unblock:
+            instance.status = instance.UNDEFINED
+            instance.is_deleted = False
+            if banner:
+                instance.banner = None
+                instance.banner_approved = None
+                # instance.banner.save()
+            if logo:
+                instance.logo = None
+                instance.logo_approved = None
+                # instance.logo.save()
+            instance.person.is_active = True
             instance.person.save()
 
         else:
