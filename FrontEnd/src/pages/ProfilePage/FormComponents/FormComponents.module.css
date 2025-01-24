@@ -62,6 +62,11 @@
     color: var(--tooltip-font-color);
   }
 
+.crop-container {
+    position: relative;
+    height: 300px;
+}  
+
 @media only screen and (min-width: 768px) {
     .form__container {
         width: 474px;

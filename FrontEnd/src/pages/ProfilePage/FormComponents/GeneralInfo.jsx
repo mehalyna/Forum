@@ -76,6 +76,15 @@ const GeneralInfo = (props) => {
   const [rnokppFieldError, setRnokppFieldError] = useState(null);
   const [companyTypeError, setCompanyTypeError] = useState(null);
 
+  const [imageSrc, setImageSrc] = useState(null);
+  const [crop, setCrop] = useState({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState(1);
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+  const [logoFileName, setlogoFileName] = useState(null);
+
+
+
+
   const { data: fetchedRegions, isLoading: isRegionLoading } = useSWR(
     `${process.env.REACT_APP_BASE_API_URL}/api/regions/`,
     fetcher
@@ -357,21 +366,62 @@ const GeneralInfo = (props) => {
     }
   };
 
-  const onUpdateImageField = async (e) => {
+  const onUpdateBanner = async (e) => {
     const file = e.target.files[0];
     e.target.value = '';
-    const imageUrl =
-      e.target.name === 'banner'
-      ? `${process.env.REACT_APP_BASE_API_URL}/api/image/banner/`
-      : `${process.env.REACT_APP_BASE_API_URL}/api/image/logo/`;
-    const setImage =
-      e.target.name === 'banner'
-      ? setBannerImage
-      : setLogoImage;
+    const imageUrl = `${process.env.REACT_APP_BASE_API_URL}/api/image/banner/`;
     if (file && checkMaxImageSize(e.target.name, file)) {
-      setImage(URL.createObjectURL(file));
+      setBannerImage(URL.createObjectURL(file));
       await uploadImage(imageUrl, e.target.name, file);
     }
+  };
+
+  const onUpdateLogo = async (e) => {
+    const file = e.target.files[0];
+    if (file && checkMaxImageSize(e.target.name, file)) {
+      setlogoFileName(file.name);
+      const reader = new FileReader();
+      reader.onload = () => {
+        setImageSrc(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const onLogoSubmit = async () => {
+    const imgResponse = await fetch(imageSrc);
+    const blob = await imgResponse.blob();
+    const formData = new FormData();
+    formData.append('image_path', blob, logoFileName);
+    formData.append('crop_x', croppedAreaPixels?.x);
+    formData.append('crop_y', croppedAreaPixels?.y);
+    formData.append('width', croppedAreaPixels?.width);
+    formData.append('height', croppedAreaPixels?.height);
+
+    const url = `${process.env.REACT_APP_BASE_API_URL}/api/image/logo/`;
+    try {
+      const response = await axios.post(url, formData);
+      setProfile((prevState) => {
+        return { ...prevState, ['logo']: {
+          ...prevState['logo'],
+          uuid: response.data.uuid
+        }};
+      });
+    } catch (error) {
+      console.error(
+        'Error uploading image:',
+        error.response ? error.response.data : error.message
+      );
+      if (!error.response || error.response.status !== 401) {
+        toast.error('Не вдалося завантажити банер/лого, сталася помилка');
+      }
+    }
+  };
+
+  const onCropComplete = ( _, croppedAreaPixels) => {
+    setCroppedAreaPixels(croppedAreaPixels);
+    console.log(croppedAreaPixels);
+
   };
 
   const deleteImageHandler = async (name) => {
@@ -571,7 +621,7 @@ const GeneralInfo = (props) => {
               inputType="file"
               name="banner"
               label={LABELS.banner}
-              updateHandler={onUpdateImageField}
+              updateHandler={onUpdateBanner}
               value={bannerImage}
               error={bannerImageError}
               onDeleteImage={deleteImageHandler}
@@ -582,12 +632,29 @@ const GeneralInfo = (props) => {
               inputType="file"
               name="logo"
               label={LABELS.logo}
-              updateHandler={onUpdateImageField}
+              updateHandler={onUpdateLogo}
               value={logoImage}
               error={logoImageError}
               onDeleteImage={deleteImageHandler}
               profile={mainProfile}
             />
+            {imageSrc &&
+            <>
+              <div className={css['crop-container']}>
+                <Cropper
+                  image={imageSrc}
+                  crop={crop}
+                  zoom={zoom}
+                  onCropChange={setCrop}
+                  onCropComplete={onCropComplete}
+                  onZoomChange={setZoom}
+                  cropShape="round"
+                  aspect={1}
+                  />
+              </div>
+              <button onClick={onLogoSubmit}>Підтвердити</button>
+            </>
+            }
             <BanerModeration />
             <TextField
               name="common_info"
