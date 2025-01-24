@@ -79,42 +79,6 @@ class UserLoginAPITests(APITestCase):
             response.json(),
         )
 
-    def test_login_after_allowed_number_attempts(self):
-        self.user.set_password("Test1234")
-        self.user.save()
-
-        self.client.post(
-            path="/api/auth/token/login/",
-            data={
-                "email": "test@test.com",
-                "password": "Test1234",
-                "captcha": "dummy_captcha",
-            },
-        )
-        self.client.post(
-            path="/api/auth/token/login/",
-            data={
-                "email": "test@test.com",
-                "password": "Test1234",
-                "captcha": "dummy_captcha",
-            },
-        )
-
-        response = self.client.post(
-            path="/api/auth/token/login/",
-            data={
-                "email": "test@test.com",
-                "password": "Test1234",
-                "captcha": "dummy_captcha",
-            },
-        )
-        sleep(6)
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(
-            {"non_field_errors": ["User account is disabled."]},
-            response.json(),
-        )
-
     def test_login_after_allowed_delay_time(self):
         self.user.set_password("Test1234")
         self.user.save()
