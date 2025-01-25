@@ -28,16 +28,13 @@
 
 .modal__button {
     display: flex;
-    padding: 5px 15px;
+    padding: 7px 15px;
     justify-content: center;
     align-items: center;
     gap: 10px;
     border-radius: 4px;
-    border: 1px solid var(--primary-green-80, #1f9a7c);
-    background: var(--main-white, #fff);
-    box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.02);
-
-    color: var(--primary-green-80, #1f9a7c);
+    background: var(--main-button-color);
+    color: var(--main-button-text-color);
     text-align: center;
     font-feature-settings: "calt" off;
 
@@ -49,4 +46,8 @@
     letter-spacing: -0.16px;
     text-decoration: none;
     cursor: pointer;
+}
+
+.modal__button:hover {
+    background: var(--main-button-hover-color);
 }
