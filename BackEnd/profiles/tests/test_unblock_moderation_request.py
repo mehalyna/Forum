@@ -21,7 +21,7 @@ class TestProfileModeration(APITestCase):
         self.logo = ProfileimageFactory(image_type="logo")
         self.second_banner = ProfileimageFactory(image_type="banner")
         self.second_logo = ProfileimageFactory(image_type="logo")
-        self.user = UserFactory()
+        self.user = UserFactory(email="test@test.com")
         self.profile = ProfileCompanyFactory.create(person=self.user)
 
         self.user_client = APIClient()
@@ -279,7 +279,7 @@ class TestProfileModeration(APITestCase):
         response = self.user_client.post(
             path="/api/auth/token/login/",
             data={
-                "email": "test5@test.com",
+                "email": "test@test.com",
                 "password": "Test1234",
                 "captcha": "dummy_captcha",
             },
@@ -289,3 +289,39 @@ class TestProfileModeration(APITestCase):
         self.assertContains(response, "auth_token")
         mock_schedule.assert_has_calls([call()])
         mock_revoke.assert_has_calls([call(), call()])
+
+    def test_unblock_banner_and_logo_empty_image_fields(
+        self, mock_revoke, mock_schedule
+    ):
+        # user updates both banner and logo
+        self.user_client.patch(
+            path="/api/profiles/{profile_id}".format(
+                profile_id=self.profile.id
+            ),
+            data={
+                "banner": self.banner.uuid,
+                "logo": self.logo.uuid,
+            },
+        )
+
+        # moderator rejects request
+        response = self.moderator_client.patch(
+            path="/api/profiles/{profile_id}/images_moderation/".format(
+                profile_id=encode_id(self.profile.id)
+            ),
+            data={
+                "action": "unblock",
+            },
+        )
+
+        self.assertEqual(status.HTTP_400_BAD_REQUEST, response.status_code)
+        self.assertEqual(
+            {
+                "non_field_errors": [
+                    "At least one image (logo or banner) must be provided for the moderation request."
+                ]
+            },
+            response.json(),
+        )
+        mock_schedule.assert_called_once()
+        mock_revoke.assert_not_called()
