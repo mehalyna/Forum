@@ -523,8 +523,8 @@ class ProfileModerationSerializer(serializers.Serializer):
             with transaction.atomic():
                 instance.status = instance.UNDEFINED
                 instance.is_deleted = False
-                delete_images(instance, 'banner', 'banner_approved')
-                delete_images(instance, 'logo', 'logo_approved')
+                delete_images(instance, "banner", "banner_approved")
+                delete_images(instance, "logo", "logo_approved")
                 instance.person.is_active = True
                 instance.person.save()
 
