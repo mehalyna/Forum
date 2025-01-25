@@ -10,7 +10,7 @@ function ProfileDetail() {
     const { id } = useParams();
     const url = `${process.env.REACT_APP_BASE_API_URL}/api/admin/profiles/${id}/`;
     const fetcher = url => axios.get(url).then(res => res.data);
-    const {data: profile, error, isLoading } = useSWR(url, fetcher, {revalidateOnFocus: false});
+    const {data: profile, error, isLoading } = useSWR(url, fetcher);
 
     const getStartupOrRegisteredFields = () => {
         let fields = [];
@@ -194,10 +194,10 @@ function ProfileDetail() {
         },
         {
             key: '22',
-            label: 'Завердити або скасувати зміну зображень в профілі',
-            children: (
+                label: 'Затвердити або скасувати зміну зображень в профілі',
+                children: (
                 profile.status === 'pending' && (
-                    <ModerationAdminButtons banner={profile.banner} logo={profile.logo} id={id}/>
+                    <ModerationAdminButtons banner={profile.banner} logo={profile.logo} id={profile.encoded_id}/>
                 )
             )
         }
