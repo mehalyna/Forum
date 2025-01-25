@@ -11,10 +11,10 @@ from validation.validate_image import (
 
 
 class ImageSerializer(serializers.ModelSerializer):
-    crop_x = serializers.IntegerField(write_only=True)
-    crop_y = serializers.IntegerField(write_only=True)
-    width = serializers.IntegerField(write_only=True)
-    height = serializers.IntegerField(write_only=True)
+    crop_x = serializers.IntegerField(write_only=True, required=False)
+    crop_y = serializers.IntegerField(write_only=True, required=False)
+    width = serializers.IntegerField(write_only=True, required=False)
+    height = serializers.IntegerField(write_only=True, required=False)
     class Meta:
         model = ProfileImage
         fields = (
