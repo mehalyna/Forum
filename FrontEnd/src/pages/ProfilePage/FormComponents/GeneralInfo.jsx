@@ -410,6 +410,7 @@ const GeneralInfo = (props) => {
           uuid: response.data.uuid
         }};
       });
+      toast.success('Зображення успішно завантажене');
     } catch (error) {
       console.error(
         'Error uploading image:',
