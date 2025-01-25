@@ -3,7 +3,7 @@ import axios from 'axios';
 import useSWR from 'swr';
 import { Descriptions, Tag, Badge } from 'antd';
 import Loader from '../../../components/Loader/Loader';
-import ModerationAdminButtons from '../../../components/Moderation/ModerationAdminButtons';
+import AdminModerationActions from '../../../components/Moderation/AdminModerationActions';
 import css from './ProfileDetail.module.css';
 
 function ProfileDetail() {
@@ -197,7 +197,7 @@ function ProfileDetail() {
                 label: 'Затвердити або скасувати зміну зображень в профілі',
                 children: (
                 profile.status === 'pending' && (
-                    <ModerationAdminButtons banner={profile.banner} logo={profile.logo} id={profile.encoded_id}/>
+                    <AdminModerationActions banner={profile.banner} logo={profile.logo} id={profile.encoded_id}/>
                 )
             )
         }
