@@ -10,7 +10,6 @@ from profiles.models import (
     Activity,
     Category,
 )
-from images.models import ProfileImage
 from utils.regions_ukr_names import get_regions_ukr_names_as_string
 from utils.administration.profiles.profiles_functions import (
     format_company_type,
@@ -18,6 +17,7 @@ from utils.administration.profiles.profiles_functions import (
 )
 from utils.administration.create_password import generate_password
 from utils.administration.send_email import send_email_about_admin_registration
+from utils.moderation.encode_decode_id import encode_id
 from .models import AutoModeration, ModerationEmail, ContactInformation
 from validation.validate_phone_number import (
     validate_phone_number_len,
@@ -191,10 +191,12 @@ class AdminCompanyDetailSerializer(serializers.ModelSerializer):
     logo_approved = serializers.ImageField(
         source="logo_approved.image_path", required=False
     )
+    encoded_id = serializers.SerializerMethodField()
 
     class Meta:
         model = Profile
         fields = (
+            "encoded_id",
             "name",
             "is_registered",
             "is_startup",
@@ -225,6 +227,9 @@ class AdminCompanyDetailSerializer(serializers.ModelSerializer):
 
     def get_regions_ukr_display(self, obj) -> str:
         return get_regions_ukr_names_as_string(obj)
+
+    def get_encoded_id(self, obj) -> str:
+        return encode_id(obj.id)
 
 
 class AutoModerationHoursSerializer(serializers.ModelSerializer):
