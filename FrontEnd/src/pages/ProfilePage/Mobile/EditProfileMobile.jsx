@@ -1,3 +1,8 @@
+import { useEffect, useState } from 'react';
+import { useAuth, useProfile } from '../../../hooks';
+import PropTypes from 'prop-types';
+import { validateRequiredFields, REQUIRED_FIELDS_GENERAL_INFO } from '../../../utils/validateRequiredFields';
+import NotificationBanner from '../FormComponents/NotificationBanner';
 import Accordion from './Accordion';
 import AdditionalInfo from '../FormComponents/AdditionalInfo';
 import ContactsInfo from '../FormComponents/ContactsInfo';
@@ -8,63 +13,78 @@ import StartupInfo from '../FormComponents/StartupInfo';
 import UserInfo from '../FormComponents/UserInfo';
 import ChangePassword from '../FormComponents/ChangePassword';
 import Loader from '../../../components/Loader/Loader';
-import { useAuth, useProfile } from '../../../hooks';
 import css from './EditProfileMobile.module.css';
 
-
-
-
-const EditProfileMobile = () => {
+const EditProfileMobile = ({ openSection, setOpenSection }) => {
   const { user } = useAuth();
   const { profile } = useProfile();
+  const [missingFields, setMissingFields] = useState([]);
+
+  useEffect(() => {
+    if (profile && user) {
+      const generalInfoMissing = validateRequiredFields(profile, user)
+        .filter(field => REQUIRED_FIELDS_GENERAL_INFO.includes(field));
+
+      setMissingFields([...generalInfoMissing]);
+    }
+  }, [profile, user]);
+
   if (user && profile) {
     const sections = [
       {
         title: 'Інформація про користувача',
-        content: <UserInfo user={user}
-          profile={profile} />
+        content: <UserInfo user={user} profile={profile} />,
       },
       {
         title: 'Загальна інформація',
-        content: <GeneralInfo profile={profile} />
+        content: <GeneralInfo profile={profile} />,
       },
       {
         title: 'Контакти',
-        content: <ContactsInfo profile={profile} />
+        content: <ContactsInfo profile={profile} />,
       },
       {
         title: 'Інформація про товари/послуги',
         content: <ProductServiceInfo profile={profile} />,
-        disabled: !profile.is_registered
+        disabled: !profile.is_registered,
       },
       {
         title: 'Додаткова інформація',
         content: <AdditionalInfo profile={profile} />,
-        disabled: !profile.is_registered
+        disabled: !profile.is_registered,
       },
       {
         title: 'Стартап',
         content: <StartupInfo profile={profile} />,
-        disabled: !profile.is_startup
+        disabled: !profile.is_startup,
       },
       {
         title: 'Змінити пароль',
-        content: <ChangePassword user={user} />
+        content: <ChangePassword user={user} />,
       },
       {
         title: 'Видалити профіль',
-        content: <DeleteProfilePage />
+        content: <DeleteProfilePage />,
       },
     ];
+
     return (
       <div className={css['container']}>
+        {missingFields.length > 0 && (
+          <NotificationBanner missingFields={missingFields} setOpenSection={setOpenSection} />
+        )}
         <h2 className={css['head']}>Профіль користувача</h2>
-        <Accordion sections={sections} />
+        <Accordion sections={sections} openSection={openSection} setOpenSection={setOpenSection} />
       </div>
     );
   } else {
     return <Loader />;
   }
+};
+
+EditProfileMobile.propTypes = {
+  openSection: PropTypes.any,
+  setOpenSection: PropTypes.func.isRequired,
 };
 
 export default EditProfileMobile;

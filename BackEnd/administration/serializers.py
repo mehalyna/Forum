@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
+from rest_framework.exceptions import ValidationError
 from utils.administration.feedback_category import FeedbackCategory
 from authentication.models import CustomUser
 from profiles.models import (
@@ -15,7 +16,12 @@ from utils.administration.profiles.profiles_functions import (
 )
 from utils.administration.create_password import generate_password
 from utils.administration.send_email import send_email_about_admin_registration
-from .models import AutoModeration, ModerationEmail
+from .models import AutoModeration, ModerationEmail, ContactInformation
+from validation.validate_phone_number import (
+    validate_phone_number_len,
+    validate_phone_number_is_digit,
+)
+from validation.validate_company import validate_address, validate_company_name
 
 User = get_user_model()
 
@@ -190,6 +196,8 @@ class AdminCompanyDetailSerializer(serializers.ModelSerializer):
             "common_info",
             "phone",
             "edrpou",
+            "rnokpp",
+            "status",
             "founded",
             "service_info",
             "product_info",
@@ -269,6 +277,50 @@ class StatisticsSerializer(serializers.Serializer):
     investors_count = serializers.IntegerField()
     startups_count = serializers.IntegerField()
     blocked_companies_count = serializers.IntegerField()
+    manufacturers_count = serializers.IntegerField()
+    importers_count = serializers.IntegerField()
+    retail_networks_count = serializers.IntegerField()
+    horeca_count = serializers.IntegerField()
+    others_count = serializers.IntegerField()
+
+
+class ContactInformationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ContactInformation
+        fields = [
+            "company_name",
+            "address",
+            "email",
+            "phone",
+            "updated_at",
+            "admin_user",
+        ]
+        read_only_fields = ["updated_at", "admin_user"]
+
+    def validate_phone(self, value):
+        errors = []
+        try:
+            validate_phone_number_len(value)
+        except ValidationError as error:
+            errors.append(error.message)
+
+        try:
+            validate_phone_number_is_digit(value)
+        except ValidationError as error:
+            errors.append(error.message)
+
+        if errors:
+            raise serializers.ValidationError(errors)
+
+        return value
+
+    def validate_address(self, value):
+        validate_address(value)
+        return value
+
+    def validate_company_name(self, value):
+        validate_company_name(value)
+        return value
 
 
 class MonthlyProfileStatisticsSerializer(serializers.Serializer):

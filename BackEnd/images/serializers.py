@@ -70,7 +70,7 @@ class ImageSerializer(serializers.ModelSerializer):
             format = validated_data.get("content_type").upper()
             if format == "JPG":
                 format = "JPEG"
-
+                
             dimensions = (
                 cropped_image_x_point,
                 cropped_image_y_point,

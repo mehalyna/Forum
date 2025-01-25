@@ -663,6 +663,7 @@ const GeneralInfo = (props) => {
               onBlur={onBlurHandler}
               value={profile.common_info ?? ''}
               maxLength={TEXT_AREA_MAX_LENGTH}
+              requiredField={true}
             />
             <CheckBoxField
               name="companyType"
