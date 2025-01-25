@@ -231,6 +231,7 @@ class AdminCompanyDetailSerializer(serializers.ModelSerializer):
     def get_encoded_id(self, obj) -> str:
         return encode_id(obj.id)
 
+
 class AutoModerationHoursSerializer(serializers.ModelSerializer):
     auto_moderation_hours = serializers.IntegerField(min_value=1, max_value=48)
 

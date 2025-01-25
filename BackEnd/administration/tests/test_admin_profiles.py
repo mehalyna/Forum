@@ -85,6 +85,7 @@ class TestAdminProfilesAPITests(APITestCase):
             path=f"/api/admin/profiles/{self.profile.id}/"
         )
         data = {
+            "encoded_id": AnyStr(),
             "name": "Test person",
             "is_registered": True,
             "is_startup": True,
