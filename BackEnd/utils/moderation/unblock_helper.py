@@ -10,4 +10,3 @@ def delete_images(profile, image_type, approved_image_type):
     if approved_image:
         approved_image.is_deleted = True
         approved_image.save()
-        setattr(profile, approved_image_type, None)
