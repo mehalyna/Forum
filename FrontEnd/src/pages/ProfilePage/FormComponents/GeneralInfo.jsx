@@ -76,7 +76,7 @@ const GeneralInfo = (props) => {
   const [rnokppFieldError, setRnokppFieldError] = useState(null);
   const [companyTypeError, setCompanyTypeError] = useState(null);
 
-  const [imageSrc, setImageSrc] = useState(null);
+  const [logoDataURL, setLogoDataURL] = useState(null);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
@@ -382,14 +382,17 @@ const GeneralInfo = (props) => {
       setlogoFileName(file.name);
       const reader = new FileReader();
       reader.onload = () => {
-        setImageSrc(reader.result);
+        if (reader.result) {
+        setLogoDataURL(reader.result);
+      }
       };
       reader.readAsDataURL(file);
     }
   };
 
-  const onLogoSubmit = async () => {
-    const imgResponse = await fetch(imageSrc);
+  const onLogoSubmit = async (e) => {
+    e.preventDefault();
+    const imgResponse = await fetch(logoDataURL);
     const blob = await imgResponse.blob();
     const formData = new FormData();
     formData.append('image_path', blob, logoFileName);
@@ -420,8 +423,6 @@ const GeneralInfo = (props) => {
 
   const onCropComplete = ( _, croppedAreaPixels) => {
     setCroppedAreaPixels(croppedAreaPixels);
-    console.log(croppedAreaPixels);
-
   };
 
   const deleteImageHandler = async (name) => {
@@ -438,6 +439,7 @@ const GeneralInfo = (props) => {
         const newState = { ...prevState, [name]: null };
         return newState;
     });
+      setLogoDataURL(null);
   } catch (error) {
     console.error('Error deleting image:',
       error.response ? error.response.data : error.message);
@@ -633,16 +635,16 @@ const GeneralInfo = (props) => {
               name="logo"
               label={LABELS.logo}
               updateHandler={onUpdateLogo}
-              value={logoImage}
+              value={logoDataURL ? logoDataURL : logoImage}
               error={logoImageError}
               onDeleteImage={deleteImageHandler}
               profile={mainProfile}
             />
-            {imageSrc &&
+            {logoDataURL &&
             <>
               <div className={css['crop-container']}>
                 <Cropper
-                  image={imageSrc}
+                  image={logoDataURL}
                   crop={crop}
                   zoom={zoom}
                   onCropChange={setCrop}
@@ -652,7 +654,9 @@ const GeneralInfo = (props) => {
                   aspect={1}
                   />
               </div>
-              <button onClick={onLogoSubmit}>Підтвердити</button>
+              <div className={css['submit-button__container']}>
+                <button className={css['submit-button']} onClick={onLogoSubmit}>Підтвердити</button>
+              </div>
             </>
             }
             <BanerModeration />
