@@ -89,4 +89,5 @@ AdminModerationActions.propTypes = {
         is_approved: PropTypes.bool,
     }),
     id: PropTypes.string.isRequired,
+    onModerationComplete: PropTypes.func.isRequired,
 };
