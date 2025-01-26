@@ -192,13 +192,12 @@ function ProfileDetail() {
             ),
             span: 2
         },
-        {
+        profile.status === 'pending' && {
             key: '22',
                 label: 'Затвердити або скасувати зміну зображень в профілі',
                 children: (
-                profile.status === 'pending' && (
+
                     <AdminModerationActions banner={profile.banner} logo={profile.logo} id={profile.encoded_id}/>
-                )
             )
         }
     ] : [];
