@@ -5,7 +5,7 @@ import { Tooltip } from 'antd';
 import { AdminModerationModal } from './AdminModerationModal';
 import classes from './AdminModerationActions.module.css';
 
-const AdminModerationActions = ({ banner, logo, id }) => {
+const AdminModerationActions = ({ banner, logo, id, onModerationComplete }) => {
     const [moderationStatus, setModerationStatus] = useState('');
     const [modalVisible, setModalVisible] = useState(false);
 
@@ -50,6 +50,7 @@ const AdminModerationActions = ({ banner, logo, id }) => {
       };
 
     const closeModal = () => {
+        onModerationComplete();
         setModalVisible(false);
       };
 

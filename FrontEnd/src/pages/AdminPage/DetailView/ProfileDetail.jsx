@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import useSWR from 'swr';
@@ -7,10 +8,16 @@ import AdminModerationActions from '../../../components/Moderation/AdminModerati
 import css from './ProfileDetail.module.css';
 
 function ProfileDetail() {
+    const [profile, setProfile] = useState({});
     const { id } = useParams();
     const url = `${process.env.REACT_APP_BASE_API_URL}/api/admin/profiles/${id}/`;
     const fetcher = url => axios.get(url).then(res => res.data);
-    const {data: profile, error, isLoading } = useSWR(url, fetcher);
+    const {data, error, isLoading, mutate } = useSWR(url, fetcher);
+
+    useEffect(() => {
+        setProfile(data);
+    }, [data]);
+
 
     const getStartupOrRegisteredFields = () => {
         let fields = [];
@@ -66,6 +73,34 @@ function ProfileDetail() {
         }
         return fields;
     };
+
+    const getImageFiled = (key, label, image, type, dimensions) => ({
+        key,
+        label,
+        children: (
+            <>
+                {image && (
+                    <>
+                        {profile.status === 'pending' && !image.is_approved && (
+                            <img
+                                className={css['moderation-icon']}
+                                src={`${process.env.REACT_APP_PUBLIC_URL}/img/moderation-icon.png`}
+                                alt="Pending status icon"
+                            />
+                        )}
+                        <img
+                            src={image.path}
+                            alt={type}
+                            width={dimensions.width}
+                            height={dimensions.height}
+                            className={css[`${type}-image`]}
+                        />
+                    </>
+                )}
+            </>
+        ),
+        span: 2,
+    });
 
     const items = profile ? [
         {
@@ -137,67 +172,14 @@ function ProfileDetail() {
             ),
             span: 2
         },
-        {
-            key: '20',
-            label: 'Логотип',
-            children: (
-                <>
-                    {profile.logo && (
-                        <>
-                            {profile.status === 'pending' && !profile.logo.is_approved && (
-                                <img
-                                    className={css['moderation-icon']}
-                                    src={`${process.env.REACT_APP_PUBLIC_URL}/img/moderation-icon.png`}
-                                    alt="Pending status icon"
-                                />
-                            )}
-                            <img
-                                src={profile.logo.path}
-                                alt="logo"
-                                width={200}
-                                height={200}
-                                className={css['logo-image']}
-                            />
-                        </>
-                    )}
-                </>
-            ),
-
-            span: 2
-        },
-        {
-            key: '21',
-            label: 'Банер',
-            children: (
-                <>
-                    {profile.banner && (
-                        <>
-                            {profile.status === 'pending' && !profile.banner.is_approved && (
-                                <img
-                                    className={css['moderation-icon']}
-                                    src={`${process.env.REACT_APP_PUBLIC_URL}/img/moderation-icon.png`}
-                                    alt="Pending status icon"
-                                />
-                            )}
-                            <img
-                                src={profile.banner.path}
-                                alt="banner" width={400}
-                                height={250}
-                                className={css['banner-image']}
-                            />
-
-                        </>
-                    )}
-                </>
-            ),
-            span: 2
-        },
+        getImageFiled('20', 'Логотип', profile.logo, 'logo', { width: 200, height: 200 }),
+        getImageFiled('21', 'Банер', profile.banner, 'banner', { width: 400, height: 250 }),
         profile.status === 'pending' && {
             key: '22',
                 label: 'Затвердити або скасувати зміну зображень в профілі',
                 children: (
 
-                    <AdminModerationActions banner={profile.banner} logo={profile.logo} id={profile.encoded_id}/>
+                    <AdminModerationActions banner={profile.banner} logo={profile.logo} id={profile.encoded_id} onModerationComplete={() => mutate()}/>
             )
         }
     ] : [];
