@@ -118,6 +118,10 @@ WSGI_APPLICATION = "forum.wsgi.application"
 CELERY_BROKER_URL = config("REDIS_URL")
 CELERY_RESULT_BACKEND = config("REDIS_URL")
 
+RATELIMIT_REDIS_HOST = config("RATELIMIT_REDIS_HOST")
+RATELIMIT_REDIS_PORT = config("RATELIMIT_REDIS_PORT")
+RATELIMIT_REDIS_DB = config("RATELIMIT_REDIS_DB")
+
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
