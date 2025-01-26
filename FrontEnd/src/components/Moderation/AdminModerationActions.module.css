@@ -32,7 +32,6 @@
 
 .button:hover {
     background: var(--main-button-hover-color);
-    color: var(--main-button-text-color);
 }
 
 .button-reject:hover {
