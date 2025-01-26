@@ -146,18 +146,6 @@ const GeneralInfo = (props) => {
       }
     }
 
-    if (!profile.common_info || profile.common_info.trim() === '') {
-      isValid = false;
-      newFormState.common_info = {
-        error: true,
-        message: 'Це поле є обов’язковим для заповнення.',
-      };
-    } else {
-      newFormState.common_info = {
-        error: false,
-        message: '',
-      };
-    }
     setFormStateErr({ ...formStateErr, ...newFormState });
     if (
       profile.official_name?.length !== 0 &&
