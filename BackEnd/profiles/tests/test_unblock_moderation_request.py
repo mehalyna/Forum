@@ -54,7 +54,7 @@ class TestProfileModeration(APITestCase):
             },
         )
 
-        # moderator unlocks request
+        # moderator unblocks request
         response = self.moderator_client.patch(
             path="/api/profiles/{profile_id}/images_moderation/".format(
                 profile_id=encode_id(self.profile.id)
@@ -107,7 +107,7 @@ class TestProfileModeration(APITestCase):
             },
         )
 
-        # moderator unlock request
+        # moderator unblocks request
         response = self.moderator_client.patch(
             path="/api/profiles/{profile_id}/images_moderation/".format(
                 profile_id=encode_id(self.profile.id)
@@ -157,7 +157,7 @@ class TestProfileModeration(APITestCase):
             },
         )
 
-        # moderator unlock request
+        # moderator unblocks request
         response = self.moderator_client.patch(
             path="/api/profiles/{profile_id}/images_moderation/".format(
                 profile_id=encode_id(self.profile.id)
@@ -209,7 +209,7 @@ class TestProfileModeration(APITestCase):
             },
         )
 
-        # moderator unlocks request
+        # moderator unblocks request
         response = self.moderator_client.patch(
             path="/api/profiles/{profile_id}/images_moderation/".format(
                 profile_id=encode_id(self.profile.id)
@@ -259,7 +259,7 @@ class TestProfileModeration(APITestCase):
             },
         )
 
-        # moderator unlocks request
+        # moderator unblocks request
         response = self.moderator_client.patch(
             path="/api/profiles/{profile_id}/images_moderation/".format(
                 profile_id=encode_id(self.profile.id)
@@ -304,7 +304,7 @@ class TestProfileModeration(APITestCase):
             },
         )
 
-        # moderator rejects request
+        # moderator unblocks request
         response = self.moderator_client.patch(
             path="/api/profiles/{profile_id}/images_moderation/".format(
                 profile_id=encode_id(self.profile.id)
