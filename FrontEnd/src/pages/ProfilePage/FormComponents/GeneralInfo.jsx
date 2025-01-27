@@ -54,6 +54,10 @@ const ERRORS = {
     error: false,
     message: '',
   },
+  common_info: {
+    error: false,
+    message: '',
+  },
 };
 
 const TEXT_AREA_MAX_LENGTH = 1000;
@@ -141,6 +145,7 @@ const GeneralInfo = (props) => {
         }
       }
     }
+
     setFormStateErr({ ...formStateErr, ...newFormState });
     if (
       profile.official_name?.length !== 0 &&
@@ -210,11 +215,10 @@ const GeneralInfo = (props) => {
     });
   };
 
-
   const onBlurHandler = (e) => {
     const { value: rawFieldValue, name: fieldName } = e.target;
     const fieldValue = rawFieldValue.replace(/\s{2,}/g, ' ').trim();
-    const requiredFields = ['official_name', 'name'];
+    const requiredFields = ['official_name', 'name', 'common_info'];
     if (requiredFields.includes(fieldName) && !fieldValue) {
       setFormStateErr((prev) => ({
         ...prev,
@@ -228,7 +232,6 @@ const GeneralInfo = (props) => {
       return { ...prevState, [fieldName]: fieldValue };
     });
   };
-
   const onUpdateRegions = (e) => {
     let selectedRegions = [];
     for (let region of e) {
@@ -285,10 +288,21 @@ const GeneralInfo = (props) => {
   };
 
   const onUpdateTextAreaField = (e) => {
-    if (e.target.value?.length <= TEXT_AREA_MAX_LENGTH)
+    const { name, value } = e.target;
+    if (value?.length <= TEXT_AREA_MAX_LENGTH) {
       setProfile((prevState) => {
-        return { ...prevState, [e.target.name]: e.target.value };
+        return { ...prevState, [name]: value };
       });
+      if (name === 'common_info' && value.trim() !== '') {
+        setFormStateErr((prev) => ({
+          ...prev,
+          common_info: {
+            error: false,
+            message: '',
+          },
+        }));
+      }
+    }
   };
 
   const onUpdateActivities = (e) => {
@@ -596,6 +610,11 @@ const GeneralInfo = (props) => {
               value={profile.common_info ?? ''}
               maxLength={TEXT_AREA_MAX_LENGTH}
               requiredField={true}
+              error={
+                formStateErr['common_info']?.['error']
+                  ? formStateErr['common_info']['message']
+                  : null
+              }
             />
             <CheckBoxField
               name="companyType"
