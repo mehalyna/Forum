@@ -10,6 +10,7 @@ import classes from './DataContacts.module.css';
 function DataContacts ({ data, isAuthorized }) {
 
   const companyData = {
+    'Повна назва': data.official_name,
     'ЄДРПОУ': data.edrpou,
     'РНОКПП': data.rnokpp,
     'Рік заснування': data.founded,
