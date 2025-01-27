@@ -125,7 +125,7 @@ const ImageField = ({
               <span className={css['upload-file__banner-image--title']}>
                 Зображення для карток
               </span>
-              <div>
+              <div className={css['tooltip-container']}>
                 <PendingStatus profile={profile} elementType="banner" />
                 <div
                   className={css['upload-file__banner-image--card']}
@@ -136,7 +136,7 @@ const ImageField = ({
           </>
         )}
         {name === 'logo' && value && (
-          <div>
+          <div className={css['tooltip-container']}>
             <PendingStatus profile={profile} elementType="logo" />
             <div className={css['upload-file__wrapper--logo']}>
               <div className={css['upload-file__logo']} style={backgroundImage} />
