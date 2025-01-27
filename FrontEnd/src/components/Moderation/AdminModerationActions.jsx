@@ -5,7 +5,7 @@ import { Tooltip } from 'antd';
 import { AdminModerationModal } from './AdminModerationModal';
 import classes from './AdminModerationActions.module.css';
 
-const AdminModerationActions = ({ moderationAction, banner, logo, id, onModerationComplete }) => {
+const AdminModerationActions = ({ banner, logo, id, onModerationComplete }) => {
     const [moderationStatus, setModerationStatus] = useState('');
     const [modalVisible, setModalVisible] = useState(false);
 
@@ -15,9 +15,7 @@ const AdminModerationActions = ({ moderationAction, banner, logo, id, onModerati
         'The change approval request has been processed. URL is outdated':
           'Помилка: запит на затвердження змін вже було опрацьовано. Посилання застаріле.',
         'At least one image (logo or banner) must be provided for the moderation request.':
-          'Помилка: відсутні зображення на модерації. Запит вже було опрацьовано.',
-        'The profile is not blocked':
-          'Помилка: профіль вже розблокований'
+          'Помилка: відсутні зображення на модерації. Запит вже було опрацьовано.'
       };
 
     const handleModeration = async (action) => {
@@ -31,13 +29,11 @@ const AdminModerationActions = ({ moderationAction, banner, logo, id, onModerati
             `${process.env.REACT_APP_BASE_API_URL}/api/profiles/${id}/images_moderation/`,
             data
           );
-          if (action === 'approve') {
-            setModerationStatus('Зміни успішно затверджено');
-          } else if (action === 'reject') {
-            setModerationStatus('Зміни успішно скасовано. Профіль компанії заблоковано');
-          } else if (action === 'unblock') {
-            setModerationStatus('Профіль компанії успішно розблоковано');
-          }
+          action === 'approve'
+            ? setModerationStatus('Зміни успішно затверджено')
+            : setModerationStatus(
+                'Зміни успішно скасовано. Профіль компанії заблоковано'
+              );
           setModalVisible(true);
         } catch (error) {
           setModerationStatus('Помилка застосування змін');
@@ -59,42 +55,31 @@ const AdminModerationActions = ({ moderationAction, banner, logo, id, onModerati
       };
 
     return (
-      <div className={classes['buttons-container']}>
-        { moderationAction === 'unblock' ? (
-          <button
-            onClick={() => handleModeration('unblock', banner, logo, id)}
-            className={classes['button']}>
-              Розблокувати
-          </button>
-        ) : (
-          <>
+        <div className={classes['buttons-container']}>
             <button
-              onClick={() => handleModeration('approve', banner, logo, id)}
-              className={classes['button']}>
-                Затвердити
+                onClick={() => handleModeration('approve', banner, logo, id)}
+                className={classes['button']}>
+                    Затвердити
             </button>
             <Tooltip
-              title="Профіль буде заблоковано"
-              placement="top"
-              pointAtCenter={true}
+                title="Профіль буде заблоковано"
+                placement="top"
+                pointAtCenter={true}
             >
-              <button
-                onClick={() => handleModeration('reject', banner, logo, id)}
-                className={`${classes['button']} ${classes['button-reject']}`}>
-                  Скасувати
-              </button>
+                <button
+                    onClick={() => handleModeration('reject', banner, logo, id)}
+                    className={`${classes['button']} ${classes['button-reject']}`}>
+                        Скасувати
+                </button>
             </Tooltip>
-          </>)
-        }
-        <AdminModerationModal moderationStatus={moderationStatus}  modalVisible={modalVisible} closeModal={closeModal} />
-      </div>
+            <AdminModerationModal moderationStatus={moderationStatus}  modalVisible={modalVisible} closeModal={closeModal} />
+        </div>
     );
 };
 
 export default AdminModerationActions;
 
 AdminModerationActions.propTypes = {
-    moderationAction: PropTypes.string.isRequired,
     banner: PropTypes.shape({
         uuid: PropTypes.string,
         is_approved: PropTypes.bool,

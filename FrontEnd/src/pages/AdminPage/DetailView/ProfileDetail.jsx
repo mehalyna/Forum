@@ -174,32 +174,14 @@ function ProfileDetail() {
         },
         getImageFiled('20', 'Логотип', profile.logo, 'logo', { width: 200, height: 200 }),
         getImageFiled('21', 'Банер', profile.banner, 'banner', { width: 400, height: 250 }),
-        ...(profile.status === 'pending' ? [{
+        profile.status === 'pending' && {
             key: '22',
-            label: 'Затвердити або скасувати зміну зображень в профілі',
-            children: (
-                <AdminModerationActions
-                    moderationAction={'pending'}
-                    banner={profile.banner}
-                    logo={profile.logo}
-                    id={profile.encoded_id}
-                    onModerationComplete={() => mutate()}
-                />
+                label: 'Затвердити або скасувати зміну зображень в профілі',
+                children: (
+
+                    <AdminModerationActions banner={profile.banner} logo={profile.logo} id={profile.encoded_id} onModerationComplete={() => mutate()}/>
             )
-        }] : []),
-        ...(profile.status === 'blocked' ? [{
-            key: '23',
-            label: 'Розблокувати профіль',
-            children: (
-                <AdminModerationActions
-                    moderationAction={'unblock'}
-                    banner={profile.banner}
-                    logo={profile.logo}
-                    id={profile.encoded_id}
-                    onModerationComplete={() => mutate()}
-                />
-            )
-        }] : [])
+        }
     ] : [];
 
     return (
