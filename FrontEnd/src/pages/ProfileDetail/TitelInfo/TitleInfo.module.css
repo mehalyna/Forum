@@ -3,28 +3,26 @@
   background: var(--profile-detail-title-background);
   width: var(--profile-detail-width);
   justify-content: center;
-  align-items: center;
 }
 
 .title-block__content {
   display: flex;
   align-items: flex-start;
   flex-direction: column;
+  gap: 40px;
+  padding: 24px 16px;
 }
 
 .title-block__content-info {
   display: flex;
   flex-direction: column;
   width: 343px;
-  padding: 24px 16px;
+  gap: 24px;
 }
 
 .title-block__logo-block {
-  width: 64px;
-  height: 64px;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .title-block__logo-tooltip {
@@ -79,6 +77,7 @@
 .title-block__company_category {
   display: flex;
   align-items: flex-start;
+  margin-left: -5px;
 }
 
 .title-block__company_region {
@@ -99,7 +98,6 @@
 .title-block__button-block {
   display: flex;
   justify-content: center;
-  padding: 0px 16px 24px 16px;
 }
 
 .title-block__button {
@@ -149,17 +147,14 @@
 
 @media only screen and (min-width: 768px) {
   .title-block__content {
-    width: 760px;
-  }
-
-  .title-block {
-    justify-content: center;
+    gap: 32px;
+    padding: 40px 24px;
   }
 
   .title-block__content-info {
+    width: 720px;
     flex-direction: row;
-    width: 728px;
-    gap: 24px;
+    gap: 40px;
   }
 
   .title-block__button-block {
@@ -174,19 +169,18 @@
 @media only screen and (min-width: 1200px) {
   .title-block {
     flex-direction: row;
-    justify-content: center;
   }
 
   .title-block__content {
-    width: 1100px;
+    width: 1136px;
+    padding: 40px 32px;
     flex-direction: row;
     justify-content: space-between;
+    gap: 40px;
   }
 
   .title-block__content-info {
-    flex-direction: row;
     width: 800px;
-    gap: 24px;
   }
 
   .title-block__button {
@@ -197,12 +191,22 @@
   .title-block__button-block {
     display: flex;
     justify-content: center;
-    padding: 24px 16px;
+    padding: 24px 0;
+  }
+
+  .title-block__logo-block {
+    align-items: center;
+  }
+
+  .title-block__logo-img {
+    width: 140px;
+    height: 140px;
   }
 }
 
 @media only screen and (min-width: 1512px) {
   .title-block__content {
     width: 1304px;
+    padding: 40px 104px;
   }
 }
