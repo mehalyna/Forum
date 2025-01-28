@@ -118,7 +118,7 @@ REACT_APP_PUBLIC_URL= sample filling => http://localhost:8080 #Path to the front
 
 ### Clone
 
-- Clone this repo to your local machine using `https://github.com/ita-social-projects/Forum.git`
+- Clone this repo to your local machine using `____`
 
 ### Setup
 
