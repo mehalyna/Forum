@@ -18,7 +18,12 @@ from utils.administration.profiles.profiles_functions import (
 from utils.administration.create_password import generate_password
 from utils.administration.send_email import send_email_about_admin_registration
 from utils.moderation.encode_decode_id import encode_id
-from .models import AutoModeration, ModerationEmail, ContactInformation, FeedbackCategory
+from .models import (
+    AutoModeration,
+    ModerationEmail,
+    ContactInformation,
+    FeedbackCategory,
+)
 from validation.validate_phone_number import (
     validate_phone_number_len,
     validate_phone_number_is_digit,
@@ -388,6 +393,7 @@ class SendMessageSerializer(serializers.Serializer):
     """
     Serializer for sending custom messages to users.
     """
+
     email = serializers.EmailField(
         required=True,
         error_messages={
