@@ -16,3 +16,9 @@
     line-height: 24px;
     letter-spacing: -0.16px;
 }
+
+@media only screen and (min-width: 1200px) {
+    .about-company {
+        padding-top: 32px;
+    }
+}
