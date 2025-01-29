@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from rest_framework.exceptions import ValidationError
-from utils.administration.feedback_category import FeedbackCategory
+from utils.administration.feedback_category import FeedbackCategoryEnum
 from authentication.models import CustomUser
 from profiles.models import (
     Profile,
@@ -18,7 +18,7 @@ from utils.administration.profiles.profiles_functions import (
 from utils.administration.create_password import generate_password
 from utils.administration.send_email import send_email_about_admin_registration
 from utils.moderation.encode_decode_id import encode_id
-from .models import AutoModeration, ModerationEmail, ContactInformation
+from .models import AutoModeration, ModerationEmail, ContactInformation, FeedbackCategory
 from validation.validate_phone_number import (
     validate_phone_number_len,
     validate_phone_number_is_digit,
@@ -251,7 +251,10 @@ class ModerationEmailSerializer(serializers.ModelSerializer):
 class FeedbackSerializer(serializers.Serializer):
     email = serializers.EmailField(
         required=True,
-        error_messages={"required": "Please provide a valid email address."},
+        error_messages={
+            "required": "Please provide a valid email address.",
+            "invalid": "Enter a valid email address.",
+        },
     )
     message = serializers.CharField(
         min_length=10,
@@ -261,11 +264,44 @@ class FeedbackSerializer(serializers.Serializer):
             "min_length": "Message must be at least 10 characters long.",
         },
     )
-    category = serializers.ChoiceField(
-        choices=FeedbackCategory.choices(),
-        required=True,
-        error_messages={"required": "Please select a category."},
+    category = serializers.PrimaryKeyRelatedField(
+        queryset=FeedbackCategory.objects.all(),
+        required=False,
+        allow_null=True,
+        error_messages={
+            "does_not_exist": "Selected category does not exist.",
+            "invalid": "Invalid category selection.",
+        },
     )
+
+    def validate_category(self, value):
+        """If category is not provided, default to 'Other'."""
+        if not value:
+            value, _ = FeedbackCategory.objects.get_or_create(name="Other")
+        return value
+
+
+class FeedbackCategorySerializer(serializers.ModelSerializer):
+    name = serializers.CharField(
+        max_length=50,
+        error_messages={
+            "blank": "Category name cannot be empty.",
+            "required": "Category name is required.",
+            "max_length": "Category name cannot exceed 50 characters.",
+        },
+    )
+
+    class Meta:
+        model = FeedbackCategory
+        fields = ("id", "name")
+
+    def validate_name(self, value):
+        """Ensure category name is unique (case-insensitive)."""
+        if FeedbackCategory.objects.filter(name__iexact=value).exists():
+            raise serializers.ValidationError(
+                "A category with this name already exists."
+            )
+        return value
 
 
 class CategoriesListSerializer(serializers.ModelSerializer):
@@ -346,3 +382,32 @@ class MonthlyProfileStatisticsSerializer(serializers.Serializer):
     investors_count = serializers.IntegerField()
     startups_count = serializers.IntegerField()
     startup_investor_count = serializers.IntegerField()
+
+
+class SendMessageSerializer(serializers.Serializer):
+    """
+    Serializer for sending custom messages to users.
+    """
+    email = serializers.EmailField(
+        required=True,
+        error_messages={
+            "required": "Please provide a valid email address.",
+            "invalid": "Enter a valid email address.",
+        },
+    )
+    message = serializers.CharField(
+        min_length=10,
+        required=True,
+        error_messages={
+            "required": "Message cannot be empty.",
+            "min_length": "Message must be at least 10 characters long.",
+        },
+    )
+    category = serializers.ChoiceField(
+        choices=FeedbackCategoryEnum.choices(),
+        required=True,
+        error_messages={
+            "required": "Please select a category.",
+            "invalid_choice": "Invalid category selection.",
+        },
+    )

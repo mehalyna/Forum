@@ -37,6 +37,8 @@ from administration.serializers import (
     ContactInformationSerializer,
     MonthlyProfileStatisticsSerializer,
     AdminRegistrationSerializer,
+    FeedbackCategorySerializer,
+    SendMessageSerializer,
 )
 from administration.pagination import ListPagination
 from administration.models import (
@@ -45,6 +47,7 @@ from administration.models import (
     ContactInformation,
 )
 from authentication.models import CustomUser
+from administration.models import FeedbackCategory
 from profiles.models import Profile, Category
 from .permissions import IsStaffUser, IsStaffUserOrReadOnly, IsSuperUser
 from .serializers import FeedbackSerializer
@@ -374,7 +377,7 @@ class SendMessageView(CreateAPIView):
 
     queryset = CustomUser.objects.all()
     permission_classes = [IsStaffUser]
-    serializer_class = FeedbackSerializer
+    serializer_class = SendMessageSerializer
 
     def perform_create(self, serializer):
         """
@@ -400,3 +403,23 @@ class SendMessageView(CreateAPIView):
             email=email,
             sender_name="Адміністратор CraftMerge",
         )
+
+
+class FeedbackCategoryListView(ListCreateAPIView):
+    """
+    API endpoint for retrieving the list of feedback categories and creating new ones.
+    """
+
+    queryset = FeedbackCategory.objects.all().order_by("id")
+    serializer_class = FeedbackCategorySerializer
+    permission_classes = [IsStaffUser]
+
+
+class FeedbackCategoryDetailView(RetrieveUpdateDestroyAPIView):
+    """
+    API endpoint for retrieving, updating, and deleting a specific feedback category.
+    """
+
+    queryset = FeedbackCategory.objects.all()
+    serializer_class = FeedbackCategorySerializer
+    permission_classes = [IsStaffUser]
