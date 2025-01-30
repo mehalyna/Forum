@@ -260,11 +260,9 @@ class FeedbackCategoryField(serializers.Field):
     """
 
     def to_representation(self, value):
-        """Convert the model instance to a category name."""
         return value.name
 
     def to_internal_value(self, data):
-        """Convert the input category name to a model instance."""
         if not data:
             category, _ = FeedbackCategory.objects.get_or_create(name="Інше")
         else:

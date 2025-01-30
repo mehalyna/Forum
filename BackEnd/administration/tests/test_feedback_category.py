@@ -1,6 +1,5 @@
 from rest_framework import status
 from rest_framework.test import APITestCase
-
 from administration.factories import FeedbackCategoryFactory, AdminUserFactory
 from utils.unittest_helper import AnyInt, AnyStr
 
@@ -12,14 +11,13 @@ class TestFeedbackCategoryAPIUserNotStaff(APITestCase):
             is_active=True,
         )
         self.category = FeedbackCategoryFactory()
+        self.client.force_authenticate(self.user)
 
     def test_get_feedback_categories_not_staff(self):
-        self.client.force_authenticate(self.user)
         response = self.client.get(path="/api/admin/feedback-categories/")
         self.assertEqual(status.HTTP_403_FORBIDDEN, response.status_code)
 
     def test_get_feedback_category_by_id_not_staff(self):
-        self.client.force_authenticate(self.user)
         response = self.client.get(
             path=f"/api/admin/feedback-categories/{self.category.id}/"
         )
@@ -33,9 +31,9 @@ class TestFeedbackCategoryAPIUserStaff(APITestCase):
             is_active=True,
         )
         self.categories = FeedbackCategoryFactory.create_batch(2)
+        self.client.force_authenticate(self.user)
 
     def test_get_feedback_categories_staff(self):
-        self.client.force_authenticate(self.user)
         response = self.client.get(path="/api/admin/feedback-categories/")
         data = [
             {"id": AnyInt(), "name": AnyStr()},
@@ -46,7 +44,6 @@ class TestFeedbackCategoryAPIUserStaff(APITestCase):
 
     def test_get_feedback_category_by_id_staff(self):
         category = FeedbackCategoryFactory.create()
-        self.client.force_authenticate(self.user)
         response = self.client.get(
             path=f"/api/admin/feedback-categories/{category.id}/"
         )
@@ -55,7 +52,6 @@ class TestFeedbackCategoryAPIUserStaff(APITestCase):
         self.assertEqual(data, response.json())
 
     def test_post_new_feedback_category_staff(self):
-        self.client.force_authenticate(self.user)
         data = {"name": "User Experience"}
         response = self.client.post(
             path="/api/admin/feedback-categories/", data=data
@@ -66,7 +62,6 @@ class TestFeedbackCategoryAPIUserStaff(APITestCase):
 
     def test_post_duplicate_feedback_category_staff(self):
         existing_category = FeedbackCategoryFactory.create(name="Bug Report")
-        self.client.force_authenticate(self.user)
         data = {"name": "Bug Report"}
         response = self.client.post(
             path="/api/admin/feedback-categories/", data=data
@@ -79,7 +74,6 @@ class TestFeedbackCategoryAPIUserStaff(APITestCase):
 
     def test_put_feedback_category_staff(self):
         category = FeedbackCategoryFactory.create()
-        self.client.force_authenticate(self.user)
         data = {"name": "New Category Name"}
         response = self.client.put(
             path=f"/api/admin/feedback-categories/{category.id}/", data=data
@@ -89,7 +83,6 @@ class TestFeedbackCategoryAPIUserStaff(APITestCase):
 
     def test_patch_feedback_category_staff(self):
         category = FeedbackCategoryFactory.create()
-        self.client.force_authenticate(self.user)
         data = {"name": "Updated Category"}
         response = self.client.patch(
             path=f"/api/admin/feedback-categories/{category.id}/", data=data
@@ -99,7 +92,6 @@ class TestFeedbackCategoryAPIUserStaff(APITestCase):
 
     def test_delete_feedback_category_staff(self):
         category = FeedbackCategoryFactory.create()
-        self.client.force_authenticate(self.user)
         response = self.client.delete(
             path=f"/api/admin/feedback-categories/{category.id}/"
         )
