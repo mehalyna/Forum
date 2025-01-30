@@ -253,7 +253,34 @@ class ModerationEmailSerializer(serializers.ModelSerializer):
         fields = ["email_moderation"]
 
 
+class FeedbackCategoryField(serializers.Field):
+    """
+    Custom serializer field for handling FeedbackCategory.
+    Converts category name to object and vice versa.
+    """
+
+    def to_representation(self, value):
+        """Convert the model instance to a category name."""
+        return value.name
+
+    def to_internal_value(self, data):
+        """Convert the input category name to a model instance."""
+        if not data:
+            category, _ = FeedbackCategory.objects.get_or_create(name="Інше")
+        else:
+            category = FeedbackCategory.objects.filter(name=data).first()
+            if not category:
+                raise serializers.ValidationError(
+                    "The selected category does not exist."
+                )
+        return category
+
+
 class FeedbackSerializer(serializers.Serializer):
+    """
+    Serializer for handling user feedback messages.
+    """
+
     email = serializers.EmailField(
         required=True,
         error_messages={
@@ -269,26 +296,22 @@ class FeedbackSerializer(serializers.Serializer):
             "min_length": "Message must be at least 10 characters long.",
         },
     )
-    category = serializers.PrimaryKeyRelatedField(
-        queryset=FeedbackCategory.objects.all(),
-        required=False,
-        allow_null=True,
-        error_messages={
-            "does_not_exist": "Selected category does not exist.",
-            "invalid": "Invalid category selection.",
-        },
-    )
-
-    def validate_category(self, value):
-        """If category is not provided, default to 'Other'."""
-        if not value:
-            value, _ = FeedbackCategory.objects.get_or_create(name="Other")
-        return value
+    category = FeedbackCategoryField(required=False)
 
 
 class FeedbackCategorySerializer(serializers.ModelSerializer):
+    """
+    Serializer for handling FeedbackCategory CRUD operations.
+    """
+
     name = serializers.CharField(
         max_length=50,
+        validators=[
+            UniqueValidator(
+                queryset=FeedbackCategory.objects.all(),
+                message="A category with this name already exists.",
+            )
+        ],
         error_messages={
             "blank": "Category name cannot be empty.",
             "required": "Category name is required.",
@@ -299,14 +322,6 @@ class FeedbackCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = FeedbackCategory
         fields = ("id", "name")
-
-    def validate_name(self, value):
-        """Ensure category name is unique (case-insensitive)."""
-        if FeedbackCategory.objects.filter(name__iexact=value).exists():
-            raise serializers.ValidationError(
-                "A category with this name already exists."
-            )
-        return value
 
 
 class CategoriesListSerializer(serializers.ModelSerializer):

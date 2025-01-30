@@ -413,6 +413,7 @@ class FeedbackCategoryListView(ListCreateAPIView):
     queryset = FeedbackCategory.objects.all().order_by("id")
     serializer_class = FeedbackCategorySerializer
     permission_classes = [IsStaffUser]
+    pagination_class = ListPagination
 
 
 class FeedbackCategoryDetailView(RetrieveUpdateDestroyAPIView):
