@@ -1,4 +1,5 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
+import { useBlocker } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import AccordionItem from './AccordionItem';
 import MyModal from '../UI/MyModal/MyModal';
@@ -11,6 +12,20 @@ const Accordion = ({ sections, openSectionIndex, setOpenSectionIndex }) => {
   const [triggerKey, setTriggerKey] = useState(0);
   const [showWarningModal, setShowWarningModal] = useState(false);
   const {  formIsDirty, setFormIsDirty } = useContext(DirtyFormContext);
+
+  const blocker = useBlocker(
+          ({ currentLocation, nextLocation }) =>
+              formIsDirty &&
+              currentLocation.pathname !== nextLocation.pathname
+      );
+
+      useEffect(() => {
+          if (blocker.state === 'blocked') {
+            setShowWarningModal(true);
+          } else {
+            setShowWarningModal(false);
+          }
+      }, [blocker.state]);
 
   const handleItemClick = (index, disabled) => {
     if (disabled) return;
@@ -39,6 +54,9 @@ const Accordion = ({ sections, openSectionIndex, setOpenSectionIndex }) => {
   };
 
   const onConfirmModal = () => {
+    if (blocker.state === 'blocked') {
+      blocker.proceed();
+    }
     setShowWarningModal(false);
     setFormIsDirty(false);
     setPreviousSectionIndex(openSectionIndex);
@@ -48,6 +66,9 @@ const Accordion = ({ sections, openSectionIndex, setOpenSectionIndex }) => {
   };
 
   const onCancelModal = () => {
+    if (blocker.state === 'blocked') {
+      blocker.reset();
+    }
     setShowWarningModal(false);
   };
 
