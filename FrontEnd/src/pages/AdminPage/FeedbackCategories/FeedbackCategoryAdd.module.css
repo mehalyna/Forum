@@ -1,0 +1,40 @@
+.feedbackCategoryAddContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 350px;
+}
+
+.feedbackCategoryAddTitle {
+    width: 100%;
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+}
+
+.feedbackCategoryAddTextarea {
+    min-height: 40px;
+    border-radius: 4px;
+    padding: 8px;
+    font-size: 14px;
+    width: 100%;
+}
+
+.feedbackCategoryAddButtonsBlock {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+    width: 100%;
+}
+
+.feedbackCategoryAddButton {
+    width: 120px;
+    height: 36px;
+    font-size: 14px;
+}
+
+.feedbackCategoryAddError {
+    color: red;
+    font-size: 12px;
+    margin: 0;
+}
