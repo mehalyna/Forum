@@ -2,6 +2,7 @@ import factory.django
 
 from authentication.models import CustomUser
 from profiles.models import Profile, Category
+from administration.models import FeedbackCategory
 
 
 class AdminUserFactory(factory.django.DjangoModelFactory):
@@ -47,3 +48,11 @@ class AdminCategoryFactory(factory.django.DjangoModelFactory):
         django_get_or_create = ("name",)
 
     name = factory.Sequence(lambda n: f"category {n + 1}")
+
+
+class FeedbackCategoryFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = FeedbackCategory
+        django_get_or_create = ("name",)
+
+    name = factory.Sequence(lambda n: f"feedback category {n + 1}")
