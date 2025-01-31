@@ -47,7 +47,7 @@ export default function ProfileListPage({ isAuthorized, isSaved }) {
   useEffect(() => {
     definePageSize(windowWidth, setPageSize);
   }, [windowWidth]);
-
+  
   const [url, setUrl] = useState(
     `${process.env.REACT_APP_BASE_API_URL}/api/profiles/?ordering=name&page_size=${pageSize}&page=${currentPage}`
   );

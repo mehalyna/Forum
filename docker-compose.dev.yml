@@ -46,11 +46,13 @@ services:
       - REACT_APP_PUBLIC_URL=${REACT_APP_PUBLIC_URL}
       - REACT_APP_RECAPTCHA_V2_SITE_KEY=${REACT_APP_RECAPTCHA_V2_SITE_KEY}
     ports:
-      - 3000:80
+      - 8080:80
     build:
       context: ./FrontEnd
       target: production
       args:
+        - REACT_APP_BASE_API_URL=${REACT_APP_BASE_API_URL}
+        - REACT_APP_PUBLIC_URL=${REACT_APP_PUBLIC_URL}
         - REACT_APP_RECAPTCHA_V2_SITE_KEY=${REACT_APP_RECAPTCHA_V2_SITE_KEY}
     networks:
       - forum_network
