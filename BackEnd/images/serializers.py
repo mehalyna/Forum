@@ -15,6 +15,7 @@ class ImageSerializer(serializers.ModelSerializer):
     crop_y = serializers.IntegerField(write_only=True, required=False)
     width = serializers.IntegerField(write_only=True, required=False)
     height = serializers.IntegerField(write_only=True, required=False)
+
     class Meta:
         model = ProfileImage
         fields = (
@@ -61,16 +62,17 @@ class ImageSerializer(serializers.ModelSerializer):
         width = validated_data.pop("width", 0)
         height = validated_data.pop("height", 0)
 
-        if (cropped_image_x_point and 
-            cropped_image_y_point and 
-            width and
-            height):
-
+        if (
+            cropped_image_x_point
+            and cropped_image_y_point
+            and width
+            and height
+        ):
             image = validated_data.get("image_path")
             format = validated_data.get("content_type").upper()
             if format == "JPG":
                 format = "JPEG"
-                
+
             dimensions = (
                 cropped_image_x_point,
                 cropped_image_y_point,
@@ -88,9 +90,3 @@ class ImageSerializer(serializers.ModelSerializer):
             validated_data["image_size"] = image_content.size
 
         return super().create(validated_data)
-
-
-
-
-
-
