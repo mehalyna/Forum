@@ -75,7 +75,7 @@ class ImageSerializer(serializers.ModelSerializer):
                 cropped_image_x_point,
                 cropped_image_y_point,
                 cropped_image_x_point + width,
-                cropped_image_y_point + height
+                cropped_image_y_point + height,
             )
             img = Image.open(image)
             cropped_img = img.crop(dimensions)
