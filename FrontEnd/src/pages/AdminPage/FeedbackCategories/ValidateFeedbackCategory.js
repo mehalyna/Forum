@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const ValidateFeedbackCategory = async (category, setError) => {
     const trimmedCategory = category.trim();
-    const regex = /^[А-ЯҐЄІЇ]{1}[а-яґєії]{1,}$/u;
+    const regex = /^[А-ЯҐЄІЇ][а-яґєії]+(?:\s[А-ЯҐЄІЇа-яґєії]+)*$/u;
 
     if (trimmedCategory.length < 2 || trimmedCategory.length > 50) {
         setError('Назва категорії має бути від 2 до 50 символів.');
@@ -10,7 +10,7 @@ const ValidateFeedbackCategory = async (category, setError) => {
     }
 
     if (!regex.test(trimmedCategory)) {
-        setError('Назва категорії має починатися з великої літери та містити лише кириличні символи.');
+        setError('Назва категорії має починатися з великої літери, містити лише кириличні символи та пробіли між словами.');
         return false;
     }
 
