@@ -23,7 +23,6 @@ from utils.moderation.send_email import send_moderation_email
 from utils.moderation.encode_decode_id import decode_id
 from utils.moderation.image_moderation import ModerationManager
 from utils.moderation.handle_approved_images import ApprovedImagesDeleter
-from utils.throttles.upload_throttle import UploadScopedRateThrottle
 
 from forum.pagination import ForumPagination
 from images.models import ProfileImage
@@ -166,7 +165,6 @@ class ProfileDetail(RetrieveUpdateDestroyAPIView):
         Else profile info without sensitive data returned.
         If user is authenticated, he can get sensitive data via query param 'with_contacts'.
     """
-    # throttle_classes = [UploadScopedRateThrottle, ]
     queryset = (
         Profile.objects.active_only()
         .select_related("person")
@@ -175,17 +173,13 @@ class ProfileDetail(RetrieveUpdateDestroyAPIView):
     permission_classes = [UserIsProfileOwnerOrReadOnly]
 
     def get_throttles(self):
-        from rest_framework.throttling import ScopedRateThrottle
-        return [ScopedRateThrottle()]
-    #     return [UploadScopedRateThrottle(), ]
-        # if self.request.method in ("PUT", "PATCH"):
-        #     if (
-        #         ProfileImage.BANNER in self.request.data.keys()
-        #         or ProfileImage.LOGO in self.request.data.keys()
-        #     ):
-        #         print("Applying UploadScopedRateThrottle")
-        #         return [UploadScopedRateThrottle(), ]
-        # return super(ProfileDetail, self).get_throttles()
+        if self.request.method in ("PUT", "PATCH"):
+            if (
+                ProfileImage.BANNER in self.request.data.keys()
+                or ProfileImage.LOGO in self.request.data.keys()
+            ):
+                self.throttle_scope = 'upload'
+        return super(ProfileDetail, self).get_throttles()
 
     def get_serializer_context(self):
         context = super().get_serializer_context()
