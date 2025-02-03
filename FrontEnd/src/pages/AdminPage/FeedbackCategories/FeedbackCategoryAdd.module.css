@@ -2,22 +2,27 @@
     display: flex;
     flex-direction: column;
     gap: 15px;
-    width: 350px;
+    width: 341px;
 }
 
 .feedbackCategoryAddTitle {
     width: 100%;
-    font-size: 16px;
-    font-weight: bold;
-    color: #333;
 }
 
-.feedbackCategoryAddTextarea {
-    min-height: 40px;
-    border-radius: 4px;
-    padding: 8px;
-    font-size: 14px;
+.feedbackCategoryAddText {
     width: 100%;
+}
+
+.feedbackCategoryAddContainer,
+.feedbackCategoryAddTitle,
+.feedbackCategoryAddText {
+    color: #000;
+    font-feature-settings: 'calt' off;
+    text-decoration: none;
+    font-family: var(--font__admin-panel);
+    font-size: 14px;
+    line-height: 22px;
+    letter-spacing: -0.14px;
 }
 
 .feedbackCategoryAddButtonsBlock {
@@ -28,8 +33,15 @@
 }
 
 .feedbackCategoryAddButton {
-    width: 120px;
+    width: 124px;
     height: 36px;
+}
+
+.feedbackCategoryAddInput {
+    width: 100%;
+    min-height: 36px;
+    border-radius: 2px;
+    padding: 8px;
     font-size: 14px;
 }
 

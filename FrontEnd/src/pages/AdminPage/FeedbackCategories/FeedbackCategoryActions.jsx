@@ -5,7 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 
-import ValidateFeedbackCategory from './ValidateFeedbackCategory';
+import ValidateFeedbackCategory from '../../../utils/validateFeedbackCategory';
 
 import styles from './FeedbackCategoryActions.module.css';
 
@@ -45,9 +45,9 @@ function FeedbackCategoryActions({ category, onActionComplete }) {
 
     return (
         <>
-            <Button onClick={() => setIsModalVisible(true)}>Редагувати</Button>
+            <Button onClick={() => setIsModalVisible(true)}>Змінити</Button>
             <Modal
-                title={`Редагувати категорію: ${category.name}`}
+                title={`Змінити назву ${category.name}`}
                 open={isModalVisible}
                 onCancel={() => {
                     setIsModalVisible(false);
@@ -70,15 +70,15 @@ function FeedbackCategoryActions({ category, onActionComplete }) {
                 width={400}
             >
                 <div className={styles.feedbackCategoryActionsModalContent}>
-                    <Input.TextArea
-                        rows={1}
+                    <Input
+                        type="text"
                         placeholder="Введіть нову назву"
                         value={feedbackCategoryRename}
                         onChange={(e) => {
                             setFeedbackCategoryRename(e.target.value);
                             setError('');
                         }}
-                        className={styles.feedbackCategoryActionsTextarea}
+                        className={styles.feedbackCategoryActionsInput}
                     />
                     {error && <p className={styles.feedbackCategoryActionsError}>{error}</p>}
                 </div>
@@ -96,3 +96,4 @@ FeedbackCategoryActions.propTypes = {
 };
 
 export default FeedbackCategoryActions;
+

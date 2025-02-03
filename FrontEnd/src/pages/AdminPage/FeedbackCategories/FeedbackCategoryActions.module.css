@@ -5,12 +5,16 @@
     width: 100%;
 }
 
+.feedbackCategoryActionsInput {
+    width: 100%;
+}
+
+.feedbackCategoryActionsSelect {
+    width: 100%;
+}
+
 .feedbackCategoryActionsTextarea {
     width: 100%;
-    min-height: 40px;
-    border-radius: 4px;
-    padding: 8px;
-    font-size: 14px;
 }
 
 .feedbackCategoryActionsError {

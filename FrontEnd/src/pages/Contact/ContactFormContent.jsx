@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
 import axios from 'axios';
+import useSWR from 'swr';
 import { Select, Space } from 'antd';
 
 import {
@@ -12,10 +13,14 @@ import {
 import MyModal from '../../pages/ProfilePage/UI/MyModal/MyModal';
 import styles from './ContactFormContent.module.css';
 
-export function ContactFormContent ({ onLoading }) {
+const fetcher = async (url) => {
+    const response = await axios.get(url);
+    return response.data;
+};
+
+export function ContactFormContent({ onLoading }) {
     const [modal, setModal] = useState(false);
     const [modalMessage, setModalMessage] = useState('');
-    const [categories, setCategories] = useState([]);
 
     const {
         register,
@@ -32,38 +37,24 @@ export function ContactFormContent ({ onLoading }) {
         },
     });
 
-    useEffect(() => {
-        const fetchCategories = async () => {
-            try {
-                const response = await axios.get(`${process.env.REACT_APP_BASE_API_URL}/api/admin/feedback-categories/`);
-                if (response.data.results.length > 0) {
-                    setCategories(response.data.results.map(cat => ({ value: cat.name, label: cat.name })));
-                } else {
-                    setCategories([{ value: 'Інше', label: 'Інше' }]);
-                }
-            } catch (error) {
-                setCategories([{ value: 'Інше', label: 'Інше' }]);
-            }
-        };
-
-        fetchCategories();
-    }, []);
+    const { data } = useSWR(`${process.env.REACT_APP_BASE_API_URL}/api/admin/feedback-categories/`, fetcher);
+    const categories = data?.results?.length
+        ? data.results.map(cat => ({ value: cat.name, label: cat.name }))
+        : [{ value: 'Інше', label: 'Інше' }];
 
     const onSubmit = async (value) => {
         onLoading(true);
         try {
-            const response = await axios.post(`${process.env.REACT_APP_BASE_API_URL}/api/admin/feedback/`, {
+            await axios.post(`${process.env.REACT_APP_BASE_API_URL}/api/admin/feedback/`, {
                 email: value.email,
                 message: value.message,
-                category: value.category || 'Інше',
+                category: value.category,
             });
 
-            if (response.status === 200 || response.status === 201) {
-                setModalMessage('Повідомлення успішно надіслано!');
-                setModal(true);
-                reset();
-            }
-        } catch (error) {
+            setModalMessage('Повідомлення успішно надіслано!');
+            setModal(true);
+            reset();
+        } catch {
             setModalMessage('Щось пішло не так! Будь ласка, спробуйте ще раз!');
             setModal(true);
         } finally {
@@ -115,6 +106,7 @@ export function ContactFormContent ({ onLoading }) {
                         {errors.email && errors.email.message}
                     </div>
                 </div>
+
                 <div className={styles['contact__field']}>
                     <div className={styles['contact-form__label']}>
                         <label className={styles['contact-form__label--text']}>Категорія:</label>
@@ -139,6 +131,7 @@ export function ContactFormContent ({ onLoading }) {
                         )}
                     />
                 </div>
+
                 <div className={`${styles['contact__field']}`}>
                     <div className={styles['contact-form__label']}>
                         <label className={styles['contact-form__label--required']}>*</label>

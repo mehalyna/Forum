@@ -5,7 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 
-import ValidateFeedbackCategory from './ValidateFeedbackCategory';
+import ValidateFeedbackCategory from '../../../utils/validateFeedbackCategory';
 
 import styles from './FeedbackCategoryAdd.module.css';
 
@@ -42,15 +42,15 @@ function FeedbackCategoryAdd({ onActionComplete }) {
     return (
         <div className={styles.feedbackCategoryAddContainer}>
             <h3 className={styles.feedbackCategoryAddTitle}>Додати нову категорію фідбеків</h3>
-            <Input.TextArea
-                rows={1}
+            <Input
+                type="text"
                 placeholder="Введіть назву категорії"
                 value={feedbackCategoryName}
                 onChange={(e) => {
                     setFeedbackCategoryName(e.target.value);
                     setError('');
                 }}
-                className={styles.feedbackCategoryAddTextarea}
+                className={styles.feedbackCategoryAddInput}
             />
             {error && <p className={styles.feedbackCategoryAddError}>{error}</p>}
             <div className={styles.feedbackCategoryAddButtonsBlock}>

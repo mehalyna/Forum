@@ -1,7 +1,16 @@
 .feedback-table-container {
     width: 100%;
-    max-width: 600px;
-    padding-left: 50px;
+    max-width: 500px;
+    padding-left: 100px;
+}
+
+.feedback-icon {
+    font-size: 12px;
+}
+
+.feedback-empty-icon {
+    width: 12px;
+    height: 12px;
 }
 
 .feedback-search-dropdown {

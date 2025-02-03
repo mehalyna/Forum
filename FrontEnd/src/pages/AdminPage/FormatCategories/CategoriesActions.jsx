@@ -5,43 +5,40 @@ import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 
-import ValidateCategory from './CategoryValidation';
+import ValidateCategory from '../../../utils/categoryValidation';
 
 import styles from './CategoriesActions.module.css';
 
-
 function CategoriesActions({ category, onActionComplete }) {
     const [categoryRename, setCategoryRename] = useState('');
-    const [isCreated, setIsCreated] = useState(false);
+    const [isUpdating, setIsUpdating] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [error, setError] = useState('');
-
 
     const handleCategoryRename = async () => {
         if (!ValidateCategory(categoryRename, setError)) return;
 
-        setIsCreated(true);
+        setIsUpdating(true);
+
         try {
             await axios.patch(
                 `${process.env.REACT_APP_BASE_API_URL}/api/admin/categories/${category.id}/`,
-                {
-                    name: categoryRename.trim(),
-                }
+                { name: categoryRename.trim() }
             );
-            toast.success('Успішно змінено');
-            setCategoryRename('');
+            toast.success('Категорію успішно оновлено');
             setIsModalVisible(false);
+            setCategoryRename('');
             if (onActionComplete) onActionComplete();
         } catch {
-            toast.error('Не вдалося змінити. Спробуйте ще раз.');
+            toast.error('Не вдалося оновити категорію. Спробуйте ще раз.');
         } finally {
-            setIsCreated(false);
+            setIsUpdating(false);
         }
     };
 
     return (
         <>
-            <Button key="cancel" onClick={() => setIsModalVisible(true)}>Змінити</Button>
+            <Button onClick={() => setIsModalVisible(true)}>Змінити</Button>
             <Modal
                 title={`Змінити назву ${category.name}`}
                 open={isModalVisible}
@@ -52,33 +49,32 @@ function CategoriesActions({ category, onActionComplete }) {
                 }}
                 footer={[
                     <Button key="cancel" onClick={() => setIsModalVisible(false)}>
-                        Відмінити
+                        Скасувати
                     </Button>,
                     <Button
-                        key="send"
+                        key="save"
                         type="primary"
-                        loading={isCreated}
+                        loading={isUpdating}
                         onClick={handleCategoryRename}
                     >
-                        Змінити
+                        Зберегти
                     </Button>,
                 ]}
                 width={400}
             >
-                <div className={styles.CategoriesActionsModalContent}>
-                    <Input.TextArea
-                        rows={1}
-                        placeholder={`${category.name}`}
+                <div className={styles.categoriesActionsModalContent}>
+                    <Input
+                        type="text"
+                        placeholder="Введіть нову назву"
                         value={categoryRename}
-                        width={50}
                         onChange={(e) => {
                             const input = e.target.value;
                             setCategoryRename(input);
                             ValidateCategory(input, setError);
                         }}
-                        className={styles.CategoriesActionsTextarea}
+                        className={styles.categoriesActionsInput}
                     />
-                    {error && <p className={styles.CategoriesActionsError}>{error}</p>}
+                    {error && <p className={styles.categoriesActionsError}>{error}</p>}
                 </div>
             </Modal>
         </>

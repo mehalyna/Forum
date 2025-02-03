@@ -1,22 +1,21 @@
-.CategoryAddContainer {
+.categoryAddContainer {
     display: flex;
     flex-direction: column;
     gap: 15px;
     width: 341px;
-
 }
 
-.CategoryAddTitle {
+.categoryAddTitle {
     width: 100%;
 }
 
-.CategoryAddText {
+.categoryAddText {
     width: 100%;
 }
 
-.CategoryAddContainer,
-.CategoryAddTitle,
-.CategoryAddText {
+.categoryAddContainer,
+.categoryAddTitle,
+.categoryAddText {
     color: #000;
     font-feature-settings: 'calt' off;
     text-decoration: none;
@@ -26,24 +25,24 @@
     letter-spacing: -0.14px;
 }
 
-.CategoryAddButtonsBlock {
+.categoryAddButtonsBlock {
     display: flex;
     flex-direction: row;
     gap: 16px;
     width: 100%;
 }
 
-.CategoryAddButton {
+.categoryAddButton {
     width: 124px;
     height: 36px;
 }
 
-.CategoryAddTextarea {
+.categoryAddInput {
     min-height: 40px;
     border-radius: 2px;
 }
 
-.CategoryAddError {
+.categoryAddError {
     color: red;
     font-size: 12px;
     margin: 0;

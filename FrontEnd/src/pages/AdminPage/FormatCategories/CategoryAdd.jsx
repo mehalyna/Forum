@@ -5,7 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 
-import ValidateCategory from './CategoryValidation';
+import ValidateCategory from '../../../utils/categoryValidation';
 
 import styles from './CategoryAdd.module.css';
 
@@ -13,6 +13,7 @@ function CategoryAdd({ onActionComplete }) {
     const [categoryAddName, setCategoryAddName] = useState('');
     const [isAdded, setIsAdded] = useState(false);
     const [error, setError] = useState('');
+
     const handleCategoryAdd = async () => {
         if (isAdded) return;
 
@@ -39,26 +40,25 @@ function CategoryAdd({ onActionComplete }) {
     };
 
     return (
-        <div className={styles.CategoryAddContainer}>
-            <h3 className={styles.CategoryAddTitle}>Додати нову категорію</h3>
-            <Input.TextArea
-                rows={1}
+        <div className={styles.categoryAddContainer}>
+            <h3 className={styles.categoryAddTitle}>Додати нову категорію</h3>
+            <Input
+                type="text"
                 placeholder="Введіть назву категорії"
                 value={categoryAddName}
                 onChange={(e) => {
-                    const input = e.target.value;
-                    setCategoryAddName(input);
-                    ValidateCategory(input, setError);
+                    setCategoryAddName(e.target.value);
+                    ValidateCategory(e.target.value, setError);
                 }}
-                className={styles.CategoryAddTextarea}
+                className={styles.categoryAddInput}
             />
-            {error && <p className={styles.CategoryAddError}>{error}</p>}
-            <div className={styles.CategoryAddButtonsBlock}>
+            {error && <p className={styles.categoryAddError}>{error}</p>}
+            <div className={styles.categoryAddButtonsBlock}>
                 <Button
                     type="primary"
                     loading={isAdded}
                     onClick={handleCategoryAdd}
-                    className={styles.CategoryAddButton}
+                    className={styles.categoryAddButton}
                 >
                     Зберегти
                 </Button>
@@ -67,7 +67,7 @@ function CategoryAdd({ onActionComplete }) {
                         setError('');
                         setCategoryAddName('');
                     }}
-                    className={styles.CategoryAddButton}
+                    className={styles.categoryAddButton}
                 >
                     Скасувати
                 </Button>
