@@ -227,10 +227,6 @@ export function SignUpFormContentComponent(props) {
               value: 50,
               message: errorMessageTemplates.maxLength
             },
-            validate: (value) =>
-              watch('confirmPassword') !== value
-                ? errorMessageTemplates.confirmPassword
-                : null,
           }}
           errors={errors}
           togglePassword={togglePassword}
