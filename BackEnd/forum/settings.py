@@ -185,6 +185,9 @@ REST_FRAMEWORK = {
     ),
     "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.AllowAny"],
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    "DEFAULT_THROTTLE_RATES": {
+        "upload": "2/day",
+    },
 }
 
 SPECTACULAR_SETTINGS = {
@@ -228,6 +231,27 @@ DJOSER = {
         "password_reset": "authentication.email.CustomPasswordResetEmail",
     },
 }
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": (
+            f"redis://{config('CACHE_REDIS_HOST')}:"
+            f"{config('CACHE_REDIS_PORT')}/"
+            f"{config('CACHE_REDIS_DB')}"
+        ),
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "CONNECTION_POOL_KWARGS": {
+                "max_connections": 200,
+                "retry_on_timeout": True,
+            },
+            "SOCKET_TIMEOUT": 3,
+            "SOCKET_CONNECT_TIMEOUT": 2,
+        },
+    }
+}
+
 
 DELAY_FOR_LOGIN = 600  # delay time for login in seconds
 ATTEMPTS_FOR_LOGIN = 10  # attempts for login during delay for login
