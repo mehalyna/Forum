@@ -1,23 +1,23 @@
-.CategoriesActionsModalContent {
+.categoriesActionsModalContent {
     display: flex;
     flex-direction: column;
     gap: 15px;
     width: 100%;
 }
 
-.CategoriesActionsInput {
+.categoriesActionsInput {
     width: 100%;
 }
 
-.CategoriesActionsSelect {
+.categoriesActionsSelect {
     width: 100%;
 }
 
-.CategoriesActionsTextarea {
+.categoriesActionsTextarea {
     width: 100%;
 }
 
-.CategoriesActionsError {
+.categoriesActionsError {
     color: red;
     font-size: 12px;
     margin: 0;

@@ -5,7 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 
-import ValidateCategory from '../../../utils/categoryValidation';
+import validateCategory from '../../../utils/categoryValidation';
 
 import styles from './CategoryAdd.module.css';
 
@@ -18,7 +18,7 @@ function CategoryAdd({ onActionComplete }) {
         if (isAdded) return;
 
         setIsAdded(true);
-        const isValid = await ValidateCategory(categoryAddName, setError);
+        const isValid = await validateCategory(categoryAddName, setError);
         if (!isValid) {
             setIsAdded(false);
             return;
@@ -48,7 +48,7 @@ function CategoryAdd({ onActionComplete }) {
                 value={categoryAddName}
                 onChange={(e) => {
                     setCategoryAddName(e.target.value);
-                    ValidateCategory(e.target.value, setError);
+                    validateCategory(e.target.value, setError);
                 }}
                 className={styles.categoryAddInput}
             />

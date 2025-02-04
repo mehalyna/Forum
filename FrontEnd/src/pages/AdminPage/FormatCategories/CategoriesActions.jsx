@@ -1,11 +1,10 @@
 import { useState } from 'react';
 import { Modal, Button, Input } from 'antd';
 import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 
-import ValidateCategory from '../../../utils/categoryValidation';
+import validateCategory from '../../../utils/categoryValidation';
 
 import styles from './CategoriesActions.module.css';
 
@@ -16,10 +15,15 @@ function CategoriesActions({ category, onActionComplete }) {
     const [error, setError] = useState('');
 
     const handleCategoryRename = async () => {
-        if (!ValidateCategory(categoryRename, setError)) return;
+        if (!categoryRename.trim()) {
+            setError('Назва категорії має бути від 2 до 50 символів.');
+            return;
+        }
+
+        const isValid = validateCategory(categoryRename, setError);
+        if (!isValid) return;
 
         setIsUpdating(true);
-
         try {
             await axios.patch(
                 `${process.env.REACT_APP_BASE_API_URL}/api/admin/categories/${category.id}/`,
@@ -29,8 +33,12 @@ function CategoriesActions({ category, onActionComplete }) {
             setIsModalVisible(false);
             setCategoryRename('');
             if (onActionComplete) onActionComplete();
-        } catch {
-            toast.error('Не вдалося оновити категорію. Спробуйте ще раз.');
+        } catch (error) {
+            if (error.response && error.response.data.name) {
+                setError(error.response.data.name[0]);
+            } else {
+                toast.error('Не вдалося оновити категорію.');
+            }
         } finally {
             setIsUpdating(false);
         }
@@ -48,15 +56,8 @@ function CategoriesActions({ category, onActionComplete }) {
                     setCategoryRename('');
                 }}
                 footer={[
-                    <Button key="cancel" onClick={() => setIsModalVisible(false)}>
-                        Скасувати
-                    </Button>,
-                    <Button
-                        key="save"
-                        type="primary"
-                        loading={isUpdating}
-                        onClick={handleCategoryRename}
-                    >
+                    <Button key="cancel" onClick={() => setIsModalVisible(false)}>Скасувати</Button>,
+                    <Button key="save" type="primary" loading={isUpdating} onClick={handleCategoryRename}>
                         Зберегти
                     </Button>,
                 ]}
@@ -68,9 +69,8 @@ function CategoriesActions({ category, onActionComplete }) {
                         placeholder="Введіть нову назву"
                         value={categoryRename}
                         onChange={(e) => {
-                            const input = e.target.value;
-                            setCategoryRename(input);
-                            ValidateCategory(input, setError);
+                            setCategoryRename(e.target.value);
+                            validateCategory(e.target.value, setError);
                         }}
                         className={styles.categoriesActionsInput}
                     />

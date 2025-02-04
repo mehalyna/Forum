@@ -1,11 +1,10 @@
 import { useState } from 'react';
 import { Modal, Button, Input } from 'antd';
 import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 
-import ValidateFeedbackCategory from '../../../utils/validateFeedbackCategory';
+import validateFeedbackCategory from '../../../utils/validateFeedbackCategory';
 
 import styles from './FeedbackCategoryActions.module.css';
 
@@ -17,27 +16,29 @@ function FeedbackCategoryActions({ category, onActionComplete }) {
 
     const handleFeedbackCategoryRename = async () => {
         if (!feedbackCategoryRename.trim()) {
-            setError('Назва категорії не може бути порожньою.');
+            setError('Назва категорії має бути від 2 до 50 символів.');
             return;
         }
 
-        const isValid = await ValidateFeedbackCategory(feedbackCategoryRename, setError);
+        const isValid = validateFeedbackCategory(feedbackCategoryRename, setError);
         if (!isValid) return;
 
         setIsUpdating(true);
         try {
             await axios.patch(
                 `${process.env.REACT_APP_BASE_API_URL}/api/admin/feedback-categories/${category.id}/`,
-                {
-                    name: feedbackCategoryRename.trim(),
-                }
+                { name: feedbackCategoryRename.trim() }
             );
             toast.success('Категорію успішно оновлено');
             setIsModalVisible(false);
             setFeedbackCategoryRename('');
             if (onActionComplete) onActionComplete();
-        } catch {
-            toast.error('Не вдалося оновити категорію. Спробуйте ще раз.');
+        } catch (error) {
+            if (error.response && error.response.data.name) {
+                setError(error.response.data.name[0]);
+            } else {
+                toast.error('Не вдалося оновити категорію.');
+            }
         } finally {
             setIsUpdating(false);
         }
@@ -55,15 +56,8 @@ function FeedbackCategoryActions({ category, onActionComplete }) {
                     setFeedbackCategoryRename('');
                 }}
                 footer={[
-                    <Button key="cancel" onClick={() => setIsModalVisible(false)}>
-                        Скасувати
-                    </Button>,
-                    <Button
-                        key="save"
-                        type="primary"
-                        loading={isUpdating}
-                        onClick={handleFeedbackCategoryRename}
-                    >
+                    <Button key="cancel" onClick={() => setIsModalVisible(false)}>Скасувати</Button>,
+                    <Button key="save" type="primary" loading={isUpdating} onClick={handleFeedbackCategoryRename}>
                         Зберегти
                     </Button>,
                 ]}
@@ -76,7 +70,7 @@ function FeedbackCategoryActions({ category, onActionComplete }) {
                         value={feedbackCategoryRename}
                         onChange={(e) => {
                             setFeedbackCategoryRename(e.target.value);
-                            setError('');
+                            validateFeedbackCategory(e.target.value, setError);
                         }}
                         className={styles.feedbackCategoryActionsInput}
                     />
@@ -96,4 +90,3 @@ FeedbackCategoryActions.propTypes = {
 };
 
 export default FeedbackCategoryActions;
-

@@ -1,6 +1,4 @@
-import axios from 'axios';
-
-const ValidateFeedbackCategory = async (category, setError) => {
+const validateFeedbackCategory = (category, setError) => {
     const trimmedCategory = category.trim();
     const regex = /^[А-ЯҐЄІЇ][а-яґєії]+(?:\s[А-ЯҐЄІЇа-яґєії]+)*$/u;
 
@@ -10,25 +8,7 @@ const ValidateFeedbackCategory = async (category, setError) => {
     }
 
     if (!regex.test(trimmedCategory)) {
-        setError('Назва категорії має починатися з великої літери, містити лише кириличні символи та пробіли між словами.');
-        return false;
-    }
-
-    try {
-        const response = await axios.get(
-            `${process.env.REACT_APP_BASE_API_URL}/api/admin/feedback-categories/?name=${encodeURIComponent(trimmedCategory)}`
-        );
-
-        const categoryExists = response.data.results.some(
-            (item) => item.name.toLowerCase() === trimmedCategory.toLowerCase()
-        );
-
-        if (categoryExists) {
-            setError('Така категорія вже існує.');
-            return false;
-        }
-    } catch {
-        setError('Помилка перевірки. Спробуйте пізніше.');
+        setError('Назва категорії має починатися з великої літери та містити лише кириличні символи.');
         return false;
     }
 
@@ -36,4 +16,4 @@ const ValidateFeedbackCategory = async (category, setError) => {
     return true;
 };
 
-export default ValidateFeedbackCategory;
+export default validateFeedbackCategory;

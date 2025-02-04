@@ -1,11 +1,10 @@
 import { useState } from 'react';
 import { Button, Input } from 'antd';
 import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 
-import ValidateFeedbackCategory from '../../../utils/validateFeedbackCategory';
+import validateFeedbackCategory from '../../../utils/validateFeedbackCategory';
 
 import styles from './FeedbackCategoryAdd.module.css';
 
@@ -17,12 +16,10 @@ function FeedbackCategoryAdd({ onActionComplete }) {
     const handleFeedbackCategoryAdd = async () => {
         if (isAdding) return;
 
+        const isValid = validateFeedbackCategory(feedbackCategoryName, setError);
+        if (!isValid) return;
+
         setIsAdding(true);
-        const isValid = await ValidateFeedbackCategory(feedbackCategoryName, setError);
-        if (!isValid) {
-            setIsAdding(false);
-            return;
-        }
 
         try {
             await axios.post(
@@ -33,7 +30,11 @@ function FeedbackCategoryAdd({ onActionComplete }) {
             setFeedbackCategoryName('');
             if (onActionComplete) onActionComplete();
         } catch (error) {
-            toast.error('Не вдалося створити категорію.');
+            if (error.response && error.response.data.name) {
+                setError(error.response.data.name[0]);
+            } else {
+                toast.error('Не вдалося створити категорію.');
+            }
         } finally {
             setIsAdding(false);
         }
@@ -41,25 +42,20 @@ function FeedbackCategoryAdd({ onActionComplete }) {
 
     return (
         <div className={styles.feedbackCategoryAddContainer}>
-            <h3 className={styles.feedbackCategoryAddTitle}>Додати нову категорію фідбеків</h3>
+            <h3 className={styles.feedbackCategoryAddTitle}>Додати нову категорію</h3>
             <Input
                 type="text"
                 placeholder="Введіть назву категорії"
                 value={feedbackCategoryName}
                 onChange={(e) => {
                     setFeedbackCategoryName(e.target.value);
-                    setError('');
+                    validateFeedbackCategory(e.target.value, setError);
                 }}
                 className={styles.feedbackCategoryAddInput}
             />
             {error && <p className={styles.feedbackCategoryAddError}>{error}</p>}
             <div className={styles.feedbackCategoryAddButtonsBlock}>
-                <Button
-                    type="primary"
-                    loading={isAdding}
-                    onClick={handleFeedbackCategoryAdd}
-                    className={styles.feedbackCategoryAddButton}
-                >
+                <Button type="primary" loading={isAdding} onClick={handleFeedbackCategoryAdd}>
                     Зберегти
                 </Button>
                 <Button
@@ -67,7 +63,6 @@ function FeedbackCategoryAdd({ onActionComplete }) {
                         setError('');
                         setFeedbackCategoryName('');
                     }}
-                    className={styles.feedbackCategoryAddButton}
                 >
                     Скасувати
                 </Button>
