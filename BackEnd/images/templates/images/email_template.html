@@ -9,17 +9,23 @@
         p, b {
             color: black;
         }
+        li {
+            list-style: none;
+        }
     </style>
 </head>
 <body>
     <div>
-        <img src="{{protocol}}://178.212.110.52/craftMerge-logo.png" alt="CRAFTMERGE"/>
-        <p>Доброго дня,</p>
-        <p>Кількість банерів: {{ num_of_banners }}   Загальний розмір: {{ size_of_banners }} Кб</p>
-        <p>Кількість логотипів: {{ num_of_logos }}   Загальний розмір: {{ size_of_logos }} Кб</p>
-
-        <p>З повагою,</p>
-        <p>Команда CraftMerge</p>
+        <img height="35" src="{{protocol}}://178.212.110.52/craftMerge-logo.png" alt="CRAFTMERGE"/>
+        <p>Доброго дня.</p>
+        <p>За попередній місяць на сайт було завантажено:</p>
+        <ul>
+            <li>Банерів: {{ num_of_banners }}, загальний розмір – {{ size_of_banners }} кБ</li>
+            <li>Логотипів: {{ num_of_logos }}, загальний розмір – {{ size_of_logos }} кБ</li>
+        </ul>
+        <p>З повагою,<br />
+            Команда CraftMerge
+        </p>
     </div>
 </body>
 </html>
