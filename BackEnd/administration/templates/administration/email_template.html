@@ -13,13 +13,16 @@
 </head>
 <body>
     <div>
-        <img src="{{protocol}}://178.212.110.52/craftMerge-logo.png" alt="CRAFTMERGE"/>
+        <img height="35" src="{{protocol}}://178.212.110.52/craftMerge-logo.png" alt="CRAFTMERGE"/>
         <p>Доброго дня,</p>
-        <p>Ваш пароль для входу на платформу: {{ password }} </p>
-        <p>Посилання для входу: {{ domain }}/login </p>
+        <p>Вас успішно зареєстровано як адміністратора сайту CraftMerge.<br />
+           Пароль для входу на платформу: {{ password }} (Рекомендуємо змінити його після першого входу.)<br />
+           Посилання для входу: <a href="{{ protocol }}://{{ domain }}/login">{{ protocol }}://{{ domain }}/login</a>
+        </p>
 
-        <p>З повагою,</p>
-        <p>Команда CraftMerge</p>
+        <p>З повагою,<br />
+            Команда CraftMerge
+        </p>
     </div>
 </body>
 </html>
