@@ -46,15 +46,20 @@ function FeedbackCategoriesTable() {
 
     const handleTableChange = (pagination, filters, sorter) => {
         if (sorter.field) {
-            setSortInfo({ field: sorter.field, order: sorter.order });
+            const newSortInfo =
+                sorter.order === null || sorter.order === undefined
+                    ? { field: null, order: null }
+                    : { field: sorter.field, order: sorter.order };
+            setSortInfo(newSortInfo);
         } else {
             setSortInfo({ field: null, order: null });
         }
+        setCurrentPage(1);
     };
 
     const getColumnSearchProps = () => ({
         filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
-            <div className={css['feedback-search-dropdown']}>
+            <div className={css['dropdownMenu']}>
                 <Input
                     placeholder="Пошук"
                     value={selectedKeys[0]}
@@ -63,7 +68,7 @@ function FeedbackCategoriesTable() {
                         confirm();
                         setSearchText(selectedKeys[0]);
                     }}
-                    className={css['feedback-search-input']}
+                    className={css['antInput']}
                 />
                 <Space>
                     <Button
@@ -74,7 +79,7 @@ function FeedbackCategoriesTable() {
                         }}
                         icon={<SearchOutlined />}
                         size="small"
-                        className={css['feedback-search-btn']}
+                        className={css['antBtn']}
                     >
                         Пошук
                     </Button>
@@ -84,21 +89,21 @@ function FeedbackCategoriesTable() {
                             setSearchText('');
                         }}
                         size="small"
-                        className={css['feedback-clear-btn']}
+                        className={css['antBtn']}
                     >
                         Скинути
                     </Button>
                 </Space>
             </div>
         ),
-        filterIcon: (filtered) => <SearchOutlined className={filtered ? css['feedback-filtered-icon'] : css['feedback-icon']} />,
+        filterIcon: (filtered) => <SearchOutlined className={filtered ? css['filteredIcon'] : css['icon']} />,
         render: (text) =>
             searchText ? (
                 <Highlighter
                     highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
                     searchWords={[searchText]}
                     autoEscape
-                    textToHighlight={text || ''}
+                    textToHighlight={text ? String(text) : ''}
                 />
             ) : (
                 text
@@ -116,6 +121,7 @@ function FeedbackCategoriesTable() {
         },
         {
             title: 'Дія',
+            dataIndex: 'actions',
             key: 'actions',
             align: 'center',
             render: (_, category) => (
@@ -137,6 +143,8 @@ function FeedbackCategoriesTable() {
                 pageSize={pageSize}
                 total={data?.total_items || 0}
                 onChange={handlePageChange}
+                onShowSizeChange={handlePageChange}
+                showTitle={false}
                 className={css['feedback-pagination']}
             />
             <Table
@@ -147,6 +155,11 @@ function FeedbackCategoriesTable() {
                 loading={loading}
                 rowKey={(record) => record.id}
                 tableLayout="fixed"
+                locale={{
+                    triggerDesc: 'Сортувати в порядку спадання',
+                    triggerAsc: 'Сортувати в порядку зростання',
+                    cancelSort: 'Відмінити сортування',
+                }}
             />
             <Pagination
                 showSizeChanger
@@ -154,6 +167,8 @@ function FeedbackCategoriesTable() {
                 pageSize={pageSize}
                 total={data?.total_items || 0}
                 onChange={handlePageChange}
+                onShowSizeChange={handlePageChange}
+                showTitle={false}
                 className={css['feedback-pagination']}
             />
             <FeedbackCategoryAdd />

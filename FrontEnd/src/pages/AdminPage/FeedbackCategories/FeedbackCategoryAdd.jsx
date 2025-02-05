@@ -26,12 +26,17 @@ function FeedbackCategoryAdd({ onActionComplete }) {
                 `${process.env.REACT_APP_BASE_API_URL}/api/admin/feedback-categories/`,
                 { name: feedbackCategoryName.trim() }
             );
-            toast.success('Категорія успішно створена');
+            toast.success('Успішно створено');
             setFeedbackCategoryName('');
             if (onActionComplete) onActionComplete();
         } catch (error) {
             if (error.response && error.response.data.name) {
-                setError(error.response.data.name[0]);
+                const errorMessage = error.response.data.name[0];
+                setError(
+                    errorMessage === 'A category with this name already exists.'
+                        ? 'Категорія з такою назвою вже існує.'
+                        : errorMessage
+                );
             } else {
                 toast.error('Не вдалося створити категорію.');
             }

@@ -35,7 +35,12 @@ function FeedbackCategoryActions({ category, onActionComplete }) {
             if (onActionComplete) onActionComplete();
         } catch (error) {
             if (error.response && error.response.data.name) {
-                setError(error.response.data.name[0]);
+                const errorMessage = error.response.data.name[0];
+                setError(
+                    errorMessage === 'A category with this name already exists.'
+                        ? 'Категорія з такою назвою вже існує.'
+                        : errorMessage
+                );
             } else {
                 toast.error('Не вдалося оновити категорію.');
             }
@@ -90,3 +95,5 @@ FeedbackCategoryActions.propTypes = {
 };
 
 export default FeedbackCategoryActions;
+
+

@@ -35,7 +35,12 @@ function CategoriesActions({ category, onActionComplete }) {
             if (onActionComplete) onActionComplete();
         } catch (error) {
             if (error.response && error.response.data.name) {
-                setError(error.response.data.name[0]);
+                const errorMessage = error.response.data.name[0];
+                setError(
+                    errorMessage === 'category with this name already exists.'
+                        ? 'Категорія з такою назвою вже існує.'
+                        : errorMessage
+                );
             } else {
                 toast.error('Не вдалося оновити категорію.');
             }

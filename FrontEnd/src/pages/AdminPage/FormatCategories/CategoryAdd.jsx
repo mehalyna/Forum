@@ -33,7 +33,16 @@ function CategoryAdd({ onActionComplete }) {
             setCategoryAddName('');
             if (onActionComplete) onActionComplete();
         } catch (error) {
-            toast.error('Не вдалося створити категорію.');
+            if (error.response && error.response.data.name) {
+                const errorMessage = error.response.data.name[0];
+                setError(
+                    errorMessage === 'Category with this name already exists.'
+                        ? 'Категорія з такою назвою вже існує.'
+                        : errorMessage
+                );
+            } else {
+                toast.error('Не вдалося створити категорію.');
+            }
         } finally {
             setIsAdded(false);
         }
