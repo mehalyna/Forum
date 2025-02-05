@@ -1,9 +1,9 @@
 .about-company {
     padding-top: 24px;
+    padding-bottom: 24px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 24px;
 }
 
 .about-company__content {
