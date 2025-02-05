@@ -119,18 +119,18 @@ const LoginContent = () => {
             type: 'manual',
             message: errorMessageTemplates.unspecifiedError,
           });
-        } else if (resp == 'User account is disabled.') {
-          isRunning ? reset() : start();
-          setError('rateError', {
-            type: 'manual',
-            message: errorMessageTemplates.rateError,
-          });
         } else if (resp == 'Profile has been blocked.') {
             setError('blockedUserError', {
               type: 'manual',
               message: errorMessageTemplates.blockedUserError,
           });
         }
+      } else if (error.response.status === 429) {
+        isRunning ? reset() : start();
+        setError('rateError', {
+          type: 'manual',
+          message: errorMessageTemplates.rateError,
+        });
       }
     } finally {
       reCaptchaRef.current?.reset();
