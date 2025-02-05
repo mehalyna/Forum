@@ -5,13 +5,14 @@ import time
 import sys
 import threading
 from django.conf import settings
+from rest_framework.exceptions import Throttled
 
 now = time.monotonic if hasattr(time, "monotonic") else time.time
 
 FALLBACK_REDIS_KEY = "fallback"
 
 
-class LoginRateLimit(object):
+class RateLimit(object):
     def __init__(self, calls=15, period=900, clock=now, raise_on_limit=True):
         self.clamped_calls = max(1, min(sys.maxsize, floor(calls)))
         self.period = period
@@ -44,7 +45,7 @@ class LoginRateLimit(object):
                     if count > self.clamped_calls:
                         if self.raise_on_limit:
                             raise RateLimitException(
-                                "too many calls", period_remaining
+                                period_remaining, "too many calls"
                             )
                         return
 
@@ -80,7 +81,6 @@ class LoginRateLimit(object):
         return ip
 
 
-class RateLimitException(Exception):
-    def __init__(self, message, period_remaining):
-        super(RateLimitException, self).__init__(message)
-        self.period_remaining = period_remaining
+class RateLimitException(Throttled):
+    def __init__(self, wait, detail):
+        super(RateLimitException, self).__init__(wait, detail)

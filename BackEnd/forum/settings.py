@@ -185,12 +185,6 @@ REST_FRAMEWORK = {
     ),
     "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.AllowAny"],
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
-    'DEFAULT_THROTTLE_CLASSES': [
-        'rest_framework.throttling.ScopedRateThrottle',
-    ],
-    "DEFAULT_THROTTLE_RATES": {
-        "upload": "20/day",
-    },
 }
 
 SPECTACULAR_SETTINGS = {
@@ -233,26 +227,6 @@ DJOSER = {
         "activation": "authentication.email.CustomActivationEmail",
         "password_reset": "authentication.email.CustomPasswordResetEmail",
     },
-}
-
-CACHES = {
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": (
-            f"redis://{config('CACHE_REDIS_HOST')}:"
-            f"{config('CACHE_REDIS_PORT')}/"
-            f"{config('CACHE_REDIS_DB')}"
-        ),
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-            "CONNECTION_POOL_KWARGS": {
-                "max_connections": 200,
-                "retry_on_timeout": True,
-            },
-            "SOCKET_TIMEOUT": 3,
-            "SOCKET_CONNECT_TIMEOUT": 2,
-        },
-    }
 }
 
 

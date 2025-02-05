@@ -172,15 +172,6 @@ class ProfileDetail(RetrieveUpdateDestroyAPIView):
     )
     permission_classes = [UserIsProfileOwnerOrReadOnly]
 
-    def get_throttles(self):
-        if self.request.method in ("PUT", "PATCH"):
-            if (
-                ProfileImage.BANNER in self.request.data.keys()
-                or ProfileImage.LOGO in self.request.data.keys()
-            ):
-                self.throttle_scope = 'upload'
-        return super(ProfileDetail, self).get_throttles()
-
     def get_serializer_context(self):
         context = super().get_serializer_context()
         if self.request.user.is_authenticated:
