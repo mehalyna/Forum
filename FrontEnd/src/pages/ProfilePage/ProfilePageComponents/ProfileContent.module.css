@@ -18,7 +18,9 @@
     flex-direction: column;
     align-items: flex-start;
     width: 223px;
+    padding-right: 215px;
     gap: 10px;
+
 }
 
 .profile__infolink {
