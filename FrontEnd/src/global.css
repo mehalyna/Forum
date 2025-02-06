@@ -187,15 +187,4 @@
   /* Loader */
   --loader-primary-color: #B4D27A;
   --loader-secondary-color: #E0E0E0;
-
-  /* Feedback category */
-  --feedback-filtered-icon-color: #46c636;
-  --feedback-category-actions-error-color: red;
-  --feedback-category-add-error-color: red;
-  --feedback-category-add-text-color: #000;
-
-  /* Activity categories*/
-  --activity-categories-error-color: red;
-  --activity-categories-icon-color: #46c636;
-  --activity-categories-text-color: #000;
 }
