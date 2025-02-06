@@ -20,6 +20,7 @@ import TextField from './FormFields/TextField';
 import Loader from '../../../components/Loader/Loader';
 import validateEdrpou from '../../../utils/validateEdrpou';
 import validateRnokpp from '../../../utils/validateRnokpp';
+import getCroppedImage from '../../../utils/getCroppedImage';
 import BanerModeration from './BanerModeration';
 import ProfileFormButton from '../UI/ProfileFormButton/ProfileFormButton';
 
@@ -76,11 +77,11 @@ const GeneralInfo = (props) => {
   const [rnokppFieldError, setRnokppFieldError] = useState(null);
   const [companyTypeError, setCompanyTypeError] = useState(null);
 
-  const [logoDataURL, setLogoDataURL] = useState(null);
+  const [cropLogo, setCropLogo] = useState(false);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
-  const [logoFileName, setlogoFileName] = useState(null);
+  const [logoFile, setlogoFile] = useState(null);
 
 
 
@@ -379,23 +380,16 @@ const GeneralInfo = (props) => {
   const onUpdateLogo = async (e) => {
     const file = e.target.files[0];
     if (file && checkMaxImageSize(e.target.name, file)) {
-      setlogoFileName(file.name);
-      const reader = new FileReader();
-      reader.onload = () => {
-        if (reader.result) {
-        setLogoDataURL(reader.result);
-      }
-      };
-      reader.readAsDataURL(file);
+      setLogoImage(URL.createObjectURL(file));
+      setCropLogo(true);
+      setlogoFile(file);
     }
   };
 
   const onLogoSubmit = async (e) => {
     e.preventDefault();
-    const imgResponse = await fetch(logoDataURL);
-    const blob = await imgResponse.blob();
     const formData = new FormData();
-    formData.append('image_path', blob, logoFileName);
+    formData.append('image_path', logoFile);
     formData.append('crop_x', croppedAreaPixels?.x);
     formData.append('crop_y', croppedAreaPixels?.y);
     formData.append('width', croppedAreaPixels?.width);
@@ -411,6 +405,8 @@ const GeneralInfo = (props) => {
         }};
       });
       toast.success('Зображення успішно завантажене');
+      await getCroppedImage(logoImage, croppedAreaPixels, setLogoImage);
+      setCropLogo(false);
     } catch (error) {
       console.error(
         'Error uploading image:',
@@ -422,7 +418,7 @@ const GeneralInfo = (props) => {
     }
   };
 
-  const onCropComplete = ( _, croppedAreaPixels) => {
+  const onLogoCropComplete = ( _, croppedAreaPixels) => {
     setCroppedAreaPixels(croppedAreaPixels);
   };
 
@@ -440,7 +436,6 @@ const GeneralInfo = (props) => {
         const newState = { ...prevState, [name]: null };
         return newState;
     });
-      setLogoDataURL(null);
   } catch (error) {
     console.error('Error deleting image:',
       error.response ? error.response.data : error.message);
@@ -636,20 +631,20 @@ const GeneralInfo = (props) => {
               name="logo"
               label={LABELS.logo}
               updateHandler={onUpdateLogo}
-              value={logoDataURL ? logoDataURL : logoImage}
+              value={logoImage}
               error={logoImageError}
               onDeleteImage={deleteImageHandler}
               profile={mainProfile}
             />
-            {logoDataURL &&
+            {cropLogo &&
             <>
               <div className={css['crop-container']}>
                 <Cropper
-                  image={logoDataURL}
+                  image={logoImage}
                   crop={crop}
                   zoom={zoom}
                   onCropChange={setCrop}
-                  onCropComplete={onCropComplete}
+                  onCropComplete={onLogoCropComplete}
                   onZoomChange={setZoom}
                   cropShape="round"
                   aspect={1}
