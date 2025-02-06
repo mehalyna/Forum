@@ -36,7 +36,7 @@ class ImageSerializer(serializers.ModelSerializer):
         )
 
     @RateLimit(
-        calls=20,
+        calls=30,
         period=90000,
     )
     def validate(self, value):
