@@ -125,10 +125,7 @@ class CustomTokenCreateSerializer(TokenCreateSerializer):
     def validate(self, attrs):
         captcha_token = attrs.get("captcha")
         email = attrs.get(djoser_settings.LOGIN_FIELD).lower()
-        new_attr = {
-            "password": attrs.get("password"),
-            "email": email
-        }
+        new_attr = {"password": attrs.get("password"), "email": email}
 
         try:
             validate_profile(attrs.get("email"))

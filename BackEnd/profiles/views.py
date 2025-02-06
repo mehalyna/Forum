@@ -165,6 +165,7 @@ class ProfileDetail(RetrieveUpdateDestroyAPIView):
         Else profile info without sensitive data returned.
         If user is authenticated, he can get sensitive data via query param 'with_contacts'.
     """
+
     queryset = (
         Profile.objects.active_only()
         .select_related("person")
