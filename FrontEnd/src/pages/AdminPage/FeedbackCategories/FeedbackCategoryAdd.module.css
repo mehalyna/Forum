@@ -16,7 +16,7 @@
 .feedbackCategoryAddContainer,
 .feedbackCategoryAddTitle,
 .feedbackCategoryAddText {
-    color: #000;
+    color: var(--feedback-category-add-text-color);
     font-feature-settings: 'calt' off;
     text-decoration: none;
     font-family: var(--font__admin-panel);
@@ -46,7 +46,7 @@
 }
 
 .feedbackCategoryAddError {
-    color: red;
+    color: var(--feedback-category-add-error-color);
     font-size: 12px;
     margin: 0;
 }
