@@ -18,7 +18,6 @@
     flex-direction: column;
     align-items: flex-start;
     width: 223px;
-    padding-right: 215px;
     gap: 10px;
 
 }
@@ -62,4 +61,10 @@
 .profile__divider {
     width: 222px;
     border-bottom: 1px #E2E5EB solid;
+}
+
+@media only screen and (min-width: 1200px) {
+    .profile__info-links {
+        padding-right: 215px;
+    }
 }
