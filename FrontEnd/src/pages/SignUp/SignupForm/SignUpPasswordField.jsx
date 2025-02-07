@@ -26,7 +26,7 @@ const SignUpPasswordField = ({
         <div className={styles['signup-form__label--password']}>
           <label>{label}</label>
           {name === 'password' ? (<label className={styles['signup-form__label--hint']}>
-            (Повинен містити від 8 символів, A-Z, a-z, 0-9)
+            Пароль повинен мати 8+ символів, містити принаймні велику, малу літеру (A..Z, a..z) та цифру (0..9).
           </label>) : null}
         </div>
       </div>

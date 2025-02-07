@@ -33,7 +33,7 @@ def send_email_about_banners_and_logos(
     recipient = set_admin_email()
     email_body = render_to_string("images/email_template.html", context)
     email = EmailMultiAlternatives(
-        subject="Information about number and size of banners and logos",
+        subject="Кількість та розмір зображень, завантажених на сайті CraftMerge",
         body=email_body,
         from_email=settings.EMAIL_HOST_USER,
         to=[

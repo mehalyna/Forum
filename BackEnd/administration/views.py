@@ -58,6 +58,7 @@ from .filters import (
     ProfilesFilter,
     ProfileStatisticsFilter,
     MonthlyProfileFilter,
+    FeedbackCategoryFilter,
 )
 from utils.administration.send_email_notification import send_email_to_user
 
@@ -414,6 +415,8 @@ class FeedbackCategoryListView(ListCreateAPIView):
     serializer_class = FeedbackCategorySerializer
     permission_classes = [IsStaffUser]
     pagination_class = ListPagination
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = FeedbackCategoryFilter
 
 
 class FeedbackCategoryDetailView(RetrieveUpdateDestroyAPIView):

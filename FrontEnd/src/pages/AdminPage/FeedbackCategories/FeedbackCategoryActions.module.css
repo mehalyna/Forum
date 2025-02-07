@@ -1,0 +1,24 @@
+.feedbackCategoryActionsModalContent {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+}
+
+.feedbackCategoryActionsInput {
+    width: 100%;
+}
+
+.feedbackCategoryActionsSelect {
+    width: 100%;
+}
+
+.feedbackCategoryActionsTextarea {
+    width: 100%;
+}
+
+.feedbackCategoryActionsError {
+    color: var(--feedback-category-actions-error-color);
+    font-size: 12px;
+    margin: 0;
+}
