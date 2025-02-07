@@ -101,6 +101,12 @@ class CategoriesFilter(FilterSet):
     )
 
 
+class FeedbackCategoryFilter(FilterSet):
+    id = filters.NumberFilter(lookup_expr="contains")
+    name = filters.CharFilter(lookup_expr="icontains")
+    ordering = filters.OrderingFilter(fields=(("id", "id"), ("name", "name")))
+
+
 class ProfileStatisticsFilter(FilterSet):
     """
     Filters

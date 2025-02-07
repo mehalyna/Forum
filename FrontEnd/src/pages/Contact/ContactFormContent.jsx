@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
 import axios from 'axios';
+import useSWR from 'swr';
 import { Select, Space } from 'antd';
 
 import {
@@ -12,14 +13,12 @@ import {
 import MyModal from '../../pages/ProfilePage/UI/MyModal/MyModal';
 import styles from './ContactFormContent.module.css';
 
-const CATEGORY_OPTIONS = [
-    { value: 'Технічне питання', label: 'Технічне питання' },
-    { value: 'Рекомендації', label: 'Рекомендації' },
-    { value: 'Питання', label: 'Питання' },
-    { value: 'Інше', label: 'Інше' },
-];
+const fetcher = async (url) => {
+    const response = await axios.get(url);
+    return response.data;
+};
 
-export function ContactFormContent ({ onLoading }) {
+export function ContactFormContent({ onLoading }) {
     const [modal, setModal] = useState(false);
     const [modalMessage, setModalMessage] = useState('');
 
@@ -29,29 +28,33 @@ export function ContactFormContent ({ onLoading }) {
         reset,
         control,
         formState: { errors },
-      } = useForm({
+    } = useForm({
         mode: 'all',
         defaultValues: {
-            'message': '',
-            'email': '',
-            },
-      });
+            message: '',
+            email: '',
+            category: 'Інше',
+        },
+    });
+
+    const { data } = useSWR(`${process.env.REACT_APP_BASE_API_URL}/api/admin/feedback-categories/`, fetcher);
+    const categories = data?.results?.length
+        ? data.results.map(cat => ({ value: cat.name, label: cat.name }))
+        : [{ value: 'Інше', label: 'Інше' }];
 
     const onSubmit = async (value) => {
         onLoading(true);
         try {
-            const response = await axios.post(`${process.env.REACT_APP_BASE_API_URL}/api/admin/feedback/`, {
+            await axios.post(`${process.env.REACT_APP_BASE_API_URL}/api/admin/feedback/`, {
                 email: value.email,
                 message: value.message,
                 category: value.category,
             });
 
-            if (response.status === 200 || response.status === 201) {
-                setModalMessage('Повідомлення успішно надіслано!');
-                setModal(true);
-                reset();
-            }
-        } catch (error) {
+            setModalMessage('Повідомлення успішно надіслано!');
+            setModal(true);
+            reset();
+        } catch {
             setModalMessage('Щось пішло не так! Будь ласка, спробуйте ще раз!');
             setModal(true);
         } finally {
@@ -67,13 +70,11 @@ export function ContactFormContent ({ onLoading }) {
     return (
         <div className={styles['contact-form']}>
             <div className={styles['contact-form__label']}>
-                <label className={styles['contact-form__label--required']}
-                >
-                 *
-                </label>
+                <label className={styles['contact-form__label--required']}>*</label>
                 <label className={styles['contact-form__label--text']}>
-                    Обов&apos;язкові поля позначені зірочкою</label>
-                </div>
+                    Обов&apos;язкові поля позначені зірочкою
+                </label>
+            </div>
             <form
                 id="contactForm"
                 className={styles['contact-form__container']}
@@ -82,10 +83,7 @@ export function ContactFormContent ({ onLoading }) {
             >
                 <div className={styles['contact__field']}>
                     <div className={styles['contact-form__label']}>
-                        <label className={styles['contact-form__label--required']}
-                        >
-                        *
-                        </label>
+                        <label className={styles['contact-form__label--required']}>*</label>
                         <label className={styles['contact-form__label--text']}>
                             Електронна пошта:
                         </label>
@@ -103,60 +101,40 @@ export function ContactFormContent ({ onLoading }) {
                                 }
                             })}
                         />
-                     </div>
+                    </div>
                     <div className={styles['contact-form__error']}>
                         {errors.email && errors.email.message}
                     </div>
                 </div>
+
                 <div className={styles['contact__field']}>
                     <div className={styles['contact-form__label']}>
-                        <label className={styles['contact-form__label--required']}
-                        >
-                        *
-                        </label>
-                        <label className={styles['contact-form__label--text']}>
-                        Категорія:
-                        </label>
+                        <label className={styles['contact-form__label--text']}>Категорія:</label>
                     </div>
                     <Controller
                         name="category"
                         control={control}
-                        rules={{
-                            required: 'Будь ласка, оберіть категорію повідомлення',
-                        }}
-                        render={({ field, fieldState: { error } }) =>
-                            <Space direction="vertical" style={{ width: '100%', gap: '0px', }}>
+                        render={({ field }) => (
+                            <Space direction="vertical" style={{ width: '100%', gap: '0px' }}>
                                 <Select
                                     placeholder="Оберіть"
                                     {...field}
-                                    style={{
-                                        width: '100%',
-                                        padding: 0,
-                                    }}
-                                    dropdownStyle={{
-                                        width: 257,
-                                        paddingLeft: 0,
-                                        paddingRight: 0,
-                                        borderRadius: '2px',
-                                    }}
+                                    style={{ width: '100%' }}
+                                    dropdownStyle={{ width: 257, borderRadius: '2px' }}
                                     variant="borderless"
                                     className={styles['contact__select']}
-                                    options={CATEGORY_OPTIONS}
+                                    options={categories}
                                     onChange={(value) => field.onChange(value)}
+                                    defaultValue="Інше"
                                 />
-                                <div className={styles['contact-form__error']}>
-                                    {error && error.message}
-                                </div>
                             </Space>
-                        }
+                        )}
                     />
                 </div>
+
                 <div className={`${styles['contact__field']}`}>
                     <div className={styles['contact-form__label']}>
-                        <label className={styles['contact-form__label--required']}
-                        >
-                            *
-                        </label>
+                        <label className={styles['contact-form__label--required']}>*</label>
                         <label className={styles['contact-form__label--text']}>
                             Повідомлення:
                         </label>
@@ -174,14 +152,14 @@ export function ContactFormContent ({ onLoading }) {
                                 }
                             })}
                             spellCheck={false}
-                            />
+                        />
                     </div>
                     <div className={styles['contact-form__error']}>
                         {errors.message && errors.message.message}
                     </div>
                 </div>
             </form>
-        <MyModal visible={modal}>
+            <MyModal visible={modal}>
                 <div className={styles['modal_feedback_content']}>
                     <button
                         className={styles['modal_feedback_close']}
@@ -200,7 +178,7 @@ export function ContactFormContent ({ onLoading }) {
                         </Link>
                     </div>
                 </div>
-        </MyModal>
-    </div>
+            </MyModal>
+        </div>
     );
 }

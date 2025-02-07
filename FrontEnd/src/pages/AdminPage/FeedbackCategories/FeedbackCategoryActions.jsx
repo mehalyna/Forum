@@ -4,40 +4,40 @@ import { toast } from 'react-toastify';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 
-import validateCategory from '../../../utils/categoryValidation';
+import validateFeedbackCategory from '../../../utils/validateFeedbackCategory';
 
-import styles from './CategoriesActions.module.css';
+import styles from './FeedbackCategoryActions.module.css';
 
-function CategoriesActions({ category, onActionComplete }) {
-    const [categoryRename, setCategoryRename] = useState('');
+function FeedbackCategoryActions({ category, onActionComplete }) {
+    const [feedbackCategoryRename, setFeedbackCategoryRename] = useState('');
     const [isUpdating, setIsUpdating] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [error, setError] = useState('');
 
-    const handleCategoryRename = async () => {
-        if (!categoryRename.trim()) {
+    const handleFeedbackCategoryRename = async () => {
+        if (!feedbackCategoryRename.trim()) {
             setError('Назва категорії має бути від 2 до 50 символів.');
             return;
         }
 
-        const isValid = validateCategory(categoryRename, setError);
+        const isValid = validateFeedbackCategory(feedbackCategoryRename, setError);
         if (!isValid) return;
 
         setIsUpdating(true);
         try {
             await axios.patch(
-                `${process.env.REACT_APP_BASE_API_URL}/api/admin/categories/${category.id}/`,
-                { name: categoryRename.trim() }
+                `${process.env.REACT_APP_BASE_API_URL}/api/admin/feedback-categories/${category.id}/`,
+                { name: feedbackCategoryRename.trim() }
             );
             toast.success('Категорію успішно оновлено');
             setIsModalVisible(false);
-            setCategoryRename('');
+            setFeedbackCategoryRename('');
             if (onActionComplete) onActionComplete();
         } catch (error) {
             if (error.response && error.response.data.name) {
                 const errorMessage = error.response.data.name[0];
                 setError(
-                    errorMessage === 'category with this name already exists.'
+                    errorMessage === 'A category with this name already exists.'
                         ? 'Категорія з такою назвою вже існує.'
                         : errorMessage
                 );
@@ -58,35 +58,35 @@ function CategoriesActions({ category, onActionComplete }) {
                 onCancel={() => {
                     setIsModalVisible(false);
                     setError('');
-                    setCategoryRename('');
+                    setFeedbackCategoryRename('');
                 }}
                 footer={[
                     <Button key="cancel" onClick={() => setIsModalVisible(false)}>Скасувати</Button>,
-                    <Button key="save" type="primary" loading={isUpdating} onClick={handleCategoryRename}>
+                    <Button key="save" type="primary" loading={isUpdating} onClick={handleFeedbackCategoryRename}>
                         Зберегти
                     </Button>,
                 ]}
                 width={400}
             >
-                <div className={styles.categoriesActionsModalContent}>
+                <div className={styles.feedbackCategoryActionsModalContent}>
                     <Input
                         type="text"
                         placeholder="Введіть нову назву"
-                        value={categoryRename}
+                        value={feedbackCategoryRename}
                         onChange={(e) => {
-                            setCategoryRename(e.target.value);
-                            validateCategory(e.target.value, setError);
+                            setFeedbackCategoryRename(e.target.value);
+                            validateFeedbackCategory(e.target.value, setError);
                         }}
-                        className={styles.categoriesActionsInput}
+                        className={styles.feedbackCategoryActionsInput}
                     />
-                    {error && <p className={styles.categoriesActionsError}>{error}</p>}
+                    {error && <p className={styles.feedbackCategoryActionsError}>{error}</p>}
                 </div>
             </Modal>
         </>
     );
 }
 
-CategoriesActions.propTypes = {
+FeedbackCategoryActions.propTypes = {
     category: PropTypes.shape({
         id: PropTypes.number.isRequired,
         name: PropTypes.string.isRequired,
@@ -94,4 +94,6 @@ CategoriesActions.propTypes = {
     onActionComplete: PropTypes.func,
 };
 
-export default CategoriesActions;
+export default FeedbackCategoryActions;
+
+
