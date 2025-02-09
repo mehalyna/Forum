@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { useEffect } from 'react';
 import { PropTypes } from 'prop-types';
 import { toast } from 'react-toastify';
 import { useForm } from 'react-hook-form';
@@ -17,6 +18,7 @@ export default function ChangeAdminPassword(props) {
     getValues,
     watch,
     reset,
+    trigger,
     formState: { errors, isDirty },
   } = useForm({
     mode: 'all',
@@ -26,6 +28,16 @@ export default function ChangeAdminPassword(props) {
       reNewPassword: '',
     },
   });
+
+  const handleValidation = async () => {
+      await trigger(['newPassword', 'reNewPassword']);
+    };
+
+  useEffect(() => {
+    if (watch('newPassword') && watch('reNewPassword')) {
+      handleValidation();
+    }
+  }, [watch('reNewPassword'), watch('newPassword')]);
 
   const handleFormSubmit = () => {
     axios

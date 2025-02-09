@@ -26,4 +26,15 @@
     --light-button-hover-color: #F1E7D280;
     --light-button-text-color: #232424;
     --light-button-border-color: #232424;
+
+      /* Feedback category */
+    --feedback-filtered-icon-color: #46c636;
+    --feedback-category-actions-error-color: #f4282b;
+    --feedback-category-add-error-color: #f4282b;
+    --feedback-category-add-text-color: #000;
+
+    /* Activity categories*/
+    --activity-categories-error-color: #f4282b;
+    --activity-categories-icon-color: #46c636;
+    --activity-categories-text-color: #000;
 }

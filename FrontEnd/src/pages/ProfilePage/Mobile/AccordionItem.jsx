@@ -1,32 +1,32 @@
-import { useState, useContext } from 'react';
+import PropTypes from 'prop-types';
 import css from './AccordionItem.module.css';
-import { DirtyFormContext } from '../../../context/DirtyFormContext';
 
 const AccordionItem = (props) => {
-    const [isOpen, setIsOpen] = useState(false);
-    const { formIsDirty } = useContext(DirtyFormContext);
-
-    const toggle = () => {
-        if (!props.disabled) {
-            formIsDirty ? props.warningHandler() : setIsOpen(!isOpen);
-        }
-    };
-
     return (
         <div className={css['accordion-item']}>
             <button className={`${css['accordion-button']} ${props.disabled ? css['disabled'] : ''}`}
-                    onClick={toggle}>
+                    onClick={props.onClick}
+                    >
                 <p className={props.title === 'Видалити профіль' ? css['danger'] : ''}>
                     {props.title}
                 </p>
-               {!props.disabled && <img src={`${process.env.REACT_APP_PUBLIC_URL}/svg/arrow-${isOpen ? 'up' : 'down'}.svg`}></img>}
+               {!props.disabled && <img src={`${process.env.REACT_APP_PUBLIC_URL}/svg/arrow-${props.isOpen ? 'up' : 'down'}.svg`}></img>}
             </button>
             <div className={css['divider']}></div>
-            <div className={`${css['accordion-content']} ${isOpen ? '' : css['close']}`}>
+            <div key={props.triggerKey} className={`${css['accordion-content']} ${props.isOpen ? '' : css['close']}`}>
                 {props.content}
             </div>
         </div>
     );
+};
+
+AccordionItem.propTypes = {
+    title: PropTypes.string.isRequired,
+    content: PropTypes.node.isRequired,
+    disabled: PropTypes.bool,
+    isOpen: PropTypes.bool.isRequired,
+    onClick: PropTypes.func.isRequired,
+    triggerKey: PropTypes.number,
 };
 
 export default AccordionItem;

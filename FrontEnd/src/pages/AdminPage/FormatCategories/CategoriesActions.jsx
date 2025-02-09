@@ -1,47 +1,57 @@
 import { useState } from 'react';
 import { Modal, Button, Input } from 'antd';
 import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 
-import ValidateCategory from './CategoryValidation';
+import validateCategory from '../../../utils/categoryValidation';
 
 import styles from './CategoriesActions.module.css';
 
-
 function CategoriesActions({ category, onActionComplete }) {
     const [categoryRename, setCategoryRename] = useState('');
-    const [isCreated, setIsCreated] = useState(false);
+    const [isUpdating, setIsUpdating] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [error, setError] = useState('');
 
-
     const handleCategoryRename = async () => {
-        if (!ValidateCategory(categoryRename, setError)) return;
+        if (!categoryRename.trim()) {
+            setError('Назва категорії має бути від 2 до 50 символів.');
+            return;
+        }
 
-        setIsCreated(true);
+        const isValid = validateCategory(categoryRename, setError);
+        if (!isValid) return;
+
+        setIsUpdating(true);
         try {
             await axios.patch(
                 `${process.env.REACT_APP_BASE_API_URL}/api/admin/categories/${category.id}/`,
-                {
-                    name: categoryRename.trim(),
-                }
+                { name: categoryRename.trim() }
             );
-            toast.success('Успішно змінено');
-            setCategoryRename('');
+            toast.success('Категорію успішно оновлено');
             setIsModalVisible(false);
+            setCategoryRename('');
             if (onActionComplete) onActionComplete();
-        } catch {
-            toast.error('Не вдалося змінити. Спробуйте ще раз.');
+        } catch (error) {
+            if (error.response && error.response.data.name) {
+                const errorMessage = error.response.data.name[0];
+                setError(
+                    errorMessage === 'category with this name already exists.'
+                        ? 'Категорія з такою назвою вже існує.'
+                        : errorMessage
+                );
+            } else {
+                toast.error('Не вдалося оновити категорію.');
+            }
         } finally {
-            setIsCreated(false);
+            setIsUpdating(false);
         }
     };
 
     return (
         <>
-            <Button key="cancel" onClick={() => setIsModalVisible(true)}>Змінити</Button>
+            <Button onClick={() => setIsModalVisible(true)}>Змінити</Button>
             <Modal
                 title={`Змінити назву ${category.name}`}
                 open={isModalVisible}
@@ -51,34 +61,25 @@ function CategoriesActions({ category, onActionComplete }) {
                     setCategoryRename('');
                 }}
                 footer={[
-                    <Button key="cancel" onClick={() => setIsModalVisible(false)}>
-                        Відмінити
-                    </Button>,
-                    <Button
-                        key="send"
-                        type="primary"
-                        loading={isCreated}
-                        onClick={handleCategoryRename}
-                    >
-                        Змінити
+                    <Button key="cancel" onClick={() => setIsModalVisible(false)}>Скасувати</Button>,
+                    <Button key="save" type="primary" loading={isUpdating} onClick={handleCategoryRename}>
+                        Зберегти
                     </Button>,
                 ]}
                 width={400}
             >
-                <div className={styles.CategoriesActionsModalContent}>
-                    <Input.TextArea
-                        rows={1}
-                        placeholder={`${category.name}`}
+                <div className={styles.categoriesActionsModalContent}>
+                    <Input
+                        type="text"
+                        placeholder="Введіть нову назву"
                         value={categoryRename}
-                        width={50}
                         onChange={(e) => {
-                            const input = e.target.value;
-                            setCategoryRename(input);
-                            ValidateCategory(input, setError);
+                            setCategoryRename(e.target.value);
+                            validateCategory(e.target.value, setError);
                         }}
-                        className={styles.CategoriesActionsTextarea}
+                        className={styles.categoriesActionsInput}
                     />
-                    {error && <p className={styles.CategoriesActionsError}>{error}</p>}
+                    {error && <p className={styles.categoriesActionsError}>{error}</p>}
                 </div>
             </Modal>
         </>

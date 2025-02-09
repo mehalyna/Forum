@@ -33,8 +33,8 @@ function ProfileDetailPage({ isAuthorized }) {
   } = useSWR(urlProfile, fetcher);
 
   const notRequiredData = [
-    'address', 'banner', 'logo', 'common_info', 'edrpou',
-    'rnokpp', 'founded', 'official_name', 'product_info',
+    'address', 'banner', 'logo', 'edrpou',
+    'rnokpp', 'founded', 'product_info',
     'service_info', 'startup_idea', 'logistics', 'cooperation'
   ];
 

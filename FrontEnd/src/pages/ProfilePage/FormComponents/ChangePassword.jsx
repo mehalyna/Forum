@@ -17,6 +17,7 @@ export default function ChangePassword(props) {
     getValues,
     watch,
     reset,
+    trigger,
     formState: { errors, isDirty },
   } = useForm({
     mode: 'all',
@@ -27,6 +28,15 @@ export default function ChangePassword(props) {
     },
   });
 
+  const handleValidation = async () => {
+    await trigger(['newPassword', 'reNewPassword']);
+  };
+
+  useEffect(() => {
+    if (watch('newPassword') && watch('reNewPassword')) {
+      handleValidation();
+    }
+  }, [watch('reNewPassword'), watch('newPassword')]);
 
   useEffect(() => {
     setFormIsDirty(isDirty);

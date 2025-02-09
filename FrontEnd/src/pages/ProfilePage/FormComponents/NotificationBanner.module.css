@@ -1,0 +1,51 @@
+.notification {
+    box-sizing: border-box;
+    padding: 16px;
+    width: 343px;
+    border: 1px solid var(--notification-banner-border);
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.notification-text {
+    font-family: var(--font-main);
+    color: var(--main-text-color);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 22px;
+    letter-spacing: -0.14px;
+    text-align: center;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+}
+
+.required {
+    color: red;
+    margin-right: -3px;
+    display: inline;
+}
+
+@media only screen and (min-width: 768px) {
+    .notification {
+        width: 720px;
+        padding: 16px 24px;
+        display: flex;
+        flex-direction: column;
+        align-self: center;
+        margin-bottom: 26px;
+    }
+}
+
+@media only screen and (min-width: 1200px) {
+    .notification {
+        width: 1055px;
+        flex-direction: row;
+        justify-content: center;
+    }
+}
+
+@media only screen and (min-width: 1512px) {
+    .notification {
+        width: 1304px;
+    }
+}

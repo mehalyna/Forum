@@ -1,23 +1,22 @@
-.CategoryAddContainer {
+.categoryAddContainer {
     display: flex;
     flex-direction: column;
     gap: 15px;
     width: 341px;
-
 }
 
-.CategoryAddTitle {
+.categoryAddTitle {
     width: 100%;
 }
 
-.CategoryAddText {
+.categoryAddText {
     width: 100%;
 }
 
-.CategoryAddContainer,
-.CategoryAddTitle,
-.CategoryAddText {
-    color: #000;
+.categoryAddContainer,
+.categoryAddTitle,
+.categoryAddText {
+    color: var(--activity-categories-text-color);
     font-feature-settings: 'calt' off;
     text-decoration: none;
     font-family: var(--font__admin-panel);
@@ -26,25 +25,25 @@
     letter-spacing: -0.14px;
 }
 
-.CategoryAddButtonsBlock {
+.categoryAddButtonsBlock {
     display: flex;
     flex-direction: row;
     gap: 16px;
     width: 100%;
 }
 
-.CategoryAddButton {
+.categoryAddButton {
     width: 124px;
     height: 36px;
 }
 
-.CategoryAddTextarea {
+.categoryAddInput {
     min-height: 40px;
     border-radius: 2px;
 }
 
-.CategoryAddError {
-    color: red;
+.categoryAddError {
+    color: var(--activity-categories-error-color);
     font-size: 12px;
     margin: 0;
 }

@@ -15,6 +15,9 @@ const MENU = [
         title: 'Керування категоріями діяльності',
         link: '/customadmin/categories/'
     },
+    {   title: 'Керування категоріями фідбеків',
+        link: '/customadmin/feedback-categories/'
+    },
     {
         title: 'Керування контактами',
         link: '/customadmin/contacts/'

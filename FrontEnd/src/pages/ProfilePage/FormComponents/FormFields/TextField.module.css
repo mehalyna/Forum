@@ -94,10 +94,11 @@
     flex: 1 0 0;
     color: var(--red-red-100, #F34444);
     font-family: var(--font-error);
-    font-size: 14px;
+    font-size: 12px;
     font-style: normal;
     font-weight: 400;
     line-height: 22px;
+    margin-top: -15px;
 }
 
 .count__symbols {

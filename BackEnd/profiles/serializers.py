@@ -1,6 +1,7 @@
 from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
 from django.utils.timezone import now
+from django.db import transaction
 from .models import (
     Profile,
     Activity,
@@ -13,6 +14,7 @@ from images.models import ProfileImage
 from utils.regions_ukr_names import get_regions_ukr_names_as_string
 from utils.moderation.moderation_action import ModerationAction
 from utils.moderation.image_moderation import ModerationManager
+from utils.moderation.unblock_helper import delete_images
 
 
 class ActivitySerializer(serializers.ModelSerializer):
@@ -465,6 +467,7 @@ class ProfileModerationSerializer(serializers.Serializer):
 
     def validate(self, attrs):
         profile = self.instance
+        action = attrs.get("action")
         banner = attrs.get("banner")
         logo = attrs.get("logo")
 
@@ -473,10 +476,18 @@ class ProfileModerationSerializer(serializers.Serializer):
                 "At least one image (logo or banner) must be provided for the moderation request."
             )
 
-        if profile.status != profile.PENDING:
+        if profile.status != profile.PENDING and action in [
+            ModerationAction.approve,
+            ModerationAction.reject,
+        ]:
             raise serializers.ValidationError(
                 "The change approval request has been processed. URL is outdated"
             )
+        elif (
+            profile.status != profile.BLOCKED
+            and action == ModerationAction.unblock
+        ):
+            raise serializers.ValidationError("The profile is not blocked")
         else:
             if (banner and profile.banner != banner) or (
                 logo and profile.logo != logo
@@ -507,6 +518,15 @@ class ProfileModerationSerializer(serializers.Serializer):
             instance.is_deleted = True
             instance.person.is_active = False
             instance.person.save()
+
+        elif action == ModerationAction.unblock:
+            with transaction.atomic():
+                instance.status = instance.UNDEFINED
+                instance.is_deleted = False
+                delete_images(instance, "banner", "banner_approved")
+                delete_images(instance, "logo", "logo_approved")
+                instance.person.is_active = True
+                instance.person.save()
 
         else:
             raise serializers.ValidationError("Invalid action provided.")

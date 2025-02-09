@@ -1,0 +1,50 @@
+.feedback-table-container {
+    width: 100%;
+    max-width: 500px;
+    padding-left: 100px;
+}
+
+.feedback-icon {
+    font-size: 12px;
+}
+
+.feedback-empty-icon {
+    width: 12px;
+    height: 12px;
+}
+
+.feedback-search-dropdown {
+    padding: 8px;
+}
+
+.feedback-search-input {
+    margin-bottom: 8px;
+    display: block;
+}
+
+.feedback-search-btn {
+    width: 90px;
+}
+
+.feedback-clear-btn {
+    width: 90px;
+}
+
+.feedback-pagination {
+    margin-top: 16px;
+    text-align: center;
+    justify-content: center;
+    margin-bottom: 24px;
+}
+
+.feedback-icon {
+    font-size: 16px;
+    font-weight: normal;
+    color: inherit;
+}
+
+.feedback-filtered-icon {
+    font-size: 25px;
+    font-weight: bold;
+    color: var(--feedback-filtered-icon-color);
+}

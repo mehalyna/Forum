@@ -4,6 +4,7 @@
     min-height: calc(100vh - 75px);
     justify-content: safe center;
     overflow-x: auto;
+    padding: 0;
 }
 
 .admin-layout {

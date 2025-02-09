@@ -9,8 +9,8 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    width: 344px;
-    padding: 24px 16px;
+    width: 343px;
+    padding: 40px 16px;
 }
 
 .company-description-block {
@@ -57,12 +57,9 @@
     .detail-info-page {
         display: flex;
         flex-direction: column;
-        width: 760px;
-        padding: 24px 0;
-    }
-
-    .company-description-block {
         width: 720px;
+        padding: 48px 24px;
+
     }
 
     .profile-detail__tags-mobile {
@@ -82,11 +79,8 @@
         display: flex;
         flex-direction: row-reverse;
         justify-content: space-between;
-        width: 1100px;
-    }
-
-    .company-description-block {
-        width: 860px;
+        width: 1136px;
+        padding: 64px 32px;
     }
 
     .profile-detail__tags-mobile {
@@ -107,6 +101,7 @@
         letter-spacing: -0.34px;
         white-space: nowrap;
     }
+
     .empty-data {
         padding-left: 100px;
     }
@@ -115,9 +110,5 @@
 @media only screen and (min-width: 1512px) {
     .detail-info-page {
         width: 1304px;
-    }
-
-    .company-description-block {
-        width: 860px;
     }
 }
