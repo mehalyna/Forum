@@ -1,8 +1,15 @@
 .pageContent {
   transition: margin-top 0.3s ease;
   margin-top: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 .pageContent.menuOpen {
   margin-top: 180px;
+}
+
+.pageContent > * {
+  flex-grow: 1;
 }
