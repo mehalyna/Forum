@@ -37,7 +37,7 @@
     border-radius: 6px;
     width: 342px;
     background-color: var(--main-white);
-    margin: 6px;
+    margin-bottom: 10px;
 }
 
 .divider {
