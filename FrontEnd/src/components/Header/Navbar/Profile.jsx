@@ -19,6 +19,10 @@ function Profile() {
       try {
         await axios.post(`${process.env.REACT_APP_BASE_API_URL}/api/auth/token/logout`);
         await logout();
+
+        if (window.location.pathname.startsWith('/customadmin')) {
+          navigate('/');
+        }
       } catch (error) {
         console.error('Error during logout', error);
       }
