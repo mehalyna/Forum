@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import styles from './SignUpFormContent.module.css';
 
-const SignUpCheckboxField = ({ label, options, onChange, register, validation, error }) => {
+const SignUpCheckboxField = ({ label, options, register, validation, error, onChange }) => {
     return (
       <div className={styles['representative']}>
         <div className={styles['representative__title']}>
@@ -11,7 +11,7 @@ const SignUpCheckboxField = ({ label, options, onChange, register, validation, e
         </div>
         <div className={styles['representative__content']}>
           {options.map(({ name, value, label }) => (
-            <div key={name} className={styles['representative__option']}>
+            <div key={[name, value]} className={styles['representative__option']}>
               <div
                 className={classNames(styles['representative__checkbox-container'], {
                   [styles['representative__input--error']]: error,
@@ -21,7 +21,7 @@ const SignUpCheckboxField = ({ label, options, onChange, register, validation, e
                   type="checkbox"
                   name={name}
                   value={value}
-                  {...register((name === 'fop' || name === 'yurosoba') ? name : 'representative', { ...validation, onChange })}
+                  {...register(name, { ...validation, onChange})}
                 />
                 </div>
                 <label className={styles['representative__label']}>{label}</label>
