@@ -17,6 +17,12 @@ from utils.dump_response import dump  # noqa
 @patch("profiles.views.ModerationManager.revoke_deprecated_autoapprove")
 class TestProfileModeration(APITestCase):
     def setUp(self) -> None:
+        patcher = patch(
+            "authentication.serializers.verify_recaptcha", return_value=True
+        )
+        self.mock_verify_recaptcha = patcher.start()
+        self.addCleanup(patcher.stop)
+
         self.banner = ProfileimageFactory(image_type="banner")
         self.logo = ProfileimageFactory(image_type="logo")
         self.second_banner = ProfileimageFactory(image_type="banner")
