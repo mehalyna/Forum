@@ -48,21 +48,23 @@ const ProfilePage = () => {
   }
 
   return (
-    <div className={css['container']}>
-      <DirtyFormContext.Provider value={{ formIsDirty, setFormIsDirty }}>
-        <NotificationBanner missingFields={missingFields} />
-        {!profile ? (
-          <Loader />
-        ) : (
-          <>
-            <Description
-              companyName={profile.name}
-              companyLogo={profile?.logo?.path}
-            />
-            <ProfileContent user={user} profile={profile} />
-          </>
-        )}
-      </DirtyFormContext.Provider>
+    <div className={css['main-profile__container']}>
+      <div className={css['main-container']}>
+        <DirtyFormContext.Provider value={{ formIsDirty, setFormIsDirty }}>
+          <NotificationBanner missingFields={missingFields} />
+          {!profile ? (
+            <Loader />
+          ) : (
+            <>
+              <Description
+                companyName={profile.name}
+                companyLogo={profile?.logo?.path}
+              />
+              <ProfileContent user={user} profile={profile} />
+            </>
+          )}
+        </DirtyFormContext.Provider>
+      </div>
     </div>
   );
 };

@@ -19,6 +19,7 @@
     align-items: flex-start;
     width: 223px;
     gap: 10px;
+
 }
 
 .profile__infolink {
@@ -60,4 +61,10 @@
 .profile__divider {
     width: 222px;
     border-bottom: 1px #E2E5EB solid;
+}
+
+@media only screen and (min-width: 1200px) {
+    .profile__info-links {
+        padding-right: 215px;
+    }
 }

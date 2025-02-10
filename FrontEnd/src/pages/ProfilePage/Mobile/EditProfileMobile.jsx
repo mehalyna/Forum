@@ -69,12 +69,14 @@ const EditProfileMobile = () => {
     ];
 
     return (
-      <div className={css['container']}>
-        {missingFields.length > 0 && (
-          <NotificationBanner missingFields={missingFields} sections={sections} setOpenSectionIndex={setOpenSectionIndex} />
-        )}
-        <h2 className={css['head']}>Профіль користувача</h2>
-        <Accordion sections={sections} openSectionIndex={openSectionIndex} setOpenSectionIndex={setOpenSectionIndex} />
+      <div className={css['main-container']}>
+        <div className={css['container']}>
+          {missingFields.length > 0 && (
+            <NotificationBanner missingFields={missingFields} sections={sections} setOpenSectionIndex={setOpenSectionIndex} />
+          )}
+          <h2 className={css['head']}>Профіль користувача</h2>
+          <Accordion sections={sections} openSectionIndex={openSectionIndex} setOpenSectionIndex={setOpenSectionIndex} />
+        </div>
       </div>
     );
   } else {

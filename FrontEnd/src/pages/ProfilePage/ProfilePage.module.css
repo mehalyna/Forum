@@ -1,12 +1,33 @@
-.container {
+.main-profile__container {
     display: flex;
+    justify-content: space-around;
+    align-items: center;
     flex-direction: column;
-    padding-top: 32px;
+    width: 100vw;
     background-color: var(--light-seashell-background);
 }
 
+.main-container{
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+}
+
+@media only screen and (min-width: 768px) {
+    .main-container {
+        width: 768px;
+     }
+}
+
 @media only screen and (min-width: 1200px) {
-    .container {
-        padding-left: 70px;
+    .main-container {
+       width: 1200px;
+       padding: 104px 80px;
+    }
+}
+
+@media only screen and (min-width: 1512px) {
+    .main-container {
+        width: 1352px;
     }
 }
