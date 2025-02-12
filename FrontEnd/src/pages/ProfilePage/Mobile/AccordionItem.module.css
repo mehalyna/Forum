@@ -3,6 +3,7 @@
     transition: max-height 0.5s ease-in-out;
     overflow: hidden;
     border-radius: 6px;
+    background-color: var(--light-seashell-background);
 }
 
 .accordion-content.close {
@@ -36,7 +37,7 @@
     border-radius: 6px;
     width: 342px;
     background-color: var(--main-white);
-    margin: 6px;
+    margin-bottom: 10px;
 }
 
 .divider {
