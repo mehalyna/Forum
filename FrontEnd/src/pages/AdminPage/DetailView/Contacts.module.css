@@ -3,10 +3,7 @@
     margin: 0 auto;
     padding: 24px;
     background-color: var(--background__admin-panel);
-    border: 1px solid var(--border-input__admin-panel);
-    border-radius: 8px;
     font-family: var(--font__admin-panel);
-    box-shadow: 0px 4px 8px var(--box-shadow-color__admin-panel);
 }
 
 .contacts-title {
