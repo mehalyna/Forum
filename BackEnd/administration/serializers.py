@@ -169,6 +169,9 @@ class ProfileImageField(serializers.Field):
                 "path": self.context["request"].build_absolute_uri(
                     value.image_path.url
                 ),
+                "cropped_path": self.context["request"].build_absolute_uri(
+                    value.cropped_image_path.url
+                ) if value.cropped_image_path else None,
                 "is_approved": value.is_approved,
             }
 
