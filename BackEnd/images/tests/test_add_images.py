@@ -179,7 +179,7 @@ class TestBannerChange(APITestCase):
         )
 
 
-class TestLoginRateLimit(APITestCase):
+class TestUploadRateLimit(APITestCase):
     def setUp(self):
         self.right_banner = open(
             os.path.join(os.getcwd(), "images/tests/img/img_2mb.png"),
@@ -204,16 +204,13 @@ class TestLoginRateLimit(APITestCase):
         redis_memory = {}
 
         def mock_get(key):
-            print(key, redis_memory, "get")
             return str(redis_memory.get(key, 0)).encode()
 
         def mock_incr(key):
-            print(key, redis_memory, "incr")
             redis_memory[key] = redis_memory.get(key, 0) + 1
             return redis_memory[key]
 
         def mock_set(key, value, ex=None):
-            print(key, value, redis_memory, "set")
             redis_memory[key] = value
 
         mock_instance = mock_redis.return_value
