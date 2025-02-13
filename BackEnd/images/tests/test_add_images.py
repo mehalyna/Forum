@@ -204,16 +204,16 @@ class TestLoginRateLimit(APITestCase):
         redis_memory = {}
 
         def mock_get(key):
-            print(key, redis_memory, 'get')
+            print(key, redis_memory, "get")
             return str(redis_memory.get(key, 0)).encode()
 
         def mock_incr(key):
-            print(key, redis_memory, 'incr')
+            print(key, redis_memory, "incr")
             redis_memory[key] = redis_memory.get(key, 0) + 1
             return redis_memory[key]
 
         def mock_set(key, value, ex=None):
-            print(key, value, redis_memory, 'set')
+            print(key, value, redis_memory, "set")
             redis_memory[key] = value
 
         mock_instance = mock_redis.return_value
@@ -222,13 +222,13 @@ class TestLoginRateLimit(APITestCase):
         mock_instance.set.side_effect = mock_set
 
         self.client.post(
-            path="/api/image/banner/",
-            data={"image_path": self.right_banner}
+            path="/api/image/banner/", data={"image_path": self.right_banner}
         )
         response = self.client.post(
-            path="/api/image/logo/",
-            data={"image_path": self.right_logo}
+            path="/api/image/logo/", data={"image_path": self.right_logo}
         )
 
-        self.assertEqual(response.status_code, status.HTTP_429_TOO_MANY_REQUESTS)
+        self.assertEqual(
+            response.status_code, status.HTTP_429_TOO_MANY_REQUESTS
+        )
         mock_instance.flushall()
