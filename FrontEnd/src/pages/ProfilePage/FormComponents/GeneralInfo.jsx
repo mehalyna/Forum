@@ -83,9 +83,6 @@ const GeneralInfo = (props) => {
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
   const [logoFile, setlogoFile] = useState(null);
 
-
-
-
   const { data: fetchedRegions, isLoading: isRegionLoading } = useSWR(
     `${process.env.REACT_APP_BASE_API_URL}/api/regions/`,
     fetcher
@@ -220,7 +217,6 @@ const GeneralInfo = (props) => {
       return { ...prevState, [fieldName]: fieldValue };
     });
   };
-
 
   const onBlurHandler = (e) => {
     const { value: rawFieldValue, name: fieldName } = e.target;
@@ -646,25 +642,25 @@ const GeneralInfo = (props) => {
             />
             {cropLogo &&
             <>
-            <Tooltip title={'Оберіть область логотипу, яка буде відображатись на картці компанії.\nНа сторінці компанії буде відображатись оригінальне зображення.'}
-                    open={true}
-            >
-              <div className={css['crop-container']}>
-                  <Cropper
-                    image={logoImage}
-                    crop={crop}
-                    zoom={zoom}
-                    onCropChange={setCrop}
-                    onCropComplete={onLogoCropComplete}
-                    onZoomChange={setZoom}
-                    cropShape="round"
-                    aspect={1}
-                    />
-              </div>
-              <div className={css['submit-button__container']}>
-                <button className={css['submit-button']} onClick={onLogoSubmit}>Зберегти</button>
-                <button className={css['submit-button']} onClick={onLogoCancel}>Скасувати</button>
-              </div>
+              <Tooltip title={'Оберіть область логотипу, яка буде відображатись на картці компанії.\nНа сторінці компанії буде відображатись оригінальне зображення.'}
+                      open={true}
+              >
+                <div className={css['crop-container']}>
+                    <Cropper
+                      image={logoImage}
+                      crop={crop}
+                      zoom={zoom}
+                      onCropChange={setCrop}
+                      onCropComplete={onLogoCropComplete}
+                      onZoomChange={setZoom}
+                      cropShape="round"
+                      aspect={1}
+                      />
+                </div>
+                <div className={css['submit-button__container']}>
+                  <button className={css['submit-button']} onClick={onLogoSubmit}>Зберегти</button>
+                  <button className={css['submit-button']} onClick={onLogoCancel}>Скасувати</button>
+                </div>
               </Tooltip>
             </>
             }
