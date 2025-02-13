@@ -7,6 +7,9 @@ from authentication.models import CustomUser
 def image_directory_path(instance, filename):
     return f"{instance.image_type}/{filename}"
 
+def cropped_image_directory_path(instance, filename):
+    return f"{instance.image_type}/cropped/{filename}"
+
 
 class ProfileImage(models.Model):
     BANNER = "banner"
@@ -30,6 +33,15 @@ class ProfileImage(models.Model):
             FileExtensionValidator(allowed_extensions=["jpeg", "png", "jpg"])
         ],
         blank=True,
+    )
+    cropped_image_path = models.ImageField(
+        upload_to=cropped_image_directory_path,
+        validators=[
+            FileExtensionValidator(allowed_extensions=["jpeg", "png", "jpg"])
+        ],
+        blank=True,
+        null=True,
+        default=None,
     )
     image_size = models.PositiveIntegerField(null=True)
     hash_md5 = models.CharField(max_length=32, blank=True)
