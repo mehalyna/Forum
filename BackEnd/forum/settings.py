@@ -233,7 +233,7 @@ DJOSER = {
 DELAY_FOR_LOGIN = 600  # delay time for login in seconds
 ATTEMPTS_FOR_LOGIN = 10  # attempts for login during delay for login
 
-DELAY_FOR_UPLOADS = 90000
+DELAY_FOR_UPLOADS = 86400
 MAX_UPLOADS = 30
 
 
