@@ -60,17 +60,18 @@
     font-weight: bold;
     font-family: 'Geologica', sans-serif;
     color: var(--tooltip-font-color);
-  }
+}
 
 .crop-container {
     position: relative;
     height: 300px;
-}  
+}
 
 .submit-button__container {
     display: flex;
-    align-items:center;
+    align-items: center;
     justify-content: center;
+    gap: 24px;
     padding: 11px 17px;
     background-color: var(--main-white);
 }
@@ -106,7 +107,7 @@
         align-items: center;
         padding-left: 24px;
     }
-    
+
     .divider {
         width: 100%;
         height: 1px;
@@ -114,7 +115,7 @@
         display: inherit;
     }
 }
-    
+
 @media only screen and (min-width: 1200px) {
     .form__container {
         width: 636px;

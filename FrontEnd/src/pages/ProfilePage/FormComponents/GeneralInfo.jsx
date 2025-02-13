@@ -70,7 +70,7 @@ const GeneralInfo = (props) => {
   const [profile, setProfile] = useState(props.profile);
   const [formStateErr, setFormStateErr] = useState(ERRORS);
   const [bannerImage, setBannerImage] = useState(props.profile?.banner?.path);
-  const [logoImage, setLogoImage] = useState(props.profile?.logo?.path);
+  const [logoImage, setLogoImage] = useState(props.profile?.logo?.cropped_path);
   const [bannerImageError, setBannerImageError] = useState(null);
   const [logoImageError, setLogoImageError] = useState(null);
   const [edrpouFieldError, setEdrpouFieldError] = useState(null);
@@ -379,6 +379,7 @@ const GeneralInfo = (props) => {
 
   const onUpdateLogo = async (e) => {
     const file = e.target.files[0];
+    e.target.value = '';
     if (file && checkMaxImageSize(e.target.name, file)) {
       setLogoImage(URL.createObjectURL(file));
       setCropLogo(true);
@@ -386,14 +387,22 @@ const GeneralInfo = (props) => {
     }
   };
 
+  const onLogoCancel = () => {
+    setCropLogo(false);
+    setLogoImage(props.profile?.logo?.cropped_path);
+  };
+
   const onLogoSubmit = async (e) => {
     e.preventDefault();
+
+    const croppedBlob  = await getCroppedImage(logoImage, croppedAreaPixels);
+    const croppedLogoFile = new File([croppedBlob], logoFile.name, {type: logoFile.type});
+
+    setLogoImage(URL.createObjectURL(croppedBlob));
+
     const formData = new FormData();
     formData.append('image_path', logoFile);
-    formData.append('crop_x', croppedAreaPixels?.x);
-    formData.append('crop_y', croppedAreaPixels?.y);
-    formData.append('width', croppedAreaPixels?.width);
-    formData.append('height', croppedAreaPixels?.height);
+    formData.append('cropped_image_path', croppedLogoFile);
 
     const url = `${process.env.REACT_APP_BASE_API_URL}/api/image/logo/`;
     try {
@@ -405,7 +414,6 @@ const GeneralInfo = (props) => {
         }};
       });
       toast.success('Зображення успішно завантажене');
-      await getCroppedImage(logoImage, croppedAreaPixels, setLogoImage);
       setCropLogo(false);
     } catch (error) {
       console.error(
@@ -638,21 +646,26 @@ const GeneralInfo = (props) => {
             />
             {cropLogo &&
             <>
+            <Tooltip title={'Оберіть область логотипу, яка буде відображатись на картці компанії.\nНа сторінці компанії буде відображатись оригінальне зображення.'}
+                    open={true}
+            >
               <div className={css['crop-container']}>
-                <Cropper
-                  image={logoImage}
-                  crop={crop}
-                  zoom={zoom}
-                  onCropChange={setCrop}
-                  onCropComplete={onLogoCropComplete}
-                  onZoomChange={setZoom}
-                  cropShape="round"
-                  aspect={1}
-                  />
+                  <Cropper
+                    image={logoImage}
+                    crop={crop}
+                    zoom={zoom}
+                    onCropChange={setCrop}
+                    onCropComplete={onLogoCropComplete}
+                    onZoomChange={setZoom}
+                    cropShape="round"
+                    aspect={1}
+                    />
               </div>
               <div className={css['submit-button__container']}>
-                <button className={css['submit-button']} onClick={onLogoSubmit}>Підтвердити</button>
+                <button className={css['submit-button']} onClick={onLogoSubmit}>Зберегти</button>
+                <button className={css['submit-button']} onClick={onLogoCancel}>Скасувати</button>
               </div>
+              </Tooltip>
             </>
             }
             <BanerModeration />
