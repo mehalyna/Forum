@@ -7,6 +7,7 @@ from authentication.models import CustomUser
 def image_directory_path(instance, filename):
     return f"{instance.image_type}/{filename}"
 
+
 def cropped_image_directory_path(instance, filename):
     return f"{instance.image_type}/cropped/{filename}"
 
