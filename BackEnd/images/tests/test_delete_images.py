@@ -7,7 +7,7 @@ from images.factories import ProfileimageFactory
 from utils.dump_response import dump  # noqa
 
 
-class TestBannerChange(APITestCase):
+class TestDeleteImages(APITestCase):
     def setUp(self) -> None:
         self.banner_path = os.path.join(
             os.getcwd(), "images", "tests", "img", "img_2mb.png"
