@@ -1,3 +1,4 @@
+from django.conf import settings
 from rest_framework import serializers
 from utils.ratelimiters import RateLimit
 from images.models import ProfileImage
@@ -36,8 +37,8 @@ class ImageSerializer(serializers.ModelSerializer):
         )
 
     @RateLimit(
-        calls=30,
-        period=90000,
+        calls=settings.MAX_UPLOADS,
+        period=settings.DELAY_FOR_UPLOADS,
     )
     def validate(self, value):
         validator_function = {
