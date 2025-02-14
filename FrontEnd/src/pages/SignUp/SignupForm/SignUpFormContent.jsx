@@ -35,7 +35,7 @@ export function SignUpFormContentComponent(props) {
     nameSurnameFieldLength: 'Введіть від 2 до 50 символів',
     companyFieldLength: 'Введіть від 2 до 45 символів',
     notAllowedSymbols: 'Поле містить недопустимі символи та/або цифри',
-    maxLength: 'Кількість символів перевищує максимально допустиму (50 символів)',
+    maxLength: 'Кількість символів перевищує максимально допустиму (128 символів)',
   };
 
   const {
@@ -215,7 +215,7 @@ export function SignUpFormContentComponent(props) {
               message: errorMessageTemplates.password,
             },
             maxLength: {
-              value: 50,
+              value: 128,
               message: errorMessageTemplates.maxLength
             },
           }}
@@ -235,7 +235,7 @@ export function SignUpFormContentComponent(props) {
           validation={{
             required: 'Не ввели пароль ще раз',
             maxLength: {
-              value: 50,
+              value: 128,
               message: errorMessageTemplates.maxLength
             },
             validate: (value) =>
