@@ -26,6 +26,8 @@
     font-weight: 400;
     line-height: 22px;
     letter-spacing: -0.16px;
+    width: fit-content;
+    max-width: 100%;
 }
 
 .admin-layout__content {
