@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.shortcuts import get_object_or_404
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from rest_framework.exceptions import ValidationError
@@ -110,7 +111,7 @@ class AdminUserListSerializer(serializers.ModelSerializer):
             "is_superuser": obj.is_superuser,
             "is_deleted": obj.email.startswith("is_deleted_"),
             "is_inactive": not obj.is_active
-            and not obj.email.startswith("is_deleted_"),
+                           and not obj.email.startswith("is_deleted_"),
         }
         return data
 
@@ -430,3 +431,14 @@ class SendMessageSerializer(serializers.Serializer):
             "invalid_choice": "Invalid category selection.",
         },
     )
+
+
+class RemoveStaffSerializer(serializers.Serializer):
+    class Meta:
+        model = CustomUser
+        fields = []
+
+    def update(self, instance, validated_data):
+        instance.is_staff = False
+        instance.save()
+        return instance

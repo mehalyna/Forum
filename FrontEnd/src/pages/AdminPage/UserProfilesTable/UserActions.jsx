@@ -5,16 +5,13 @@ import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 import styles from './UserActions.module.css';
-import { useNavigate } from 'react-router-dom';
 
-function UserActions({ user, onActionComplete }) {
+function UserActions({ user, currentUser, onActionComplete }) {
     const [selectedCategory, setSelectedCategory] = useState('Інше');
     const [messageContent, setMessageContent] = useState('');
     const [isSending, setIsSending] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [error, setError] = useState('');
-    const navigate = useNavigate();
-
     const validateMessage = (message) => {
         if (message.trim().length >= 10) {
             setError('');
@@ -49,11 +46,12 @@ function UserActions({ user, onActionComplete }) {
         }
     };
 
-    const viewProfile = () => {
+    const removeStaffStatus = async () => {
         try {
-            navigate(`/customadmin/users/${user.id}`);
+            await axios.put(`${process.env.REACT_APP_BASE_API_URL}/api/admin/users/${user.id}/remove_staff/`, {});
+            if (onActionComplete) onActionComplete();
         } catch (error) {
-            toast.error('Не вдалося переглянути профіль. Спробуйте оновити сторінку.');
+            toast.error('Не вдалося забрати права адміністратора.');
         }
     };
 
@@ -67,16 +65,17 @@ function UserActions({ user, onActionComplete }) {
             ),
             onClick: () => setIsModalVisible(true),
         },
+        currentUser.isStaff && user.status.is_staff ?
         {
             key: 'viewProfile',
             label: (
-                <Tooltip title="Переглянути детальний профіль користувача">
-                    Переглянути профіль
+                <Tooltip title="Забрати права адміністратора">
+                    Забрати права адміністратора
                 </Tooltip>
             ),
-            onClick: viewProfile,
-        },
-    ];
+            onClick: removeStaffStatus,
+        } : null,
+    ].filter(Boolean);
 
     return (
         <>

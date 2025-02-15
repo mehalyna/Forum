@@ -20,9 +20,8 @@ from rest_framework.generics import (
     RetrieveAPIView,
     RetrieveUpdateDestroyAPIView,
     RetrieveUpdateAPIView,
-    CreateAPIView,
+    CreateAPIView, UpdateAPIView,
 )
-
 
 from administration.serializers import (
     AdminCompanyListSerializer,
@@ -38,7 +37,7 @@ from administration.serializers import (
     MonthlyProfileStatisticsSerializer,
     AdminRegistrationSerializer,
     FeedbackCategorySerializer,
-    SendMessageSerializer,
+    SendMessageSerializer, RemoveStaffSerializer,
 )
 from administration.pagination import ListPagination
 from administration.models import (
@@ -427,3 +426,9 @@ class FeedbackCategoryDetailView(RetrieveUpdateDestroyAPIView):
     queryset = FeedbackCategory.objects.all()
     serializer_class = FeedbackCategorySerializer
     permission_classes = [IsStaffUser]
+
+
+class RemoveStaffView(UpdateAPIView):
+    queryset = CustomUser.objects.all()
+    permission_classes = [IsStaffUser]
+    serializer_class = RemoveStaffSerializer
