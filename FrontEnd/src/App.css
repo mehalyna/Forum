@@ -1,8 +1,13 @@
 .App {
   display: flex;
   flex-direction: column;
+  min-height: 100vh;
 }
 
 body {
   width: 100vw;
+}
+
+footer {
+  margin-top: auto;
 }
