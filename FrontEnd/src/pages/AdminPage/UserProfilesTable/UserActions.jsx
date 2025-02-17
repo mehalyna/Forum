@@ -47,8 +47,20 @@ function UserActions({ user, currentUser, onActionComplete }) {
     };
 
     const removeStaffStatus = async (choice) => {
+        let data = {};
+        if (choice === 'remove_staff') {
+            data = {
+                'is_staff': false,
+                'is_active': false
+            };
+        } else if (choice === 'add_staff') {
+            data = {
+                'is_staff': true,
+                'is_active': true
+            };
+        }
         try {
-            await axios.put(`${process.env.REACT_APP_BASE_API_URL}/api/admin/users/${user.id}/`, {'choice': choice});
+            await axios.put(`${process.env.REACT_APP_BASE_API_URL}/api/admin/users/${user.id}/`, data);
             if (onActionComplete) onActionComplete();
         } catch (error) {
             toast.error('Не вдалося виконати дію.');

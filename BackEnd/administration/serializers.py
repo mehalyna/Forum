@@ -120,20 +120,10 @@ class AdminUserDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CustomUser
-        fields = ["choice"]
-
-    def update(self, instance, validated_data):
-        choice = validated_data.pop("choice", None)
-        if choice == "remove_staff":
-            instance.is_staff = False
-            instance.is_active = False
-        elif choice == "add_staff":
-            instance.is_staff = True
-            instance.is_active = True
-        else:
-            raise serializers.ValidationError({"choice": "Invalid choice"})
-        instance.save()
-        return instance
+        fields = (
+            "is_staff",
+            "is_active"
+        )
 
 
 class AdminCompanyListSerializer(serializers.ModelSerializer):

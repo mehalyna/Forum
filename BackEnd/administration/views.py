@@ -93,7 +93,7 @@ class UserDetailView(UpdateAPIView):
     View to change the staff status
     """
 
-    permission_classes = [IsStaffUser]
+    permission_classes = [IsSuperUser]
     serializer_class = AdminUserDetailSerializer
     queryset = CustomUser.objects.select_related("profile")
 
