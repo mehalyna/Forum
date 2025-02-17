@@ -1,5 +1,4 @@
 from django.contrib.auth import get_user_model
-from django.shortcuts import get_object_or_404
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from rest_framework.exceptions import ValidationError
@@ -117,22 +116,24 @@ class AdminUserListSerializer(serializers.ModelSerializer):
 
 
 class AdminUserDetailSerializer(serializers.ModelSerializer):
-    company_name = serializers.SerializerMethodField()
-
+    choice = serializers.CharField(write_only=True)
     class Meta:
         model = CustomUser
-        fields = (
-            "name",
-            "surname",
-            "email",
-            "is_active",
-            "is_staff",
-            "is_superuser",
-            "company_name",
-        )
+        fields = ['choice']
 
-    def get_company_name(self, obj) -> bool:
-        return True if hasattr(obj, "profile") else False
+    def update(self, instance, validated_data):
+        choice = validated_data.pop("choice", None)
+        if choice == 'remove_staff':
+            instance.is_staff = False
+            instance.is_active = False
+        elif choice == 'add_staff':
+            instance.is_staff = True
+            instance.is_active = True
+        else:
+            raise serializers.ValidationError({"choice": "Invalid choice"})
+        instance.save()
+        return instance
+
 
 
 class AdminCompanyListSerializer(serializers.ModelSerializer):
@@ -431,14 +432,3 @@ class SendMessageSerializer(serializers.Serializer):
             "invalid_choice": "Invalid category selection.",
         },
     )
-
-
-class RemoveStaffSerializer(serializers.Serializer):
-    class Meta:
-        model = CustomUser
-        fields = []
-
-    def update(self, instance, validated_data):
-        instance.is_staff = False
-        instance.save()
-        return instance

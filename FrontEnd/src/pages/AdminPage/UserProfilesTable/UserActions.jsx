@@ -46,12 +46,12 @@ function UserActions({ user, currentUser, onActionComplete }) {
         }
     };
 
-    const removeStaffStatus = async () => {
+    const removeStaffStatus = async (choice) => {
         try {
-            await axios.put(`${process.env.REACT_APP_BASE_API_URL}/api/admin/users/${user.id}/remove_staff/`, {});
+            await axios.put(`${process.env.REACT_APP_BASE_API_URL}/api/admin/users/${user.id}/`, {'choice': choice});
             if (onActionComplete) onActionComplete();
         } catch (error) {
-            toast.error('Не вдалося забрати права адміністратора.');
+            toast.error('Не вдалося виконати дію.');
         }
     };
 
@@ -67,13 +67,23 @@ function UserActions({ user, currentUser, onActionComplete }) {
         },
         currentUser.isStaff && user.status.is_staff ?
         {
-            key: 'viewProfile',
+            key: 'removeStaff',
             label: (
                 <Tooltip title="Забрати права адміністратора">
                     Забрати права адміністратора
                 </Tooltip>
             ),
-            onClick: removeStaffStatus,
+            onClick: () => removeStaffStatus('remove_staff'),
+        } : null,
+        currentUser.isStaff && !user.status.is_staff ?
+        {
+            key: 'addStaff',
+            label: (
+                <Tooltip title="Надати права адміністратора">
+                    Надати права адміністратора
+                </Tooltip>
+            ),
+            onClick: () => removeStaffStatus('add_staff'),
         } : null,
     ].filter(Boolean);
 

@@ -17,7 +17,6 @@ from administration.views import (
     SendMessageView,
     FeedbackCategoryListView,
     FeedbackCategoryDetailView,
-    RemoveStaffView,
 )
 
 app_name = "administration"
@@ -70,10 +69,5 @@ urlpatterns = [
         "users/<pk>/send_message/",
         SendMessageView.as_view(),
         name="send-message",
-    ),
-    path(
-        "users/<pk>/remove_staff/",
-        RemoveStaffView.as_view(),
-        name="remove_staff",
     )
 ]

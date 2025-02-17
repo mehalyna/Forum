@@ -37,7 +37,7 @@ from administration.serializers import (
     MonthlyProfileStatisticsSerializer,
     AdminRegistrationSerializer,
     FeedbackCategorySerializer,
-    SendMessageSerializer, RemoveStaffSerializer,
+    SendMessageSerializer,
 )
 from administration.pagination import ListPagination
 from administration.models import (
@@ -87,21 +87,14 @@ class UsersListView(ListAPIView):
     queryset = CustomUser.objects.select_related("profile").order_by("id")
 
 
-class UserDetailView(RetrieveUpdateDestroyAPIView):
+class UserDetailView(UpdateAPIView):
     """
-    Retrieve, update or delete a user.
+    View to change the staff status
     """
 
     permission_classes = [IsStaffUser]
     serializer_class = AdminUserDetailSerializer
     queryset = CustomUser.objects.select_related("profile")
-
-    def destroy(self, request, *args, **kwargs):
-        instance = self.get_object()
-        if not Profile.objects.filter(person_id=instance.id).exists():
-            return super().destroy(request, *args, **kwargs)
-        else:
-            return self.http_method_not_allowed(request, *args, **kwargs)
 
 
 class ProfilesListView(ListAPIView):
@@ -426,9 +419,3 @@ class FeedbackCategoryDetailView(RetrieveUpdateDestroyAPIView):
     queryset = FeedbackCategory.objects.all()
     serializer_class = FeedbackCategorySerializer
     permission_classes = [IsStaffUser]
-
-
-class RemoveStaffView(UpdateAPIView):
-    queryset = CustomUser.objects.all()
-    permission_classes = [IsStaffUser]
-    serializer_class = RemoveStaffSerializer
