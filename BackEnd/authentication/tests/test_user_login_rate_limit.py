@@ -50,70 +50,73 @@ class LoginRateLimitTests(APITestCase):
     def test_login_blocked_after_too_many_attempts(self, mock_redis):
         mock_redis_instance = self.setup_redis_mock(mock_redis)
 
-        sleep(3) # prevent endpoint is being blocked unexpectedly due to exceeding limit of calls
+        sleep(
+            3
+        )  # prevent endpoint is being blocked unexpectedly due to exceeding limit of calls
         for _ in range(2):
             response = self.client.post(
                 path="/api/auth/token/login/",
-                data = {
+                data={
                     "email": "test@example.com",
                     "password": "wrongpassword",
                     "captcha": "dummy_captcha",
-                }
+                },
             )
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
         response = self.client.post(
-                path="/api/auth/token/login/",
-                data = {
-                    "email": "test@example.com",
-                    "password": "wrongpassword",
-                    "captcha": "dummy_captcha",
-                }
-            )
+            path="/api/auth/token/login/",
+            data={
+                "email": "test@example.com",
+                "password": "wrongpassword",
+                "captcha": "dummy_captcha",
+            },
+        )
         self.assertEqual(
             response.status_code, status.HTTP_429_TOO_MANY_REQUESTS
         )
 
         mock_redis_instance.flushall()
 
-
     @patch("utils.ratelimiters.redis.Redis")
     def test_login_after_allowed_delay_time(self, mock_redis):
         mock_redis_instance = self.setup_redis_mock(mock_redis)
 
-        sleep(3) # prevent endpoint is being blocked unexpectedly due to exceeding limit of calls
+        sleep(
+            3
+        )  # prevent endpoint is being blocked unexpectedly due to exceeding limit of calls
         for _ in range(2):
             response = self.client.post(
                 path="/api/auth/token/login/",
-                data = {
+                data={
                     "email": "test@example.com",
                     "password": "wrongpassword",
                     "captcha": "dummy_captcha",
-                }
+                },
             )
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
         response = self.client.post(
-                path="/api/auth/token/login/",
-                data = {
-                    "email": "test@example.com",
-                    "password": "wrongpassword",
-                    "captcha": "dummy_captcha",
-                }
-            )
+            path="/api/auth/token/login/",
+            data={
+                "email": "test@example.com",
+                "password": "wrongpassword",
+                "captcha": "dummy_captcha",
+            },
+        )
         self.assertEqual(
             response.status_code, status.HTTP_429_TOO_MANY_REQUESTS
         )
 
-        sleep(4) # delay time before the next login attempt
+        sleep(4)  # delay time before the next login attempt
         response = self.client.post(
-                path="/api/auth/token/login/",
-                data = {
-                    "email": "test@example.com",
-                    "password": "Test1234",
-                    "captcha": "dummy_captcha",
-                }
-            )
+            path="/api/auth/token/login/",
+            data={
+                "email": "test@example.com",
+                "password": "Test1234",
+                "captcha": "dummy_captcha",
+            },
+        )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual({"auth_token": AnyStr()}, response.json())
         self.assertContains(response, "auth_token")

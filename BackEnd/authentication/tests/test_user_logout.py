@@ -18,7 +18,9 @@ class UserLogoutAPITests(APITestCase):
 
         self.user = UserFactory(email="test@test.com")
 
-        sleep(3) # prevent endpoint is being blocked due to exceeding limit of calls
+        sleep(
+            3
+        )  # prevent endpoint is being blocked due to exceeding limit of calls
 
     def test_logout_successful(self):
         self.user.set_password("Test1234")
