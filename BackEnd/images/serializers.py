@@ -1,5 +1,8 @@
 from rest_framework import serializers
 from images.models import ProfileImage
+from PIL import Image
+from io import BytesIO
+from django.core.files.base import ContentFile
 
 from validation.validate_image import (
     validate_banner_size,
@@ -14,6 +17,7 @@ class ImageSerializer(serializers.ModelSerializer):
             "uuid",
             "image_type",
             "image_path",
+            "cropped_image_path",
             "created_by",
             "content_type",
             "image_size",

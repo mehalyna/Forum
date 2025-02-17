@@ -143,9 +143,9 @@ export default function CompanyCard({
           </div>
         </div>
         <div className={styles['company-card__logo']}>
-          {profile.logo?.path ? (
+          {profile.logo?.cropped_path ? (
             <img
-              src={profile.logo?.path}
+              src={profile.logo?.cropped_path}
               alt="Logo"
               className={styles['company-card__logo-image']}
             />
