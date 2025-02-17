@@ -18,6 +18,8 @@ class UserLogoutAPITests(APITestCase):
 
         self.user = UserFactory(email="test@test.com")
 
+        sleep(3) # prevent endpoint is being blocked due to exceeding limit of calls
+
     def test_logout_successful(self):
         self.user.set_password("Test1234")
         self.user.save()
@@ -38,7 +40,6 @@ class UserLogoutAPITests(APITestCase):
 
     def test_logout_not_logged_in(self):
         response = self.client.post(path="/api/auth/token/logout/")
-        sleep(6)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
         self.assertEqual(
             {"detail": "Authentication credentials were not provided."},
