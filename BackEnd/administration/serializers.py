@@ -110,30 +110,30 @@ class AdminUserListSerializer(serializers.ModelSerializer):
             "is_superuser": obj.is_superuser,
             "is_deleted": obj.email.startswith("is_deleted_"),
             "is_inactive": not obj.is_active
-                           and not obj.email.startswith("is_deleted_"),
+            and not obj.email.startswith("is_deleted_"),
         }
         return data
 
 
 class AdminUserDetailSerializer(serializers.ModelSerializer):
     choice = serializers.CharField(write_only=True)
+
     class Meta:
         model = CustomUser
-        fields = ['choice']
+        fields = ["choice"]
 
     def update(self, instance, validated_data):
         choice = validated_data.pop("choice", None)
-        if choice == 'remove_staff':
+        if choice == "remove_staff":
             instance.is_staff = False
             instance.is_active = False
-        elif choice == 'add_staff':
+        elif choice == "add_staff":
             instance.is_staff = True
             instance.is_active = True
         else:
             raise serializers.ValidationError({"choice": "Invalid choice"})
         instance.save()
         return instance
-
 
 
 class AdminCompanyListSerializer(serializers.ModelSerializer):

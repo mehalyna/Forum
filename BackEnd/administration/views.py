@@ -20,7 +20,8 @@ from rest_framework.generics import (
     RetrieveAPIView,
     RetrieveUpdateDestroyAPIView,
     RetrieveUpdateAPIView,
-    CreateAPIView, UpdateAPIView,
+    CreateAPIView,
+    UpdateAPIView,
 )
 
 from administration.serializers import (

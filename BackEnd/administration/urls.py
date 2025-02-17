@@ -69,5 +69,5 @@ urlpatterns = [
         "users/<pk>/send_message/",
         SendMessageView.as_view(),
         name="send-message",
-    )
+    ),
 ]
