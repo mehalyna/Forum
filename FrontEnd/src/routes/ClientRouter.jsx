@@ -148,8 +148,8 @@ function ClientRouter() {
                   <Route path="*" element={<ErrorPage404 />} />
                 </Routes>
               )}
-              <Footer />
             </PageWrapper>
+            <Footer />
             <ToastContainer
               position="top-right"
               autoClose={3000}
