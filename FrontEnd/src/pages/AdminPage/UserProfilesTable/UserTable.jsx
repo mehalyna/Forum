@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useAuth } from '../../../hooks';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Highlighter from 'react-highlight-words';
 import axios from 'axios';
@@ -13,6 +14,7 @@ const LENGTH_EMAIL = 14;
 const DEFAULT_PAGE_SIZE = 10;
 
 function UserTable() {
+    const currentUser = useAuth();
     const location = useLocation();
     const navigate = useNavigate();
     const queryParams = new URLSearchParams(location.search);
@@ -263,6 +265,7 @@ function UserTable() {
             render: (_, user) => (
                 <UserActions
                     user={user}
+                    currentUser={currentUser}
                     onActionComplete={() => {
                         mutate(url);
                     }}

@@ -21,8 +21,8 @@ from rest_framework.generics import (
     RetrieveUpdateDestroyAPIView,
     RetrieveUpdateAPIView,
     CreateAPIView,
+    UpdateAPIView,
 )
-
 
 from administration.serializers import (
     AdminCompanyListSerializer,
@@ -88,21 +88,14 @@ class UsersListView(ListAPIView):
     queryset = CustomUser.objects.select_related("profile").order_by("id")
 
 
-class UserDetailView(RetrieveUpdateDestroyAPIView):
+class UserDetailView(UpdateAPIView):
     """
-    Retrieve, update or delete a user.
+    View to change the staff status
     """
 
-    permission_classes = [IsStaffUser]
+    permission_classes = [IsSuperUser]
     serializer_class = AdminUserDetailSerializer
     queryset = CustomUser.objects.select_related("profile")
-
-    def destroy(self, request, *args, **kwargs):
-        instance = self.get_object()
-        if not Profile.objects.filter(person_id=instance.id).exists():
-            return super().destroy(request, *args, **kwargs)
-        else:
-            return self.http_method_not_allowed(request, *args, **kwargs)
 
 
 class ProfilesListView(ListAPIView):

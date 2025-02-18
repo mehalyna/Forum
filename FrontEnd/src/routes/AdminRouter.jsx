@@ -7,7 +7,6 @@ import { useAuth } from '../hooks';
 
 import AdminLayout from '../pages/AdminPage/AdminLayout.jsx';
 import Header from '../components/Header/Header';
-import UserDetail from '../pages/AdminPage/DetailView/UserDetail';
 import UserTable from '../pages/AdminPage/UserProfilesTable/UserTable';
 import ProfilesTable from '../pages/AdminPage/UserProfilesTable/ProfilesTable';
 import ProfileDetail from '../pages/AdminPage/DetailView/ProfileDetail';
@@ -32,7 +31,6 @@ function AdminRouter() {
         <>
             <Route path="/" element={<MainPage />} />
             <Route path="/users" element={<UserTable />} />
-            <Route path="/users/:id" element={<UserDetail />} />
             <Route path="/profiles" element={<ProfilesTable />} />
             <Route path="/profile/:id" element={<ProfileDetail />} />
             <Route path="/automoderation" element={<AutoApproveDelay />} />

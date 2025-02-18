@@ -5,16 +5,13 @@ import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 import styles from './UserActions.module.css';
-import { useNavigate } from 'react-router-dom';
 
-function UserActions({ user, onActionComplete }) {
+function UserActions({ user, currentUser, onActionComplete }) {
     const [selectedCategory, setSelectedCategory] = useState('Інше');
     const [messageContent, setMessageContent] = useState('');
     const [isSending, setIsSending] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [error, setError] = useState('');
-    const navigate = useNavigate();
-
     const validateMessage = (message) => {
         if (message.trim().length >= 10) {
             setError('');
@@ -49,11 +46,25 @@ function UserActions({ user, onActionComplete }) {
         }
     };
 
-    const viewProfile = () => {
+    const removeStaffStatus = async (choice) => {
+        let data = {};
+        if (choice === 'remove_staff') {
+            data = {
+                'is_staff': false,
+                'is_active': false
+            };
+        } else if (choice === 'add_staff') {
+            data = {
+                'is_staff': true,
+                'is_active': true
+            };
+        }
         try {
-            navigate(`/customadmin/users/${user.id}`);
+            await axios.patch(`${process.env.REACT_APP_BASE_API_URL}/api/admin/users/${user.id}/`, data);
+            if (onActionComplete) onActionComplete();
+            toast.success('Запит на зміну прав успішно виконано');
         } catch (error) {
-            toast.error('Не вдалося переглянути профіль. Спробуйте оновити сторінку.');
+            toast.error('Не вдалося виконати дію.');
         }
     };
 
@@ -67,16 +78,27 @@ function UserActions({ user, onActionComplete }) {
             ),
             onClick: () => setIsModalVisible(true),
         },
+        currentUser.isSuperUser && user.status.is_staff ?
         {
-            key: 'viewProfile',
+            key: 'removeStaff',
             label: (
-                <Tooltip title="Переглянути детальний профіль користувача">
-                    Переглянути профіль
+                <Tooltip title="Забрати права адміністратора">
+                    Забрати права адміністратора
                 </Tooltip>
             ),
-            onClick: viewProfile,
-        },
-    ];
+            onClick: () => removeStaffStatus('remove_staff'),
+        } : null,
+        currentUser.isSuperUser && !user.status.is_staff && !user.company_name ?
+        {
+            key: 'addStaff',
+            label: (
+                <Tooltip title="Надати права адміністратора">
+                    Надати права адміністратора
+                </Tooltip>
+            ),
+            onClick: () => removeStaffStatus('add_staff'),
+        } : null,
+    ].filter(Boolean);
 
     return (
         <>
