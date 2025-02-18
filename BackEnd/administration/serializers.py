@@ -116,8 +116,6 @@ class AdminUserListSerializer(serializers.ModelSerializer):
 
 
 class AdminUserDetailSerializer(serializers.ModelSerializer):
-    choice = serializers.CharField(write_only=True)
-
     class Meta:
         model = CustomUser
         fields = (

@@ -60,8 +60,9 @@ function UserActions({ user, currentUser, onActionComplete }) {
             };
         }
         try {
-            await axios.put(`${process.env.REACT_APP_BASE_API_URL}/api/admin/users/${user.id}/`, data);
+            await axios.patch(`${process.env.REACT_APP_BASE_API_URL}/api/admin/users/${user.id}/`, data);
             if (onActionComplete) onActionComplete();
+            toast.success('Запит на зміну прав успішно виконано');
         } catch (error) {
             toast.error('Не вдалося виконати дію.');
         }
@@ -77,7 +78,7 @@ function UserActions({ user, currentUser, onActionComplete }) {
             ),
             onClick: () => setIsModalVisible(true),
         },
-        currentUser.isStaff && user.status.is_staff ?
+        currentUser.isSuperUser && user.status.is_staff ?
         {
             key: 'removeStaff',
             label: (
@@ -87,7 +88,7 @@ function UserActions({ user, currentUser, onActionComplete }) {
             ),
             onClick: () => removeStaffStatus('remove_staff'),
         } : null,
-        currentUser.isStaff && !user.status.is_staff ?
+        currentUser.isSuperUser && !user.status.is_staff && !user.company_name ?
         {
             key: 'addStaff',
             label: (
