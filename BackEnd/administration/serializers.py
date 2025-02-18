@@ -118,10 +118,7 @@ class AdminUserListSerializer(serializers.ModelSerializer):
 class AdminUserDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = (
-            "is_staff",
-            "is_active"
-        )
+        fields = ("is_staff", "is_active")
 
 
 class AdminCompanyListSerializer(serializers.ModelSerializer):
