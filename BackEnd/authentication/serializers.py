@@ -10,7 +10,7 @@ from djoser.serializers import (
     TokenCreateSerializer,
 )
 from rest_framework import serializers
-from .ratelimiters import LoginRateLimit, RateLimitException
+from utils.ratelimiters import RateLimit
 
 from profiles.models import Profile
 from validation.validate_password import (
@@ -118,31 +118,23 @@ class CustomTokenCreateSerializer(TokenCreateSerializer):
         write_only=True, allow_blank=True, allow_null=True
     )
 
+    @RateLimit(
+        calls=django_settings.ATTEMPTS_FOR_LOGIN,
+        period=django_settings.DELAY_FOR_LOGIN,
+    )
     def validate(self, attrs):
         captcha_token = attrs.get("captcha")
+        email = attrs.get(djoser_settings.LOGIN_FIELD).lower()
+        new_attr = {"password": attrs.get("password"), "email": email}
 
         try:
             validate_profile(attrs.get("email"))
         except ValidationError as error:
             raise serializers.ValidationError(error.message)
 
-        try:
-            return self.validate_for_rate(attrs)
-        except RateLimitException:
-            self.fail("inactive_account")
-
         if captcha_token and not verify_recaptcha(captcha_token):
             raise serializers.ValidationError(
                 "Invalid reCAPTCHA. Please try again."
             )
 
-    @LoginRateLimit(
-        calls=django_settings.ATTEMPTS_FOR_LOGIN,
-        period=django_settings.DELAY_FOR_LOGIN,
-    )
-    def validate_for_rate(self, attrs):
-        email = attrs.get(djoser_settings.LOGIN_FIELD).lower()
-        new_attr = dict(
-            [("password", attrs.get("password")), ("email", email)]
-        )
         return super().validate(new_attr)

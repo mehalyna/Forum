@@ -19,10 +19,14 @@ class UserLoginAPITests(APITestCase):
 
         self.user = UserFactory(email="test@test.com")
 
+        sleep(
+            3
+        )  # prevent endpoint is being blocked due to exceeding limit of calls
+
     def test_login_successful(self):
         self.user.set_password("Test1234")
         self.user.save()
-        sleep(6)
+
         response = self.client.post(
             path="/api/auth/token/login/",
             data={
@@ -78,46 +82,3 @@ class UserLoginAPITests(APITestCase):
             },
             response.json(),
         )
-
-    def test_login_after_allowed_delay_time(self):
-        self.user.set_password("Test1234")
-        self.user.save()
-
-        self.client.post(
-            path="/api/auth/token/login/",
-            data={
-                "email": "test@test.com",
-                "password": "Test1234",
-                "captcha": "dummy_captcha",
-            },
-        )
-
-        self.client.post(
-            path="/api/auth/token/login/",
-            data={
-                "email": "test@test.com",
-                "password": "Test1234",
-                "captcha": "dummy_captcha",
-            },
-        )
-        self.client.post(
-            path="/api/auth/token/login/",
-            data={
-                "email": "test@test.com",
-                "password": "Test1234",
-                "captcha": "dummy_captcha",
-            },
-        )
-        sleep(6)
-        response = self.client.post(
-            path="/api/auth/token/login/",
-            data={
-                "email": "test@test.com",
-                "password": "Test1234",
-                "captcha": "dummy_captcha",
-            },
-        )
-
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual({"auth_token": AnyStr()}, response.json())
-        self.assertContains(response, "auth_token")

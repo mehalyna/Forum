@@ -332,11 +332,16 @@ const GeneralInfo = (props) => {
   };
 
   const uploadImage = async (url, imageKey, image) => {
+    const setImage =
+      imageKey === 'banner'
+      ? setBannerImage
+      : setLogoImage;
     if (image instanceof File || image === '') {
       const formData = new FormData();
       formData.append('image_path', image);
       try {
         const response = await axios.post(url, formData);
+        setImage(URL.createObjectURL(image));
         setProfile((prevState) => {
           return { ...prevState, [imageKey]: {
             ...prevState[imageKey],
@@ -377,12 +382,7 @@ const GeneralInfo = (props) => {
       e.target.name === 'banner'
       ? `${process.env.REACT_APP_BASE_API_URL}/api/image/banner/`
       : `${process.env.REACT_APP_BASE_API_URL}/api/image/logo/`;
-    const setImage =
-      e.target.name === 'banner'
-      ? setBannerImage
-      : setLogoImage;
     if (file && checkMaxImageSize(e.target.name, file)) {
-      setImage(URL.createObjectURL(file));
       await uploadImage(imageUrl, e.target.name, file);
     }
   };

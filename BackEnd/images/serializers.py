@@ -1,4 +1,6 @@
+from django.conf import settings
 from rest_framework import serializers
+from utils.ratelimiters import RateLimit
 from images.models import ProfileImage
 
 from validation.validate_image import (
@@ -34,6 +36,10 @@ class ImageSerializer(serializers.ModelSerializer):
             "is_deleted",
         )
 
+    @RateLimit(
+        calls=settings.MAX_UPLOADS,
+        period=settings.DELAY_FOR_UPLOADS,
+    )
     def validate(self, value):
         validator_function = {
             ProfileImage.BANNER: validate_banner_size,

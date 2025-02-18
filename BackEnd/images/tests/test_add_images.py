@@ -1,3 +1,5 @@
+from unittest.mock import patch
+
 from rest_framework.test import APITestCase
 from rest_framework import status
 import os
@@ -175,3 +177,55 @@ class TestBannerChange(APITestCase):
             },
             response.json(),
         )
+
+
+class TestUploadRateLimit(APITestCase):
+    def setUp(self):
+        self.right_banner = open(
+            os.path.join(os.getcwd(), "images/tests/img/img_2mb.png"),
+            "rb",
+        )
+        self.right_logo = open(
+            os.path.join(os.getcwd(), "images/tests/img/img_300kb.png"),
+            "rb",
+        )
+
+        self.user = UserFactory(id=1, email="test1@test.com")
+        self.upload_image_url = "/api/image/logo/"
+        self.valid_data = {"image_path": self.right_logo}
+        self.client.force_authenticate(self.user)
+
+    def tearDown(self) -> None:
+        self.right_banner.close()
+        self.right_logo.close()
+
+    @patch("utils.ratelimiters.redis.Redis")
+    def test_uploads_too_many_attempts(self, mock_redis):
+        redis_memory = {}
+
+        def mock_get(key):
+            return str(redis_memory.get(key, 0)).encode()
+
+        def mock_incr(key):
+            redis_memory[key] = redis_memory.get(key, 0) + 1
+            return redis_memory[key]
+
+        def mock_set(key, value, ex=None):
+            redis_memory[key] = value
+
+        mock_instance = mock_redis.return_value
+        mock_instance.get.side_effect = mock_get
+        mock_instance.incr.side_effect = mock_incr
+        mock_instance.set.side_effect = mock_set
+
+        self.client.post(
+            path="/api/image/banner/", data={"image_path": self.right_banner}
+        )
+        response = self.client.post(
+            path="/api/image/logo/", data={"image_path": self.right_logo}
+        )
+
+        self.assertEqual(
+            response.status_code, status.HTTP_429_TOO_MANY_REQUESTS
+        )
+        mock_instance.flushall()
