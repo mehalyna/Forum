@@ -55,10 +55,10 @@ function ClientRouter() {
         <CookieProvider>
           <BurgerMenuProvider>
             <Header isAuthorized={isAuth} />
-            {isLoading ? (
-              <Loader />
-            ) : (
-              <PageWrapper>
+            <PageWrapper>
+              {isLoading ? (
+                <Loader />
+              ) : (
                 <Routes>
                   <Route path="/" element={<MainPage isAuthorized={isAuth} />} />
                   <Route path="/about-us" element={<AboutUsPage />} />
@@ -147,8 +147,8 @@ function ClientRouter() {
                   />
                   <Route path="*" element={<ErrorPage404 />} />
                 </Routes>
-              </PageWrapper>
-            )}
+              )}
+            </PageWrapper>
             <Footer />
             <ToastContainer
               position="top-right"

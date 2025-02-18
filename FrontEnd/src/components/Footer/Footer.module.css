@@ -3,6 +3,7 @@
     width: 100%;
     background: var(--footer-backround);
     justify-content: center;
+    margin-top: auto;
 }
 
 .footer-content {
